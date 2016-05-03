@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+rm -rf work-arcs-neutrons2nxs
+time mcvine instruments arcs neutrons2nxs --neutrons=out/scattered-neutrons --nodes=2

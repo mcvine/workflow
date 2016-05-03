@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+mcvine instruments arcs nxs reduce arcs-sim-wEidata.nxs --qaxis=0 15 0.1 
+mcvine mantid extract_iqe iqe.nxs iqe.h5
+python -c "import histogram.hdf as hh; iqe=hh.load('iqe.h5'); iq=iqe.sum('energy'); hh.dump(iq, 'iq.h5'); ie = iqe[(2.5,9), ()].sum('Q'); hh.dump(ie, 'ie-Q_2.5,9.h5')"

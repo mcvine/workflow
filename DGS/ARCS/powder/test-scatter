@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+LAUNCHER=`python -c "from mcni.pyre_support.MpiApplication import mpi_launcher_choice as l; print l"`
+rm -rf out && time ./sss --ncount=1e6 --$LAUNCHER.nodes=5
+
+#--journal.debug.phonon_incoherent_inelastic_kernel
+
+# rm -rf out && ./sss --ncount=1e8  --$LAUNCHER.nodes=10 
+
