@@ -1,7 +1,6 @@
-install(
-  DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/
-  DESTINATION share/mcvine/workflow/
-  USE_SOURCE_PERMISSIONS
+# copy share files
+file(COPY ./
+  DESTINATION ${EXPORT_SHARE}/workflow/
   PATTERN "CMakeLists.txt" EXCLUDE
   PATTERN "*~" EXCLUDE
   )
