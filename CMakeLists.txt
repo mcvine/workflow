@@ -3,6 +3,7 @@ file(COPY ./
   DESTINATION ${EXPORT_SHARE}/workflow/
   PATTERN "CMakeLists.txt" EXCLUDE
   PATTERN "*~" EXCLUDE
+  PATTERN ".git*" EXCLUDE
   )
 
 
