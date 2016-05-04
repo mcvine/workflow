@@ -15,7 +15,7 @@ import numpy as np
 
 def make_all(N, supercell_matrix, atom_chemical_symbols):
     make_omega2_pols(N, supercell_matrix, atom_chemical_symbols)
-    make_gridinfo(N)
+    make_gridinfo(N, atom_chemical_symbols)
     from .dos import fromOmaga2
     fromOmaga2()
     return
@@ -72,7 +72,7 @@ def make_omega2_pols(N, supercell_matrix, atom_chemical_symbols):
     return
 
 
-def make_gridinfo(N):
+def make_gridinfo(N, atom_chemical_symbols):
     """Create Q gridinfo file in IDF format
 
     inputs:

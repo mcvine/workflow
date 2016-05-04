@@ -5,7 +5,7 @@ import numpy as np
 
 def fromOmaga2():
     """create DOS in IDF format from Omega2 in IDF format"""
-    (filetype, version, comment), omega2 = Omega2.read(path)
+    (filetype, version, comment), omega2 = Omega2.read()
     omega2[ omega2<0 ] = 0
     energies = np.sqrt(omega2) * units.hertz2mev
 
