@@ -3,7 +3,7 @@ echo $SAMPLE_ANGLE
 
 LAUNCHER=`python -c "from mcni.pyre_support.MpiApplication import mpi_launcher_choice as l; print l"`
 
-SSSCMD="./sss --ncount=5e7 --$LAUNCHER.nodes=16 --multiple-scattering=off --geometer.sample=(0,0,0),(0,$SAMPLE_ANGLE,0)"
-# SSSCMD="./sss --ncount=5e6 --$LAUNCHER.nodes=16 --multiple-scattering=off --geometer.sample=(0,0,0),(0,$SAMPLE_ANGLE,0)"
+SSSCMD="./sss --ncount=$NCOUNT --$LAUNCHER.nodes=$NODES --multiple-scattering=$MS --geometer.sample=(0,0,0),(0,$SAMPLE_ANGLE,0)"
+
 echo $SSSCMD
 rm -rf out && time $SSSCMD

@@ -1,11 +1,11 @@
 # -*- Makefile -*-
-# ARCS workflow
+# single crystal scan workflow: one angle
 #
 
+# this will be overide
 SAMPLE_ANGLE=0
 
-# default rule: we want I(Q,E)
-all: IQE
+all: sim-$(SAMPLE_ANGLE).nxs
 
 # clean up
 clean:
@@ -18,21 +18,13 @@ restore-template: clean
 	rm -rf sampleassembly
 	rm -rf *.nxs *.h5
 
-# # IQE comes from iqe histogram file
-IQE: iqe.h5
-
-# reduce
-sim.nxspe: arcs-sim-wEiData.nxs
-	SAMPLE_ANGLE=$(SAMPLE_ANGLE) time ./reduce2iqe &> log.reduce
-
-# Ei data need to be added to the simulated nexus file
-arcs-sim-wEiData.nxs: arcs-sim.nxs
-	cp arcs-sim.nxs arcs-sim-wEidata.nxs
-	mcvine instruments arcs nxs populate_metadata --type=Ei --beam_outdir=beam/out --nxs=arcs-sim-wEidata.nxs
-# 	arcs-nxs-populate-Eidata --nxs=arcs-sim-wEidata.nxs --mod2sample=beam/out
+# add meta data
+sim-$(SAMPLE_ANGLE).nxs: sim.nxs
+	cp sim.nxs sim-$(SAMPLE_ANGLE).nxs
+	mcvine instruments $(INSTRUMENT) nxs populate_metadata --type=Ei --beam_outdir=beam/out --nxs=sim-$(SAMPLE_ANGLE).nxs
 
 # nexus file comes from collecting scattered neutrons at the detector system
-arcs-sim.nxs: out/scattered-neutrons
+sim.nxs: out/scattered-neutrons
 	time ./create-nxs &> log.create-nxs
 
 # scattered neutrons comes from simulation of scattering of incident beam by sample assembly

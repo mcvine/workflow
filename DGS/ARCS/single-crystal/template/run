@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-
-./scatter
-./create-nxs
-./reduce2iqe
-
