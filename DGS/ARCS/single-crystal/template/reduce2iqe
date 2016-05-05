@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+mcvine-sns-reduce-by-mantid -nxs=arcs-sim-wEidata.nxs --psi=$SAMPLE_ANGLE --powder=off --speout=sim_$SAMPLE_ANGLE.nxspe
