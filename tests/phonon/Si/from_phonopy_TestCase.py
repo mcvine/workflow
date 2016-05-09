@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+skip = True # this test needs phonopy
+
 import unittest, os, sys, shutil, numpy as np
 
 
@@ -10,6 +12,7 @@ class TestCase(unittest.TestCase):
         work = '_tmp'
         if os.path.exists(work):
             shutil.rmtree(work)
+        from mcvine import deployment_info
         from mcvine.resources import sample
         src = sample(name='Si', temperature='100K', shape='dummy')
         src = os.path.join(os.path.dirname(src), 'phonons', 'vasp-phonopy')
