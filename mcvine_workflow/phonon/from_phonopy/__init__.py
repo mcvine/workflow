@@ -34,6 +34,8 @@ def make_all(N, supercell_matrix, atom_chemical_symbols):
     make_gridinfo(N, atom_chemical_symbols)
     from .dos import fromOmaga2
     fromOmaga2()
+    xtal_xyz = ''.join(atom_chemical_symbols) + '.xyz'
+    make_crystal_xyz(xtal_xyz, atom_chemical_symbols)
     return
 
 
@@ -50,7 +52,7 @@ def make_omega2_pols(N, supercell_matrix, atom_chemical_symbols):
       - Polarizations
     """
     print "* Constructing Q array"
-    delta = 1./N
+    delta = 1./(N-1)
     Qx = np.arange(0, 1.+delta/2, delta)
     Qy = np.arange(0, 1.+delta/2, delta)
     Qz = np.arange(0, 1.+delta/2, delta)
@@ -111,6 +113,29 @@ def make_gridinfo(N, atom_chemical_symbols):
         ostream.write("n%d = %s\n" % (i+1, N[i]))
         continue
     ostream.close()
+    return
+
+
+def make_crystal_xyz(outpath, atom_chemical_symbols):
+    from phonopy.interface import vasp
+    atoms = vasp.read_vasp("POSCAR", atom_chemical_symbols)
+    # # of atoms
+    lines = [str(len(atoms.get_chemical_symbols()))]
+    # lattice
+    c = atoms.cell.copy()
+    c.shape = -1
+    lines.append("\t".join(map(str, c)))
+    # atoms and positions
+    symbols = atoms.get_chemical_symbols()
+    positions = atoms.get_scaled_positions()
+    for s, p in zip(symbols, positions):
+        line = "%s\t%s" % (s, ' '.join(map(str, p)))
+        lines.append(line)
+        continue
+    text = '\n'.join(lines)
+    # output stream
+    ostream = open(outpath, 'wt')
+    ostream.write(text)
     return
     
 
