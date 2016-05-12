@@ -14,6 +14,22 @@ import numpy as np
 
 
 def make_all(N, supercell_matrix, atom_chemical_symbols):
+    """ compute all phonon data needed by the single crystal phonon
+    kernel.
+    
+    Inputs
+      - N: number of points along each axis
+      - supercell_matrix: supercell matrix used in phonpy calculation
+      - atom_chemical_symbols: list of atom symbols
+      - POSCAR: vasp POSCAR file
+    
+    Output:
+      - Omega2
+      - Polarizations
+      - Qgridinfo
+      - DOS
+    
+    """
     make_omega2_pols(N, supercell_matrix, atom_chemical_symbols)
     make_gridinfo(N, atom_chemical_symbols)
     from .dos import fromOmaga2
