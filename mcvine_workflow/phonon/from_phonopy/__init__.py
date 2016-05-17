@@ -13,7 +13,7 @@ from phonopy.interface import vasp
 import numpy as np
 
 
-def make_all(N, supercell_matrix, atom_chemical_symbols):
+def make_all(N, supercell_matrix, atom_chemical_symbols, fix_pols_phase=True):
     """ compute all phonon data needed by the single crystal phonon
     kernel.
     
@@ -30,7 +30,8 @@ def make_all(N, supercell_matrix, atom_chemical_symbols):
       - DOS
     
     """
-    make_omega2_pols(N, supercell_matrix, atom_chemical_symbols)
+    make_omega2_pols(
+        N, supercell_matrix, atom_chemical_symbols, fix_phase=fix_pols_phase)
     make_gridinfo(N, atom_chemical_symbols)
     from .dos import fromOmaga2
     fromOmaga2()
@@ -39,7 +40,7 @@ def make_all(N, supercell_matrix, atom_chemical_symbols):
     return
 
 
-def make_omega2_pols(N, supercell_matrix, atom_chemical_symbols):
+def make_omega2_pols(N, supercell_matrix, atom_chemical_symbols, fix_phase=True):
     """compute polarizations
     
     Inputs
@@ -79,13 +80,14 @@ def make_omega2_pols(N, supercell_matrix, atom_chemical_symbols):
     print "* Fixing and writing out polarizations"
     nq, nbr, natoms, three = pols.shape
     assert three is 3
-    atoms = vasp.read_vasp("POSCAR", atom_chemical_symbols)
-    positions = atoms.get_scaled_positions()
-    for iatom in range(natoms):
-        qdotr = np.dot(Qs, positions[iatom]) * 2 * np.pi
-        phase = np.exp(1j * qdotr)
-        pols[:, :, iatom, :] *= phase[:, np.newaxis, np.newaxis]
-        continue
+    if fix_phase:
+        atoms = vasp.read_vasp("POSCAR", atom_chemical_symbols)
+        positions = atoms.get_scaled_positions()
+        for iatom in range(natoms):
+            qdotr = np.dot(Qs, positions[iatom]) * 2 * np.pi
+            phase = np.exp(1j * qdotr)
+            pols[:, :, iatom, :] *= phase[:, np.newaxis, np.newaxis]
+            continue
     Polarizations.write(pols)
     return
 
