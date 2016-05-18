@@ -5,7 +5,7 @@
 # this will be overide
 SAMPLE_ANGLE=0
 
-all: sim-$(SAMPLE_ANGLE).nxs
+all: event-nxs
 
 # clean up
 clean:
@@ -17,6 +17,9 @@ restore-template: clean
 	rm -f beam
 	rm -rf sampleassembly
 	rm -rf *.nxs *.h5
+
+# 
+event-nxs: sim-$(SAMPLE_ANGLE).nxs
 
 # add meta data
 sim-$(SAMPLE_ANGLE).nxs: sim.nxs
