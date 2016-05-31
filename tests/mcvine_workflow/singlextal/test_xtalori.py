@@ -3,8 +3,8 @@
 # Jiao Lin <jiao.lin@gmail.com>
 
 import mcvine.cli
-from mcvine_workflow.singlextal.xtalori import xtalori2mat, Eresidual
-from mcvine_workflow.singlextal.XtalOrientation import XtalOrientation
+from mcvine_workflow.singlextal.misc import Eresidual
+from mcvine_workflow.singlextal.XtalOrientation import XtalOrientation, xtalori2mat
 from mcvine_workflow import singlextal
 
 import numpy as np
