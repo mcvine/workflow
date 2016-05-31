@@ -5,6 +5,7 @@
 import mcvine.cli
 from mcvine_workflow.singlextal.xtalori import xtalori2mat, Eresidual
 from mcvine_workflow.singlextal.XtalOrientation import XtalOrientation
+from mcvine_workflow import singlextal
 
 import numpy as np
 
@@ -83,9 +84,31 @@ def test_Eresidual():
     return
 
 
+def test_Eresidual2():    
+    Ei = 100
+    Etarget = 35
+    angles = np.arange(-5, 89.6, 0.5) # psi angles
+    angles = np.arange(40, 49.5, 0.5) # psi angles
+
+    import os
+    xtalori = singlextal.loadXtalOriConfig("Si-xtalori.yaml")
+    # hkl. center of silicon 111 plot
+    ex = np.array((1,0,0))
+    ey = np.array((0,1,0))
+    ez = np.array((0,0,1))
+    u = np.array((1, 0.5, -0.5))
+    v = np.array((0, -1, -1))
+    hkl = -(5+1./3) * u + 0 * v
+    
+    print "psi\tresidual"
+    print Eresidual(xtalori, hkl, Etarget, angles, Ei)
+    return
+
+
 def test():
     test_xtalori2mat()
     test_Eresidual()
+    test_Eresidual2()
     return
 
 
