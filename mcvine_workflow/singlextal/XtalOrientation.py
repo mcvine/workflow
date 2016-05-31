@@ -7,12 +7,14 @@
 """data object for crystal orientation
 """
 
+import numpy as np
+
 class XtalOrientation:
     
-    def __init__(self, ra, rb, rc, u, v, psi):
-        self.ra = np.array(ra)
-        self.rb = np.array(rb)
-        self.rc = np.array(rc)
+    def __init__(self, b1, b2, b3, u, v, psi):
+        self.b1 = np.array(b1)
+        self.b2 = np.array(b2)
+        self.b3 = np.array(b3)
         self.u = np.array(u)
         self.v = np.array(v)
         self.psi = psi
@@ -26,7 +28,7 @@ class XtalOrientation:
         """
         from .xtalori import xtalori2mat
         return xtalori2mat(
-            self.ra, self.rb, self.rc, 
+            self.b1, self.b2, self.b3, 
             self.u, self.v, self.psi,
             )
     
