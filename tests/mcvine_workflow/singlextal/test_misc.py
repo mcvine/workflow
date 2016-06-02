@@ -48,8 +48,8 @@ def test_Eresidual():
 def test_Eresidual2():    
     Ei = 100
     Etarget = 35
-    angles = np.arange(-5, 89.6, 0.5) # psi angles
-    angles = np.arange(40, 49.5, 0.5) # psi angles
+    angles = np.arange(-5, 89.6, 5) # psi angles
+    # angles = np.arange(40, 49.5, 0.5) # psi angles
 
     import os
     xtalori = singlextal.loadXtalOriConfig("Si-xtalori.yaml")
@@ -66,9 +66,28 @@ def test_Eresidual2():
     return
 
 
+def test_Eresidual3():
+    Ei = 100
+    Etarget = 35
+    angles = np.arange(-5, 89.6, 5) # psi angles
+    # angles = np.arange(40, 49.5, 0.5) # psi angles
+
+    import os
+    xtalori = singlextal.loadXtalOriConfig("Si-xtalori.yaml")
+    hkl0 = np.array([-2,-4,4])
+    delta = np.array([-1,1,-1])
+    for i in range(9):
+        hkl = hkl0+delta*i
+        print hkl
+        print "psi\tresidual"
+        print Eresidual(xtalori, hkl, Etarget, angles, Ei)
+    return
+
+
 def test():
     test_Eresidual()
     test_Eresidual2()
+    test_Eresidual3()
     return
 
 def main():
