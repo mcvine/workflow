@@ -8,12 +8,13 @@ from mcvine_workflow.singlextal import solve_psi
 
 import numpy as np
 
-def test_solve():
-    Ei = 100
-    Etarget = 35
-    xtalori = singlextal.loadXtalOriConfig("Si-xtalori.yaml")
-    hkl = [-6,0,0]
-    psi_min, psi_max = -5., 90.
+Ei = 100
+Etarget = 35
+xtalori = singlextal.loadXtalOriConfig("Si-xtalori.yaml")
+hkl = [-6,0,0]
+psi_min, psi_max = -5., 90.
+
+def test_solve1():
     solutions = solve_psi.solve(xtalori, Ei, hkl, Etarget, psi_min, psi_max)
     assert len(solutions)==1
     sol = solutions[0]
@@ -23,8 +24,19 @@ def test_solve():
     return
 
 
+def test_solve2():
+    solutions = solve_psi.solve(xtalori, Ei, hkl, Etarget, psi_min, psi_max, solver='ridder')
+    assert len(solutions)==1
+    sol = solutions[0]
+    from mcvine_workflow.singlextal.misc import Eresidual
+    psi, residual = Eresidual(xtalori, hkl, Etarget, [sol], Ei)[0]
+    assert abs(residual) < 1e-7
+    return
+
+
 def main():
-    test_solve()
+    test_solve1()
+    test_solve2()
     return
 
 

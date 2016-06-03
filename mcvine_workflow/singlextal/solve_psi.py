@@ -9,7 +9,7 @@ def solve(
         xtalori, Ei, hkl, E, psi_min, psi_max, 
         Nsegments = 10,
         solver=scipy.optimize.brentq):
-    """search for the psi angle that allows for minimal discrepancy
+    """search for the psi angles that allows for minimal discrepancy
     between desired energy transfer and energy transfer computed from
     scattering triangle Q = ki - kf
     
@@ -19,6 +19,12 @@ def solve(
     - hkl: desired hkl
     - E: desired energy transfer
     - psi_min, psi_max: psi bracket (degrees)
+    - Nsegments: the psi range is divided into this many segments
+    - solver: if it is a string, it specifies
+              scipy solver of choice. the solver assumes that the
+              two ends of a segment have opposite sign.
+              choices: brentq, brenth, ridder, bisect, newton
+              if not a string, it should be a callable solver
     """
     from .misc import Eresidual
     def res(angles):
@@ -36,6 +42,9 @@ def solve(
     
     delta = 1.*(psi_max-psi_min)/Nsegments
     results = []
+    # retrieve solver
+    if isinstance(solver, basestring):
+        solver = getattr(scipy.optimize, solver)
     for i in range(Nsegments):
         min = psi_min+i*delta
         max = min + delta
