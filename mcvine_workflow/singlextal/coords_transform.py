@@ -36,13 +36,16 @@ def rtzE2hkl(r, theta, z, E, xtalori, Ei):
     """convert from cylinderical coordinate sytem to hkl
     """
     kf_dir = [r*np.cos(theta), r*np.sin(theta), z]
-    kf_dir /= np.linalg.norm(kf_dir)
-    Ef = Ei - E
-    kf_scalar = (conv.SE2V*conv.V2K) * Ef**.5
-    kf = kf_dir * kf_scalar
-    ki_scalar = conv.e2k(Ei)
+    kf_dir = np.array(kf_dir).T # (N,3)
+    kf_dir /= np.linalg.norm(kf_dir, axis=-1)[:, np.newaxis] # (N,3)
+    Ef = Ei - E # (N,)
+    kf_scalar = (conv.SE2V*conv.V2K) * Ef**.5 # (N,)
+    del Ef
+    kf = kf_dir * kf_scalar[:, np.newaxis] # (N,3)
+    del kf_scalar
+    ki_scalar = conv.e2k(Ei) 
     ki = [ki_scalar, 0, 0]
-    Q = ki - kf
+    Q = ki - kf;  del ki, kf
     return Q2hkl(Q, xtalori)
 
 def hklE2rtz(hkl, E, xtalori, Ei, r):
