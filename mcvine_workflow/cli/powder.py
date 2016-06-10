@@ -44,7 +44,7 @@ def create_beam_run_script(workdir, instrument):
     name = "run-beam.sh"
     content = """#!/usr/bin/env bash
 
-mcvine instruments %s beam --keep-in-cache --use-cache E=100 --ncount=1e8
+mcvine instruments %s beam --keep-in-cache --use-cache -E=100 --ncount=1e8
 
 """ % instrument
     path = os.path.join(workdir, name)
