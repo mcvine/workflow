@@ -9,14 +9,14 @@
 
 import os, subprocess as sp, numpy as np
 
-def run(sample):
+def run(sample, Eiguess, Eaxis):
   work = 'work_%s' % sample
   outname = "reduced_%s.nxs" % sample
   if os.path.exists(os.path.join(work, outname)):
     print "skipping %s" % sample
     return
   # cmd = ['python', '../../scripts/reduceKeepingEvents.py', "sequoia-sim.nxs", "100.3", "-10,80,0.25", outname]
-  cmd = ['python', '../../reduce/reduceKeepingEvents.py', "arcs-sim-wEidata.nxs", str(sample), "100", "-10,0.25,90", outname]
+  cmd = ['python', '../scripts/reduce/reduceKeepingEvents.py', "sim-%s.nxs"%sample, str(sample), Eiguess, Eaxis, outname]
   print work, cmd
   p = sp.Popen(cmd, stdout=sp.PIPE, cwd=work)
   out,err = p.communicate()
@@ -27,9 +27,14 @@ def run(sample):
 
 
 def main():
-  for sample in np.arange(-5,90.1,0.5):
+  import sys
+  samples = eval(sys.argv[1])
+  Eiguess = sys.argv[2]
+  Emin,Emax,dE = eval(sys.argv[3])
+  Eaxis = '%s,%s,%s' % (Emin,dE,Emax)
+  for sample in np.arange(*samples):
   # for sample in np.arange(79.5,90.1,0.5):
-    run(sample)
+    run(sample, Eiguess, Eaxis)
   return
 
 if __name__ == '__main__' : main()
