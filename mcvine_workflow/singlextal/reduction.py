@@ -3,15 +3,18 @@
 # Jiao Lin <jiao.lin@gmail.com>
 #
 
-def reduceScan(psis, nxs_template, outfn_template, eiguess, eaxis):
+import numpy as np
+
+def reduceScan(psi_axis, nxs_template, outfn_template, eiguess, eaxis):
     """run reductions on all given directories
     
-    - psis: psi angles in degrees 
+    - psi axis: (min,max,delta) for constructing psi angles in degrees
     - nxs_template: template for input nxs path
     - outfn_template: template for output file path
     - eiguess: Ei in meV
     - eaxis: Emin, Emax, dE
     """
+    psis = np.arange(*psi_axis)
     for psi in psis:
         nxsfile = nxs_template % (psi,)
         outfile = outfn_template % (psi,)
@@ -52,8 +55,7 @@ def reduceOneKeepingEvents(nxsfile, angle, eiguess, eaxis, outfile):
         EnergyTransferRange = eaxis,
         )
 
-    AddSampleLog(Workspace=wsname,LogName="psi",LogText=angle,LogType="Number")
-
+    AddSampleLog(Workspace=wsname,LogName="psi",LogText=str(angle),LogType="Number")
     SaveNexus(
         InputWorkspace=wsname,
         Filename = outfile,
