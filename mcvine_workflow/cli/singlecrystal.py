@@ -8,14 +8,28 @@ import os, stat, click
 
 from . import workflow
 
+"""
+angles: -50,40.1,.5
+filename_pattern: reduced_%(angle)s.nxs
+lattice: 8.87, 8.87, 5.2, 90, 90, 90
+orientation:
+ u: 1, 0, 0
+ v: 0, 1, 0
+"""
+
 @workflow.command()
 @click.option("--type", default='DGS')
 @click.option("--instrument", default='ARCS')
 @click.option("--beam", default='')
-@click.option("--sample", default='V')
-@click.option("--workdir", default="")
-def singlecrystal(type, instrument, beam, sample, workdir):
-    workdir = workdir or "mcvine-workflow-powder-%s-%s" % (instrument, sample)
+@click.option("--material", default='V')
+@click.option("--excitation", default='spinwave')
+@click.option("--scan", default="scan.yml")
+def singlecrystal(
+        type, instrument,
+        beam, 
+        material, excitation,
+        scan):
+    workdir = workdir or "mcvine-workflow-singlecrystal-%s-%s" % (instrument, material)
     # create workdir
     if os.path.exists(workdir):
         raise IOError('%s already exists' % workdir)
@@ -51,19 +65,6 @@ def singlecrystal(type, instrument, beam, sample, workdir):
 
 sample_examples = '"V", "V/300K", or "V/300K/plate"'
 
-
-def create_beam_run_script(workdir, instrument):
-    name = "run-beam.sh"
-    content = """#!/usr/bin/env bash
-
-mcvine instruments %s beam --keep-in-cache --use-cache -E=100 --ncount=1e8
-
-""" % instrument
-    path = os.path.join(workdir, name)
-    open(path, 'wt').write(content)
-    st = os.stat(path)
-    os.chmod(path, st.st_mode | stat.S_IEXEC)
-    return
-
+from .powder import create_beam_run_script
 
 # End of file 
