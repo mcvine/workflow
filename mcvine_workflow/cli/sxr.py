@@ -7,7 +7,7 @@
 single crystal reduction
 """
 
-import mantid, os, stat, click, numpy as np
+import os, stat, click, numpy as np
 
 from . import workflow
 
