@@ -62,31 +62,23 @@ def reduce(instrument_type, type, eiguess, eaxis, psi_axis, psi, eventnxs, out):
     return
 
 
-scan_yml_example = """
-angles: -90,90.1,3.0
-filename_pattern: work_%(angle)s/reduced_%(angle)s.nxs
-lattice: 2., 2.5, 3., 90, 90, 90
-orientation:
- u: 1, 0, 2
- v: 1,0,0
-"""
-
 @sxr.command()
 @click.option("--sample", default='sample.yml')
-@click.option("--scan", default='scan.yml')
+@click.option("--psi-axis", default=(-10., 120., 1.), nargs=3, type=float)
+@click.option("--nxs", default='reduced_%s.nxs', help='input filename pattern for reduced nxs files')
 @click.option("--slice", default='slice.yml')
 @click.option("--out", default='out.nxs')
-def slice(sample, scan, slice, out):
+def slice(sample, psi_axis, nxs, slice, out):
     from mcvine.cli.config import loadYmlConfig
     # load sample
     sample = loadYmlConfig(sample)
     lattice_params = eval(sample.lattice.constants)
     orientation = sample.orientation
     # load scan
-    scan = loadYmlConfig(scan)
-    angles = np.arange(*eval(scan.angles))
+    angles = np.arange(*psi_axis)
+    nxs = nxs.encode()
     filenames = [
-        scan.filename_pattern % dict(angle=angle)
+        nxs % dict(angle=angle)
         for angle in angles
     ]
     print angles[0], filenames[0]
