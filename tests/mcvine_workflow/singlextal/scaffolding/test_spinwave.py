@@ -10,7 +10,14 @@ import numpy as np
 
 def test_spinwave():
     spinwave.createSample(
-        outdir='sample', name='sample', xtalori)
+        outdir='sample', name='sample', 
+        lattice_basis = [[1,0,0],[0,1,0],[0,0,1]],
+        uv = ([1,0,0], [0,1,0]),
+        chemical_formula="K2V3O8",
+        E_Q="2.563*sqrt(1-(cos(h*pi)*cos(k*pi))**2)",
+        S_Q="1",
+        Emax="10",
+    )
     return
 
 
