@@ -37,13 +37,7 @@ out/scattered-neutrons: beam sampleassembly sampleassembly/*
 scattering: out/scattered-neutrons
 
 beam:
-	@echo "** Missing incident beam"
-	@echo "** Please a symbolic link to the incident beam"
-	@echo "** For example: ln -s /SNS/users/linjiao/simulations/ARCS/mod2sample/70meV beam"
-	exit 1
+	ln -s ../../beam
 
 sampleassembly:
-	@echo "** Missing sample assembly"
-	@echo "** Please create sampleassembly directory."
-	@echo "** You can do this by copying, for example: cp -a /SNS/users/linjiao/simulations/ARCS/He4/sim/template/sampleassembly ."
-	exit 1
+	ln -s ../../sampleassembly

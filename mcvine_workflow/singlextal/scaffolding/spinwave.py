@@ -114,7 +114,7 @@ def reciprocal_basis(basis):
 
 def writeXYZ(path, basis, atoms):
     stream = open(path, 'wt')
-    stream.write('%s\n' % len(atoms))
+    stream.write('%s\n' % sum(atoms.values()))
     stream.write('\t'.join(['%s %s %s' % tuple(v) for v in basis]) + '\n')
     for symbol, number in atoms.items():
         for i in range(number):
