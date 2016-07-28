@@ -3,19 +3,34 @@
 # Jiao Lin <jiao.lin@gmail.com>
 #
 
-
-import os, stat, click
-
-from . import workflow
-
-"""
-angles: -50,40.1,.5
-filename_pattern: reduced_%(angle)s.nxs
-lattice: 8.87, 8.87, 5.2, 90, 90, 90
+sample_yml_example = """
+name: sample
+chemical_formula: K2V3O8
+lattice: 
+ constants: 8.87, 8.87, 5.2, 90, 90, 90
+ basis_vecotrs:
+  a1: 8.87 0 0
+  a2: 0 8.87 0
+  a3: 0 0 5.2
+excitation:
+ type: spinwave
+ E_Q: 2.563*sqrt(1-(cos(h*pi)*cos(k*pi))**2)
+ S_Q: 1
+ Emax: 3
 orientation:
  u: 1, 0, 0
  v: 0, 1, 0
 """
+
+scan_yml_example = """
+angles: -50,40.1,.5
+filename_pattern: reduced_%(angle)s.nxs
+"""
+
+
+import os, stat, click
+
+from . import workflow
 
 @workflow.command()
 @click.option("--type", default='DGS')
