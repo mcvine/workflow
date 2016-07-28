@@ -10,7 +10,7 @@ import numpy as np
 
 def test_spinwave():
     spinwave.createSample(
-        outdir='sample', name='sample', 
+        outdir='_tmp.spinwave', name='sample', 
         lattice_basis = [[1,0,0],[0,1,0],[0,0,1]],
         uv = ([1,0,0], [0,1,0]),
         chemical_formula="K2V3O8",
