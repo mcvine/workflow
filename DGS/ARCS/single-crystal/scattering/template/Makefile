@@ -28,11 +28,11 @@ sim-$(SAMPLE_ANGLE).nxs: sim.nxs
 
 # nexus file comes from collecting scattered neutrons at the detector system
 sim.nxs: out/scattered-neutrons
-	time ./create-nxs &> log.create-nxs
+	time ./create-nxs >log.create-nxs 2>&1
 
 # scattered neutrons comes from simulation of scattering of incident beam by sample assembly
-out/scattered-neutrons: beam sampleassembly sampleassembly/*
-	SAMPLE_ANGLE=$(SAMPLE_ANGLE) time ./scatter &> log.scatter
+out/scattered-neutrons: beam sampleassembly
+	SAMPLE_ANGLE=$(SAMPLE_ANGLE) time ./scatter >log.scatter 2>&1
 
 scattering: out/scattered-neutrons
 

@@ -42,8 +42,8 @@ def singlecrystal(outdir, type, instrument, sample):
     from mcvine_workflow import root
     # by copying from template
     template = os.path.join(root, type, instrument, 'single-crystal')
-    from .._shutil import copytree
-    copytree(template, outdir)
+    from .._shutil import rsync
+    rsync(template, outdir)
     # create "beam" subdir
     beam = os.path.join(outdir, 'beam')
     os.makedirs(beam)
@@ -63,7 +63,7 @@ def singlecrystal(outdir, type, instrument, sample):
         template = resources.sample(*sampleargs)
         if not os.path.exists(template):
             raise RuntimeError("Sample template for %r does not exist" % sample)
-        copytree(template, os.path.join(outdir, 'sampleassembly'))
+        rsync(template, os.path.join(outdir, 'sampleassembly'))
     return
 
 

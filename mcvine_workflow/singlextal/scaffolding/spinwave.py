@@ -52,7 +52,7 @@ def createSample(
     Rflat = R.copy(); Rflat.shape = -1,
     orientation=','.join(str(e) for e in Rflat)
     #  write
-    path = os.path.join(outdir, '%s-scattterer.xml' % name)
+    path = os.path.join(outdir, '%s-scatterer.xml' % name)
     open(path, 'wt').write(scatterer_template % locals())
     return
 
