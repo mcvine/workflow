@@ -78,7 +78,7 @@ def slice(sample, psi_axis, nxs, slice, out):
     angles = np.arange(*psi_axis)
     nxs = nxs.encode()
     filenames = [
-        nxs % dict(angle=angle)
+        nxs % angle
         for angle in angles
     ]
     print angles[0], filenames[0]

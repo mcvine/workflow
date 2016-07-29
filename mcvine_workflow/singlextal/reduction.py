@@ -37,7 +37,7 @@ def slice2hist(ifile, ofile):
 def getslice(angles, filenames,
              lattice_params, orientation,
              Eaxis, Qproj_axes,
-             output):
+             output, smooth=True):
     a,b,c,alpha,beta,gamma = lattice_params
     u,v = orientation.u, orientation.v
 
@@ -118,12 +118,16 @@ def getslice(angles, filenames,
     # clean up
     RemoveWorkspaceHistory(dataMD2); RemoveWorkspaceHistory(normMD2)
 
-    # smooth data
-    DataSmooth2=SmoothMD(InputWorkspace=dataMD2, WidthVector=3, Function='Hat',InputNormalizationWorkspace=normMD2)
-    NormSmooth2=SmoothMD(InputWorkspace=normMD2, WidthVector=3, Function='Hat',InputNormalizationWorkspace=normMD2)
-    SmoothedSlice=DataSmooth2/NormSmooth2
+    if smooth:
+        # smooth data
+        DataSmooth2=SmoothMD(InputWorkspace=dataMD2, WidthVector=3, Function='Hat',InputNormalizationWorkspace=normMD2)
+        NormSmooth2=SmoothMD(InputWorkspace=normMD2, WidthVector=3, Function='Hat',InputNormalizationWorkspace=normMD2)
+        SmoothedSlice=DataSmooth2/NormSmooth2
 
-    SaveMD(InputWorkspace='SmoothedSlice',Filename=output)
+        SaveMD(InputWorkspace='SmoothedSlice',Filename=output)
+    else:
+        Slice = dataMD2/normMD2
+        SaveMD(InputWorkspace="Slice", Filename=output)
     return
 
 
@@ -138,8 +142,8 @@ def reduceScan(psi_axis, nxs_template, outfn_template, eiguess, eaxis):
     """
     psis = np.arange(*psi_axis)
     for psi in psis:
-        nxsfile = nxs_template % (psi,)
-        outfile = outfn_template % (psi,)
+        nxsfile = nxs_template % tuple([psi]*nxs_template.count("%s"))
+        outfile = outfn_template % tuple([psi]*outfn_template.count("%s"))
         reduceOneKeepingEvents(nxsfile, psi, eiguess, eaxis, outfile)
     return
 

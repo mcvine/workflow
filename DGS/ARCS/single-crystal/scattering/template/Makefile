@@ -19,12 +19,12 @@ restore-template: clean
 	rm -rf *.nxs *.h5
 
 # 
-event-nxs: sim-$(SAMPLE_ANGLE).nxs
+event-nxs: sim_$(SAMPLE_ANGLE).nxs
 
 # add meta data
-sim-$(SAMPLE_ANGLE).nxs: sim.nxs
-	cp sim.nxs sim-$(SAMPLE_ANGLE).nxs
-	mcvine instruments $(INSTRUMENT) nxs populate_metadata --type=Ei --beam_outdir=beam/out --nxs=sim-$(SAMPLE_ANGLE).nxs
+sim_$(SAMPLE_ANGLE).nxs: sim.nxs
+	cp sim.nxs sim_$(SAMPLE_ANGLE).nxs
+	mcvine instruments $(INSTRUMENT) nxs populate_metadata --type=Ei --beam_outdir=beam/out --nxs=sim_$(SAMPLE_ANGLE).nxs
 
 # nexus file comes from collecting scattered neutrons at the detector system
 sim.nxs: out/scattered-neutrons
