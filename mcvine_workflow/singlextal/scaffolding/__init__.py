@@ -18,16 +18,16 @@ def createSampleAssembly(outdir, sample):
     # sample files
     type = sample.excitation.type
     if type == 'spinwave':
-        from . import spinwave
         bv = map(eval, sample.lattice.basis_vectors)
         so = sample.orientation
         uv = map(eval, (so.u, so.v))
-        spinwave.createSample(
+        from .sample import createSample
+        createSample(
             outdir, name=sample.name, 
             lattice_basis=bv, uv=uv,
             chemical_formula=sample.chemical_formula,
-            E_Q=sample.excitation.E_Q, S_Q=sample.excitation.S_Q,
-            Emax=sample.excitation.Emax)
+            excitations = [sample.excitation],
+            )
     else:
         raise NotImplementedError(type)
     return
