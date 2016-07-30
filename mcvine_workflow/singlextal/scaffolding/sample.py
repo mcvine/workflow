@@ -15,6 +15,7 @@ def createSample(
         lattice_basis=np.eye(3), uv=([1,0,0], [0,1,0]),
         chemical_formula=None, 
         excitations = None,
+        lattice_primitive_basis=None,
         ):
     """
     Inputs
@@ -33,7 +34,10 @@ def createSample(
     # xyz
     xyzpath = os.path.join(outdir, '%s.xyz' % name)
     atoms = decode_chemicalformula(chemical_formula)
-    writeXYZ(xyzpath, lattice_basis, atoms)
+    if lattice_primitive_basis:
+        writeXYZ(xyzpath, lattice_primitive_basis, atoms)
+    else:
+        writeXYZ(xyzpath, lattice_basis, atoms)
     # scatterer.xml
     reci_basis = reciprocal_basis(lattice_basis)
     #  Q = [b1 b2 b3]/ROW dot [h k l]/COL = h2Q dot [h k l]/COL
@@ -58,15 +62,16 @@ def createSample(
 def makeKernels(excitations, hkl, orientation):
     ks = []
     types = [e.type for e in excitations]
-    if 'phonon' not in types:
-        ks.append(simple_elastic_kernel)
+    # if 'phonon' not in types:
+    # XXX hack
+    ks.append(simple_elastic_kernel)
     for excitation in excitations:
         ks.append(makeKernel(excitation, hkl, orientation))
         continue
     return '\n'.join(ks)
 
 
-from . import spinwave
+from . import spinwave, phonon
 def makeKernel(excitation, hkl, orientation):
     type = excitation.type
     mod = globals()[type]

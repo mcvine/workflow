@@ -16,20 +16,25 @@ def createSampleAssembly(outdir, sample):
     content = sampleassembly_tempalte % sample.__dict__
     open(os.path.join(outdir, 'sampleassembly.xml'), 'wt').write(content)
     # sample files
-    type = sample.excitation.type
-    if type == 'spinwave':
-        bv = map(eval, sample.lattice.basis_vectors)
-        so = sample.orientation
-        uv = map(eval, (so.u, so.v))
-        from .sample import createSample
-        createSample(
-            outdir, name=sample.name, 
-            lattice_basis=bv, uv=uv,
-            chemical_formula=sample.chemical_formula,
-            excitations = [sample.excitation],
-            )
+    bv = map(eval, sample.lattice.basis_vectors)
+    if hasattr(sample.lattice, "primitive_basis_vectors"):
+        pbv = map(eval, sample.lattice.primitive_basis_vectors)
     else:
-        raise NotImplementedError(type)
+        pbv = None
+    so = sample.orientation
+    uv = map(eval, (so.u, so.v))
+    excitations = getattr(sample, 'excitations', [])
+    excitation = getattr(sample, 'excitation', None)
+    if excitation is not None:
+        excitations.append(excitation)
+    from .sample import createSample
+    createSample(
+        outdir, name=sample.name, 
+        lattice_basis=bv, uv=uv,
+        chemical_formula=sample.chemical_formula,
+        excitations = excitations,
+        lattice_primitive_basis=pbv
+        )
     return
 
 sampleassembly_tempalte = """<?xml version="1.0"?>
