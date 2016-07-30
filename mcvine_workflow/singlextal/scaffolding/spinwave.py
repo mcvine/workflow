@@ -8,6 +8,7 @@ Tools for creating spinwave sample
 """
 
 import os, numpy as np
+from .utils import computeOrientationStr, reciprocal_basis, writeXYZ, decode_chemicalformula
 
 def createSample(
         outdir, name=None, 
@@ -43,18 +44,12 @@ def createSample(
     k_expr = "%s*Qx+%s*Qy+%s*Qz" % tuple(Q2h[1])
     l_expr = "%s*Qx+%s*Qy+%s*Qz" % tuple(Q2h[2])
     #  orientation
-    u, v = uv
-    ez = np.dot(h2Q, u); ez/=np.linalg.norm(ez)
-    ex1 = np.dot(h2Q, v)
-    ey = np.cross(ez, ex1); ey/=np.linalg.norm(ey)
-    ex = np.cross(ey, ez)
-    R = np.array([ ex, ey, ez ])
-    Rflat = R.copy(); Rflat.shape = -1,
-    orientation=','.join(str(e) for e in Rflat)
+    orientation=computeOrientationStr(uv=uv, h2Q=h2Q)
     #  write
     path = os.path.join(outdir, '%s-scatterer.xml' % name)
     open(path, 'wt').write(scatterer_template % locals())
     return
+
 
 scatterer_template = """<?xml version="1.0"?>
 
@@ -101,55 +96,5 @@ scatterer_template = """<?xml version="1.0"?>
   
 </homogeneous_scatterer>
 """
-
-
-def reciprocal_basis(basis):
-    a1,a2,a3 = basis
-    v = np.dot(a1, np.cross(a2,a3))
-    b1 = np.cross(a2,a3)/v
-    b2 = np.cross(a3,a1)/v
-    b3 = np.cross(a1,a2)/v
-    return np.array([b1,b2,b3])*2*np.pi
-
-
-def writeXYZ(path, basis, atoms):
-    stream = open(path, 'wt')
-    stream.write('%s\n' % sum(atoms.values()))
-    stream.write('\t'.join(['%s %s %s' % tuple(v) for v in basis]) + '\n')
-    for symbol, number in atoms.items():
-        for i in range(number):
-            stream.write("%s\t0 0 0\n" % symbol)
-            continue
-        continue
-    return
-
-def decode_chemicalformula(formula):
-    """given a str like Fe3Al, return a dictionary {'Fe':3, 'Al': 1}
-    """
-    import re
-    l = re.findall('([A-Z][a-z]?)(\d)?', formula)
-    d = dict()
-    for symbol, n in l:
-        d[symbol] = int(n) if n else 1
-        continue
-    return d
-
-def decode_chemicalformula_using_chemcalc_org(formula):
-    import urllib, urllib2
-    import json
-    ccurl = 'http://www.chemcalc.org/chemcalc/mf'
-    # Define a molecular formula string
-    # Define the parameters and send them to Chemcalc
-    params = {'mf': mf,'isotopomers':'jcamp,xy'}
-    response = urllib2.urlopen(ccurl, urllib.urlencode(params))
-    # Read the output and convert it from JSON into a Python dictionary
-    jsondata = response.read()
-    data = json.loads(jsondata)
-    atoms = data['parts'][0]['ea']
-    for atom in atoms:
-        print atom['element']
-        print atom['number']
-        continue
-    return
 
 # End of file 

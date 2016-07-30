@@ -9,6 +9,6 @@ from mcvine.cli import mcvine
 def workflow():
     return
 
-from . import powder, sxr, singlecrystal
+from . import powder, singlecrystal, sxu, sxr
 
 # End of file 

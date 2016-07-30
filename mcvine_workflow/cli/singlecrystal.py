@@ -9,9 +9,9 @@ chemical_formula: K2V3O8
 lattice: 
  constants: 8.87, 8.87, 5.2, 90, 90, 90
  basis_vecotrs:
-  a1: 8.87 0 0
-  a2: 0 8.87 0
-  a3: 0 0 5.2
+  - 8.87, 0, 0
+  - 0, 8.87, 0
+  - 0, 0, 5.2
 excitation:
  type: spinwave
  E_Q: 2.563*sqrt(1-(cos(h*pi)*cos(k*pi))**2)
