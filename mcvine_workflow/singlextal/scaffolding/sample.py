@@ -57,6 +57,9 @@ def createSample(
 
 def makeKernels(excitations, hkl, orientation):
     ks = []
+    types = [e.type for e in excitations]
+    if 'phonon' not in types:
+        ks.append(simple_elastic_kernel)
     for excitation in excitations:
         ks.append(makeKernel(excitation, hkl, orientation))
         continue
@@ -89,7 +92,7 @@ scatterer_template = """<?xml version="1.0"?>
 </homogeneous_scatterer>
 """
 
-"""
+simple_elastic_kernel = """
     <!-- a simple kernel for elastic scattering. more realistic kernel exists. -->
     <E_Q_Kernel 
 	E_Q="1" 
