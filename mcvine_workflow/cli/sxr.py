@@ -68,7 +68,8 @@ def reduce(instrument_type, type, eiguess, eaxis, psi_axis, psi, eventnxs, out):
 @click.option("--nxs", default='reduced_%s.nxs', help='input filename pattern for reduced nxs files')
 @click.option("--slice", default='slice.yml')
 @click.option("--out", default='out.nxs')
-def slice(sample, psi_axis, nxs, slice, out):
+@click.option("--smooth", default=False, is_flag=True)
+def slice(sample, psi_axis, nxs, slice, out, smooth):
     from mcvine.cli.config import loadYmlConfig
     # load sample
     sample = loadYmlConfig(sample)
@@ -89,7 +90,7 @@ def slice(sample, psi_axis, nxs, slice, out):
     out = out.encode()
     from mcvine_workflow.singlextal import reduction
     reduction.getslice(
-        angles, filenames, lattice_params, orientation, Eaxis, Qproj_axes, out)
+        angles, filenames, lattice_params, orientation, Eaxis, Qproj_axes, out, smooth)
     return
 
 
