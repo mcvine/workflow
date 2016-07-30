@@ -37,11 +37,11 @@ import os, stat, click, numpy as np
 
 from . import workflow
 
-@workflow.group()
+@workflow.group(help="Single crystal reduction utils")
 def sxr():
     return
 
-@sxr.command()
+@sxr.command(help="Reduce event nxs by converting TOF to E")
 @click.option("--instrument-type", default='DGS', type=click.Choice(['DGS']))
 @click.option("--type", default="batch", type=click.Choice(['batch', 'single']))
 @click.option("--eiguess", default=100.)
@@ -62,7 +62,7 @@ def reduce(instrument_type, type, eiguess, eaxis, psi_axis, psi, eventnxs, out):
     return
 
 
-@sxr.command()
+@sxr.command(help="Calculate normalized slice")
 @click.option("--sample", default='sample.yml')
 @click.option("--psi-axis", default=(-10., 120., 1.), nargs=3, type=float)
 @click.option("--nxs", default='reduced_%s.nxs', help='input filename pattern for reduced nxs files')

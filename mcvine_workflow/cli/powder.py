@@ -8,7 +8,7 @@ import os, stat, click
 
 from . import workflow
 
-@workflow.command()
+@workflow.command(help="Create mcvine powder workflow")
 @click.option("--type", default='DGS')
 @click.option("--instrument", default='ARCS')
 @click.option("--sample", default='V')

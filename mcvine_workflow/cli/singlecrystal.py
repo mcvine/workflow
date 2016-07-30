@@ -28,7 +28,7 @@ import os, stat, click
 
 from . import workflow
 
-@workflow.command()
+@workflow.command(help="Create mcvine single crystal workflow")
 @click.option("--outdir", default='sim')
 @click.option("--type", default='DGS')
 @click.option("--instrument", default='ARCS')
@@ -56,6 +56,10 @@ def singlecrystal(outdir, type, instrument, sample):
         # create sample assembly using scaffolding
         from ..singlextal.scaffolding import createSampleAssembly
         createSampleAssembly(os.path.join(outdir, 'sampleassembly'), sample)
+        return
+    elif os.path.isabs(sample) and os.path.isdir(sample):
+        # this means "sample" is a path to a sample assembly diretory
+        srcpath = ssample
     else:
         sampleargs = sample.split('/')
         if len(sampleargs) > 3:
@@ -63,7 +67,8 @@ def singlecrystal(outdir, type, instrument, sample):
         template = resources.sample(*sampleargs)
         if not os.path.exists(template):
             raise RuntimeError("Sample template for %r does not exist" % sample)
-        rsync(template, os.path.join(outdir, 'sampleassembly'))
+        srcpath = template
+    rsync(template, os.path.join(outdir, 'sampleassembly'))
     return
 
 
