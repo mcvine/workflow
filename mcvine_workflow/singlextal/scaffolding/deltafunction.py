@@ -17,7 +17,7 @@ def createKernel(excitation, h2Q, orientation):
     - dE
     """
     d = dict(excitation.__dict__)
-    Q = np.dot(h2Q, excitation.hkl)
+    Q = np.dot(h2Q, eval(excitation.hkl))
     Q = "%s,%s,%s" % tuple(Q)
     d.update(Q=Q, orientation=orientation)
     return kernel_template % d

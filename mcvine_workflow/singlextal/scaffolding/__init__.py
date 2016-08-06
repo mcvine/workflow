@@ -10,6 +10,11 @@ Tools for create single crystal samples for mcvine sample assembly.
 import os
 
 def createSampleAssembly(outdir, sample):
+    """
+    * outdir: output directory
+    * sample: sample object. can be constructed from yaml file. 
+              Example yaml file: tests/DGS/ARCS/Si.yml
+    """
     if not os.path.exists(outdir):
         os.makedirs(outdir)
     # sampleassembly.xml
