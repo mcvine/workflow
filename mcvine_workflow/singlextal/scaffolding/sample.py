@@ -16,6 +16,7 @@ def createSample(
         chemical_formula=None, 
         excitations = None,
         lattice_primitive_basis=None,
+        add_elastic_line = True,
         ):
     """
     Inputs
@@ -46,26 +47,27 @@ def createSample(
     #  orientation
     orientation=computeOrientationStr(uv=uv, h2Q=h2Q)
     # prepare kernels
-    kernels = makeKernels(excitations, h2Q, orientation)
+    kernels = makeKernels(excitations, h2Q, orientation, add_elastic_line=add_elastic_line)
     #  write
     path = os.path.join(outdir, '%s-scatterer.xml' % name)
     open(path, 'wt').write(scatterer_template % locals()) 
     return
 
 
-def makeKernels(excitations, hkl, orientation):
+def makeKernels(excitations, hkl, orientation, add_elastic_line=True):
     ks = []
     types = [e.type for e in excitations]
     # if 'phonon' not in types:
     # XXX hack
-    ks.append(simple_elastic_kernel)
+    if add_elastic_line:
+        ks.append(simple_elastic_kernel)
     for excitation in excitations:
         ks.append(makeKernel(excitation, hkl, orientation))
         continue
     return '\n'.join(ks)
 
 
-from . import spinwave, phonon
+from . import spinwave, phonon, deltafunction
 def makeKernel(excitation, hkl, orientation):
     type = excitation.type
     mod = globals()[type]
