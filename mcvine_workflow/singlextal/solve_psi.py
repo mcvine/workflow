@@ -50,7 +50,9 @@ def solve(
         max = min + delta
         try:
             results.append(solver(res, min, max))
-        except:
+        except ValueError:
+            import warnings, traceback as tb
+            warnings.warn(tb.format_exc())
             pass
         continue
     return results
