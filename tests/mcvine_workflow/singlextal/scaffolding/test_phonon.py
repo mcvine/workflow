@@ -8,24 +8,22 @@ from mcvine_workflow.singlextal.scaffolding import sample
 
 import numpy as np
 
-def test_spinwave():
-    class spinwave:
-        type = "spinwave"
-        E_Q="2.563*sqrt(1-(cos(h*pi)*cos(k*pi))**2)"
-        S_Q="1"
-        Emax="10"
+def test_phonon():
+    class phonon:
+        type = "phonon"
+        idf_dir = "/path/to/phonon-idf-dir"
     sample.createSample(
-        outdir='_tmp.spinwave', name='sample.spinwave', 
+        outdir='_tmp.phonon', name='sample.phonon', 
         lattice_basis = [[1,0,0],[0,1,0],[0,0,1]],
         uv = ([1,0,0], [0,1,0]),
-        chemical_formula="K2V3O8",
-        excitations = [spinwave],
+        chemical_formula="Si",
+        excitations = [phonon],
     )
     return
 
 
 def main():
-    test_spinwave()
+    test_phonon()
     return
 
 

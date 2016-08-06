@@ -43,16 +43,10 @@ def createSample(
     #  Q = [b1 b2 b3]/ROW dot [h k l]/COL = h2Q dot [h k l]/COL
     #  so h2Q = [b1 b2 b3]/ROW
     h2Q = reci_basis.T
-    Q2h = np.linalg.inv(h2Q)
-    #  hkl
-    h_expr = "%s*Qx+%s*Qy+%s*Qz" % tuple(Q2h[0])
-    k_expr = "%s*Qx+%s*Qy+%s*Qz" % tuple(Q2h[1])
-    l_expr = "%s*Qx+%s*Qy+%s*Qz" % tuple(Q2h[2])
-    hkl = [h_expr, k_expr, l_expr]
     #  orientation
     orientation=computeOrientationStr(uv=uv, h2Q=h2Q)
     # prepare kernels
-    kernels = makeKernels(excitations, hkl, orientation)
+    kernels = makeKernels(excitations, h2Q, orientation)
     #  write
     path = os.path.join(outdir, '%s-scatterer.xml' % name)
     open(path, 'wt').write(scatterer_template % locals()) 

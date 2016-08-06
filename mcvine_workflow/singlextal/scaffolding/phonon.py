@@ -10,7 +10,7 @@ Tools for creating spinwave sample
 import os, numpy as np
 from .utils import computeOrientationStr, reciprocal_basis, writeXYZ, decode_chemicalformula
 
-def createKernel(excitation, hkl, orientation):
+def createKernel(excitation, h2Q, orientation):
     """
     excitation:
     - idf_dir: path to phonon data in IDF format

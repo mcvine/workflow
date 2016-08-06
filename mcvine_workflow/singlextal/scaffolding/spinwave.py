@@ -10,7 +10,7 @@ Tools for creating spinwave sample
 import os, numpy as np
 from .utils import computeOrientationStr, reciprocal_basis, writeXYZ, decode_chemicalformula
 
-def createKernel(excitation, hkl, orientation):
+def createKernel(excitation, h2Q, orientation):
     """
     excitation:
     - E_Q: E(vector Q) expression
@@ -18,7 +18,10 @@ def createKernel(excitation, hkl, orientation):
     - Emax: max energy
     """
     # hkl
-    h_expr, k_expr, l_expr = hkl
+    Q2h = np.linalg.inv(h2Q)
+    h_expr = "%s*Qx+%s*Qy+%s*Qz" % tuple(Q2h[0])
+    k_expr = "%s*Qx+%s*Qy+%s*Qz" % tuple(Q2h[1])
+    l_expr = "%s*Qx+%s*Qy+%s*Qz" % tuple(Q2h[2])
     # disp
     E_Q = excitation.E_Q
     S_Q = excitation.S_Q
