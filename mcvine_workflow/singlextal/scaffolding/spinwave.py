@@ -8,7 +8,6 @@ Tools for creating spinwave sample
 """
 
 import os, numpy as np
-from .utils import computeOrientationStr, reciprocal_basis, writeXYZ, decode_chemicalformula
 
 def createKernel(excitation, h2Q, orientation):
     """
