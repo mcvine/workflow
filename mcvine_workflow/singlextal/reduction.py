@@ -3,7 +3,7 @@
 # Jiao Lin <jiao.lin@gmail.com>
 #
 
-import numpy as np
+import numpy as np, os
 
 def slice2hist(ifile, ofile):
     import histogram as H, histogram.hdf as hh
@@ -159,13 +159,12 @@ def reduceOneKeepingEvents(nxsfile, angle, eiguess, eaxis, outfile):
     outfile: output path
     """
     from mantid.simpleapi import DgsReduction, SofQW3, SaveNexus, SaveNXSPE, LoadInstrument, Load, MoveInstrumentComponent, AddSampleLog
-
-    print "* working on ", nxsfile
+    outfile = os.path.abspath(outfile)
+    print "* working on reducing %s to %s" % (nxsfile, outfile)
     # load workspace from input nexus file
     workspace = Load(nxsfile)
 
     # workspace name have to be unique
-    import os
     unique_name = os.path.dirname(nxsfile).split('/')[-1]
     wsname = 'reduced-%s' % unique_name
 
