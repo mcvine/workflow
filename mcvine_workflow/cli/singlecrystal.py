@@ -50,9 +50,9 @@ def singlecrystal(outdir, type, instrument, sample):
     # add script to run beam
     create_beam_run_script(beam, instrument.lower())
     # copy sampleassembly template
-    from mcvine.cli.config import loadYmlConfig
     if sample.endswith(".yml"):
-        sample = loadYmlConfig(sample)
+        from ..sample import loadSampleYml
+        sample = loadSampleYml(sample)
         # create sample assembly using scaffolding
         from ..singlextal.scaffolding import createSampleAssembly
         createSampleAssembly(os.path.join(outdir, 'sampleassembly'), sample)

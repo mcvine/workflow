@@ -7,11 +7,12 @@ from mcvine_workflow import singlextal
 from mcvine_workflow.singlextal import coords_transform as ct
 from mcvine_workflow.singlextal import solve_psi
 
-import numpy as np
+import numpy as np, os
+thisdir = os.path.dirname(__file__)
 
 Ei = 100
 Etarget = 35
-xtalori = singlextal.loadXtalOriConfig("Si-xtalori.yaml")
+xtalori = singlextal.loadXtalOriConfig(os.path.join(thisdir, "Si-xtalori.yaml"))
 hkl = [-6,0,0]
 psi_min, psi_max = -5., 90.
 # set crystal orientation to perfectly measure the given hkl

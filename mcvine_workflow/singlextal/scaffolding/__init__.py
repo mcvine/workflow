@@ -12,7 +12,8 @@ import os
 def createSampleAssembly(outdir, sample):
     """
     * outdir: output directory
-    * sample: sample object. can be constructed from yaml file. 
+    * sample: sample object. can be constructed from yaml file
+              using mcvine_workflow.sample.loadSampleYml
               Example yaml file: tests/DGS/ARCS/Si.yml
     """
     if not os.path.exists(outdir):
@@ -20,25 +21,16 @@ def createSampleAssembly(outdir, sample):
     # sampleassembly.xml
     content = sampleassembly_tempalte % sample.__dict__
     open(os.path.join(outdir, 'sampleassembly.xml'), 'wt').write(content)
-    # sample files
-    bv = map(eval, sample.lattice.basis_vectors)
-    if hasattr(sample.lattice, "primitive_basis_vectors"):
-        pbv = map(eval, sample.lattice.primitive_basis_vectors)
-    else:
-        pbv = None
+    # sample
     so = sample.orientation
-    uv = map(eval, (so.u, so.v))
-    excitations = getattr(sample, 'excitations', [])
-    excitation = getattr(sample, 'excitation', None)
-    if excitation is not None:
-        excitations.append(excitation)
+    uv = so.u, so.v
     from .sample import createSample
     createSample(
         outdir, name=sample.name, 
-        lattice_basis=bv, uv=uv,
+        lattice_basis=sample.lattice.basis_vectors, uv=uv,
         chemical_formula=sample.chemical_formula,
-        excitations = excitations,
-        lattice_primitive_basis=pbv
+        excitations = sample.excitations,
+        lattice_primitive_basis=sample.lattice.primitive_basis_vectors
         )
     return
 

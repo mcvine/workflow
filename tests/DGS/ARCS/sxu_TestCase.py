@@ -18,4 +18,13 @@ class TestCase(unittest.TestCase):
         self.assertAlmostEqual(float(o), 46.37473, places=4)
         return
 
+    def test_dr_slice(self):
+        "mcvine workflow sxu dr_slice"
+        out = "_tmp.slice100_from000.png"
+        cmd = "mcvine workflow sxu dr_slice Si.yml --Ei=100 --psi-axis -5 90. 1. --hkl0 0 0 0 --hkl-dir 1 0 0 --x-axis -15 5 .1 --instrument ARCS --Erange -15 80 --out %s" % out
+        o = sp.check_output(cmd.split())
+        self.assert_(os.path.exists(out))
+        return
+
+
 if __name__ == '__main__': unittest.main()
