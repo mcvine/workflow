@@ -7,7 +7,9 @@ from mcvine_workflow.singlextal.misc import Eresidual
 from mcvine_workflow.singlextal.XtalOrientation import XtalOrientation
 from mcvine_workflow import singlextal
 
-import numpy as np
+import numpy as np, os
+thisdir = os.path.dirname(__file__)
+Si_xo_path = os.path.join(thisdir, "Si-xtalori.yaml")
 
 def test_Eresidual():    
     Ei = 100
@@ -16,8 +18,7 @@ def test_Eresidual():
     angles = np.arange(40, 49.5, 0.5) # psi angles
 
     from mcvine.cli.config import loadYmlConfig
-    import os
-    xtalori = loadYmlConfig("Si-xtalori.yaml")
+    xtalori = loadYmlConfig(Si_xo_path)
     l = xtalori.lattice
     for i in range(1,4):
         key = 'a%d' %i
@@ -52,7 +53,7 @@ def test_Eresidual2():
     # angles = np.arange(40, 49.5, 0.5) # psi angles
 
     import os
-    xtalori = singlextal.loadXtalOriConfig("Si-xtalori.yaml")
+    xtalori = singlextal.loadXtalOriConfig(Si_xo_path)
     # hkl. center of silicon 111 plot
     ex = np.array((1,0,0))
     ey = np.array((0,1,0))
@@ -73,7 +74,7 @@ def test_Eresidual3():
     # angles = np.arange(40, 49.5, 0.5) # psi angles
 
     import os
-    xtalori = singlextal.loadXtalOriConfig("Si-xtalori.yaml")
+    xtalori = singlextal.loadXtalOriConfig(Si_xo_path)
     hkl0 = np.array([-2,-4,4])
     delta = np.array([-1,1,-1])
     for i in range(9):

@@ -10,7 +10,7 @@ import numpy as np
 def test_deltafunction():
     class deltafunction:
         type = "deltafunction"
-        hkl = 0,1,0
+        hkl = "0,1,0"
         E = 30
         dE = 0.05
     sample.createSample(
