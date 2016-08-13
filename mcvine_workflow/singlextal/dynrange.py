@@ -5,7 +5,10 @@ tools to compute dynamic range of a single crystal scan
 import numpy as np
 from mcni.utils import conversion as Conv
 
-def iterPointsInSlice(sample, psi_angles, Ei, hkl0, hkl_dir, xaxis):
+
+def iterPointsInSlice(
+        sample, psi_angles, Ei, hkl0, hkl_dir, xaxis, 
+        scattering_angle_constraints):
     """iterate over points measured in the given slice
     """
     # linear
@@ -29,8 +32,10 @@ def iterPointsInSlice(sample, psi_angles, Ei, hkl0, hkl_dir, xaxis):
         ex = np.array(hkl_dir)
         hkl0 = np.array(hkl0)
         E, theta, phi = compute_xE_curve(xaxis, hkl0, ex, mat, Ei=Ei)
+        theta /= DEG2RAD
+        phi /= DEG2RAD
         # pylab.plot(xaxis,E)
-        limit = ((theta<135.*DEG2RAD) * (theta > 3.*DEG2RAD) + (theta < -3*DEG2RAD)*(theta>-28*DEG2RAD)) * (phi<26.565*DEG2RAD) * (phi>-26.565*DEG2RAD)
+        limit = scattering_angle_constraints(theta, phi)
         xaxis1 = xaxis[limit]
         E1 = E[limit]
         yield psi, xaxis1, E1

@@ -5,6 +5,7 @@
 import mcvine.cli
 from mcvine_workflow.singlextal import dynrange
 from mcvine_workflow.sample import loadSampleYml
+from mcvine_workflow.DGS import ARCS
 
 import numpy as np, os
 
@@ -20,7 +21,8 @@ def test_iterPointsInSlice():
     xaxis = np.arange(-6, 6, .1)
     from matplotlib import pyplot as plt
     for psi, xs, Es in dynrange.iterPointsInSlice(
-            sample, psilist, Ei, hkl0, hkl_dir, xaxis):
+            sample, psilist, Ei, hkl0, hkl_dir, xaxis,
+            ARCS.scattering_angle_constraints):
         plt.plot(xs, Es, label=str(psi))
         continue
     plt.show()
