@@ -21,6 +21,7 @@ def main(angles, angle, config, target):
     envvars = dict(
         INSTRUMENT=config.instrument.name,
         NCOUNT=config.scatter.ncount,
+        BUFFER_SIZE=getattr(config.scatter, 'buffer_size', "0"),
         MS=config.scatter.multiple_scattering,
         NODES=config.cluster.nodes,
         )
