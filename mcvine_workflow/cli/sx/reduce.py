@@ -35,13 +35,13 @@ Q_projections:
 
 import os, stat, click, numpy as np
 
-from . import workflow
+from . import sx
 
-@workflow.group(help="OBSOLETE: Single crystal reduction utils")
-def sxr():
+@sx.group(help="Single crystal reduction utils")
+def reduce():
     return
 
-@sxr.command()
+@reduce.command(help="Reduce event nxs by converting TOF to E")
 @click.option("--instrument-type", default='DGS', type=click.Choice(['DGS']))
 @click.option("--type", default="batch", type=click.Choice(['batch', 'single']))
 @click.option("--eiguess", default=100.)
@@ -50,8 +50,7 @@ def sxr():
 @click.option("--psi", default=0.)
 @click.option("--eventnxs", help='type=single: event nxs filename, type=batch: event nxs filename template')
 @click.option("--out", help='type=single: output filename, type=batch: output filename template')
-def reduce(instrument_type, type, eiguess, eaxis, psi_axis, psi, eventnxs, out):
-    """OBSOLETE: use "mcvine workflow sx reduce tof2e" instead"""
+def tof2e(instrument_type, type, eiguess, eaxis, psi_axis, psi, eventnxs, out):
     assert instrument_type == 'DGS'
     eventnxs = eventnxs.encode()
     out = out.encode()
@@ -63,7 +62,7 @@ def reduce(instrument_type, type, eiguess, eaxis, psi_axis, psi, eventnxs, out):
     return
 
 
-@sxr.command()
+@reduce.command(help="Calculate normalized slice")
 @click.option("--sample", default='sample.yml')
 @click.option("--psi-axis", default=(-10., 120., 1.), nargs=3, type=float)
 @click.option("--nxs", default='reduced_%s.nxs', help='input filename pattern for reduced nxs files')
@@ -71,7 +70,6 @@ def reduce(instrument_type, type, eiguess, eaxis, psi_axis, psi, eventnxs, out):
 @click.option("--out", default='out.nxs')
 @click.option("--smooth", default=False, is_flag=True)
 def slice(sample, psi_axis, nxs, slice, out, smooth):
-    """OBSOLETE: use "mcvine workflow sx reduce slice" instead"""
     from mcvine.cli.config import loadYmlConfig
     # load sample
     sample = loadYmlConfig(sample)
@@ -96,11 +94,10 @@ def slice(sample, psi_axis, nxs, slice, out, smooth):
     return
 
 
-@sxr.command()
+@reduce.command(help="Convert mantid-create slice nxs file to histogram h5 file")
 @click.argument("mantid")
 @click.argument("histogram")
 def slice2hist(mantid, histogram):
-    """OBSOLETE: use "mcvine workflow sx reduce slice2hist" instead"""
     mantid = mantid.encode()
     histogram = histogram.encode()
     from mcvine_workflow.singlextal import reduction

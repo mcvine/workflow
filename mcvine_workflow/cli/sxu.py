@@ -11,7 +11,7 @@ import os, stat, click, numpy as np
 
 from . import workflow
 
-@workflow.group(help="Other utils for mcvine single crystal workflow")
+@workflow.group(help="OBSOLETE: Other utils for mcvine single crystal workflow")
 def sxu():
     return
 
@@ -19,7 +19,9 @@ def sxu():
 @sxu.command()
 @click.argument("sample")
 def kernelorientation(sample):
-    """Compute kernel orientation str, given sample lattice basis and uv vectors, 
+    """OBSOLETE: use "mcvine workflow sx orientation kernel" instead.
+
+Compute kernel orientation str, given sample lattice basis and uv vectors, 
 This cmd needs a simplified sample yaml file. Here is an example:
 
 \b
@@ -56,6 +58,7 @@ orientation:
 @click.option("--psimax", default=90.)
 @click.option("--number-segments", default=10)
 def solve_psi(sample, ei, hkl, e, psimin, psimax, number_segments):
+    """OBSOLETE: use "mcvine workflow sx orientation solve_psi" instead"""
     from ..singlextal.io import loadXtalOriFromSampleYml
     xtalori = loadXtalOriFromSampleYml(sample)
     from ..singlextal.solve_psi import solve
@@ -83,7 +86,7 @@ def dr_slice(
         hkl0, hkl_dir, x_axis, 
         instrument, erange,
         out):
-    """dynamic range of slice"""
+    """OBSOLETE: use "mcvine workflow sx dynamicalrange slice" instead"""
     from mcvine_workflow.sample import loadSampleYml
     sample = loadSampleYml(sample)
     code = "from mcvine_workflow.DGS import %s as mod" % instrument
