@@ -67,6 +67,7 @@ def solve_psi(sample, ei, hkl, e, psimin, psimax, number_segments):
     for r in results:
         xtalori.psi = r*np.pi/180.
         print "psi=%s, Q=%s" % (r, hkl2Q(hkl, xtalori))
+        print "hkl2Q=%r\n(Q = hkl dot hkl2Q)" % (xtalori.hkl2cartesian_mat(),)
     return
 
 
