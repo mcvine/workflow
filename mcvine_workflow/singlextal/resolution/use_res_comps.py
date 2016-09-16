@@ -31,6 +31,7 @@ Inputs
 """
 
 import os, numpy as np
+from mcni.utils import conversion as Conv
 
 
 def setup(sampleyml, beam, E, hkl, psi_axis, instrument, pixel):
@@ -46,10 +47,18 @@ def setup(sampleyml, beam, E, hkl, psi_axis, instrument, pixel):
     kfv, Ef = computeKf(Ei, E, Q)
     pixel_position = computePixelPosition(kfv, instrument)
     # at this point the coordinates have convention of z vertical up
+    # ** coordinate system for calculated position: z is vertical **
+    # compute nominal tof from mod to sample
+    vi = Conv.e2v(Ei)
+    t_m2s = instrument.L_m2s/vi + t0*1e-6
+    # nominal tof from mod to pixel
+    vf = Conv.e2v(Ef)
+    t_s2p = np.linalg.norm(pixel_position)/vf
+    t_m2p = t_m2s + t_s2p
+    print "t_m2s=%s, t_s2p=%s, t_m2p=%s" % (t_m2s, t_s2p, t_m2p)
     return
 
 def computeKf(Ei, E, Q):
-    from mcni.utils import conversion as Conv
     ki = Conv.e2k(Ei);
     print "ki=%s" % (ki,)
     kiv = np.array([ki, 0, 0])
