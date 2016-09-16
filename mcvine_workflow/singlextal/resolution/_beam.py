@@ -3,7 +3,7 @@
 # Jiao Lin <jiao.lin@gmail.com>
 #
 
-import os
+import os, numpy as np
 
 def computeEi_and_t0(beampath, instrument='ARCS'):
     """use mantid to compute Ei and t0
@@ -43,7 +43,9 @@ def create_dummy_nxs(out, beam):
 
 def test():
     beam = "/SNS/users/lj7/simulations/ARCS/beam/100meV-n1e10"
-    print computeEi_and_t0(beam)
+    Ei,t0 = computeEi_and_t0(beam)
+    assert np.isclose(Ei, 100.482385711)
+    assert np.isclose(t0, 18.7623408857)
     return
 
 if __name__ == '__main__': test()
