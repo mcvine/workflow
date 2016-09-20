@@ -44,7 +44,8 @@ def createSample(
     #  Q = [b1 b2 b3]/ROW dot [h k l]/COL = h2Q dot [h k l]/COL
     #  so h2Q = [b1 b2 b3]/ROW
     h2Q = reci_basis.T
-    #  orientation
+    # orientation matrix that connects the instrument coordinate system
+    # to the cartesian coordinate system fixed in the crystal
     orientation=computeOrientationStr(uv=uv, h2Q=h2Q)
     # prepare kernels
     kernels = makeKernels(excitations, h2Q, orientation, add_elastic_line=add_elastic_line)
@@ -67,7 +68,7 @@ def makeKernels(excitations, hkl, orientation, add_elastic_line=True):
     return '\n'.join(ks)
 
 
-from . import spinwave, phonon, deltafunction
+from . import spinwave, phonon, deltafunction, DGSresolution
 def makeKernel(excitation, hkl, orientation):
     type = excitation.type
     mod = globals()[type]
