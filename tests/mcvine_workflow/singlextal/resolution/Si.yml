@@ -11,7 +11,7 @@ lattice:
   - 2.71526503565, 0.0, 2.71526503565
   - 2.71526503565, 2.71526503565, 0.0
 excitations:
- - type: resolution
+ - type: DGSresolution
 orientation:
  u: -1, 1, -1
  v: 2, 1, -1

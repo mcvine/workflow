@@ -12,13 +12,20 @@ def test_setup():
     beam = "/SNS/users/lj7/simulations/ARCS/beam/100meV-n1e10"
     E = 40.
     hkl = [-16/3.,-8/3.,8/3.]
+    hkl_projection = np.array([-1.,1.,-1.])/3
     psi_axis = -5, 90., 0.5
     class instrument:
         name = 'ARCS'
-        detsys_radius = 3.
+        detsys_radius = "3.*meter"
+        L_m2s = "13.6*meter"
+        offset_sample2beam = "-0.15*meter" # offset from sample to saved beam
     class pixel:
-        radius = 0.0254
-    use_res_comps.setup(sampleyml, beam, E, hkl, psi_axis, instrument, pixel)
+        radius = "0.5*inch"
+        height = "meter/128"
+        pressure = "10*atm"
+    use_res_comps.setup(
+        '_tmp.out', sampleyml, beam, E, hkl, hkl_projection,
+        psi_axis, instrument, pixel)
     return
 
 

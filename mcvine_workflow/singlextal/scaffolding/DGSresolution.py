@@ -18,7 +18,8 @@ def createKernel(excitation, h2Q, orientation):
     - dtof
     """
     d = dict(excitation.__dict__)
-    d.update(orientation=orientation)
+    # DEV NOTE: it is more tourblesome to use the orientation matrix with this kernel
+    # DEV NOTE: so we don't use it here, in contrast to other kernels that use hkl
     return kernel_template % d
 
 
@@ -28,14 +29,12 @@ kernel_template = """
       target-radius: rough estimate of target radius
       tof-at-target: TOF at target
       dtof: TOF width thru target
-      orientation: flattened rotation matrix M. M dot Q_crystal = Q_instrument
      -->
-    <ConstantvQEKernel
+    <DGSSXResKernel
         target-position="%(target_position)s"
         target-radius="%(target_radius)s"
         tof-at-target="%(tof_at_target)s"
         dtof="%(dtof)s"
-        orientation="%(orientation)s"
         />
 """
 
