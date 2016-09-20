@@ -9,7 +9,7 @@ Tools for create single crystal samples for mcvine sample assembly.
 
 import os
 
-def createSampleAssembly(outdir, sample):
+def createSampleAssembly(outdir, sample, **kwds):
     """
     * outdir: output directory
     * sample: sample object. can be constructed from yaml file
@@ -30,7 +30,8 @@ def createSampleAssembly(outdir, sample):
         lattice_basis=sample.lattice.basis_vectors, uv=uv,
         chemical_formula=sample.chemical_formula,
         excitations = sample.excitations,
-        lattice_primitive_basis=sample.lattice.primitive_basis_vectors
+        lattice_primitive_basis=sample.lattice.primitive_basis_vectors,
+        **kwds
         )
     return
 
