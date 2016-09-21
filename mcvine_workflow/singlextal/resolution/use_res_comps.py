@@ -57,7 +57,6 @@ def setup(outdir, sampleyml, beam, E, hkl, hkl_projection, psi_axis, instrument,
     sample = loadSampleYml(sampleyml)
     # the sample kernel need information of E and hkl
     Q, hkl2Qmat, psi = calcQ(sampleyml, Ei, E, hkl, psi_axis, Npsisegments=10)
-    # import pdb; pdb.set_trace()
     kfv, Ef = computeKf(Ei, E, Q)
     pixel_position = computePixelPosition(kfv, instrument)
     # at this point the coordinates have convention of z vertical up
@@ -198,6 +197,8 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
     z_beam = mcvine.units.parse(instrument.offset_sample2beam)/mcvine.units.meter
     geometer.register( source, (0,0,z_beam), (0,0,0) )
     geometer.register( sample, (0,0,0), (0,psi*180/np.pi,0) )
+    #  8.69538059e-01,   2.87121987e+00,  -1.66786532e-16
+    # (2.8712198737660715, -1.6678653212531173e-16, 0.86953805925373207)
     geometer.register( pixel_comp, pixel.position, (0,0,0) )
     # 
     Q2hkl = np.linalg.inv(hkl2Q)
@@ -216,7 +217,18 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
         tracer = NeutronTracer()
         mcni.simulate( sim_chain, geometer, neutrons, tracer=tracer)
         #
-        dummy_start, incident, scattered, detected, dummy_end = tracer._store
+        before_dummy_start, after_dummy_start, \
+            before_incident, after_incident, \
+            before_scattered, after_scattered, \
+            before_detected, after_detected, \
+            before_dummy_end, after_dummy_end = tracer._store
+        incident = after_incident; scattered = before_detected
+        detected = after_detected
+        del (before_dummy_start, after_dummy_start,
+             before_incident, after_incident,
+             before_scattered, after_scattered,
+             before_detected, after_detected,
+             before_dummy_end, after_dummy_end)
         is_scattered = incident.v != scattered.v
         is_scattered = np.logical_or(
             is_scattered[:,0],
@@ -298,25 +310,22 @@ class NeutronTracer(AbstractNeutronTracer):
         if context:
             context.identify(self)
 
-        if self._process:
-            from mcni.neutron_storage import neutrons_as_npyarr
-            a = neutrons_as_npyarr(neutrons)
-            a.shape = -1, 10
-            r = a[:, :3]
-            v = a[:, 3:6]
-            p = a[:, -1]
-            self._store.append(_N(r, v, p))
+        from mcni.neutron_storage import neutrons_as_npyarr
+        a = neutrons_as_npyarr(neutrons)
+        a.shape = -1, 10
+        r = a[:, :3]
+        v = a[:, 3:6]
+        p = a[:, -1]
+        self._store.append(_N(r, v, p))
         sys.stdout.write(".")
         sys.stdout.flush()
         return
 
 
     def onBefore(self, context):
-        self._process = False
-
+        return
 
     def onProcessed(self, context):
-        self._process = True
-
+        return
 
 # End of file 
