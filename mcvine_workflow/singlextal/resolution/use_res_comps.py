@@ -222,7 +222,12 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
             before_scattered, after_scattered, \
             before_detected, after_detected, \
             before_dummy_end, after_dummy_end = tracer._store
-        incident = after_incident; scattered = before_detected
+        incident = after_incident
+        # has to be this. pixel and beam has no relative rotation. 
+        # should not used after_scattered.
+        # it is in the sample's coordinate system,
+        # which is rotated by angle psi.
+        scattered = before_detected 
         detected = after_detected
         del (before_dummy_start, after_dummy_start,
              before_incident, after_incident,
