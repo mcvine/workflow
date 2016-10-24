@@ -205,7 +205,7 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
     # neutron buffer
     from mcni.neutron_storage.idf_usenumpy import count
     N0 = count(beam_neutrons_path)
-    dxs_all = None; dEs_all = None; probs_all=None
+    dxs_all = None; dEs_all = None; probs_all=None; dhkls_all=None
     start = 0
     for i in range(int(np.ceil(N0/Nbuffer))):
     # for i in range(10):
@@ -266,10 +266,12 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
             dxs_all = dxs
             dEs_all = dEs
             probs_all = probs
+            dhkls_all = dhkls
         else:
             dxs_all = np.concatenate((dxs_all, dxs))
             dEs_all = np.concatenate((dEs_all, dEs))
             probs_all = np.concatenate((probs_all, probs))
+            dhkls_all = np.concatenate((dhkls_all, dhkls))
         print
         start = end
         continue
@@ -277,6 +279,7 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
     dxs_all *= -1
     dEs_all *= -1
     # save results
+    np.save("dhkls.npy", dhkls_all)
     np.save("dxs.npy", dxs_all)
     np.save("dEs.npy", dEs_all)
     np.save("probs.npy", probs_all)
