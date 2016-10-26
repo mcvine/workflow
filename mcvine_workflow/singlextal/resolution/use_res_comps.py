@@ -4,6 +4,9 @@
 #
 
 """
+Limitations:
+* assume cylindrical arrangement of det tubes for the det system
+
 Inputs
 
 * sample assembly
