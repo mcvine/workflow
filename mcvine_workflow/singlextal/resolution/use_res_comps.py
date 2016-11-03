@@ -279,8 +279,10 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
         start = end
         continue
     # reverse x and E
+    # the negative sign here makes the result the PSF
     dxs_all *= -1
     dEs_all *= -1
+    dhkls_all *= -1
     # save results
     np.save("dhkls.npy", dhkls_all)
     np.save("dxs.npy", dxs_all)
