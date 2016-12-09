@@ -295,6 +295,7 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
     Eaxis = H.axis('E', boundaries=yedges)
     res = H.histogram('res', (xaxis, Eaxis), data=h)
     hh.dump(res, 'res.h5')
+    sys.stdout.write("Done.\n"); sys.stdout.flush()
     return
 
 
