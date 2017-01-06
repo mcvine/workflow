@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+rm -rf out && time ./sss --ncount=3 --journal.debug.phonon_coherent_inelastic_polyxtal_kernel
+
