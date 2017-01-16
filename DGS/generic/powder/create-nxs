@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+rm -rf work-neutrons2nxs
+time mcvine instruments ${INSTRUMENT} neutrons2nxs \
+     --neutrons=out/scattered-neutrons --nxs=sim.nxs \
+     --populate-metadata --beam=beam \
+     --nodes=${NODES}

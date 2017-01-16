@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+rm -rf out && ./sss --ncount=30 --buffer_size=30 --tracer=console
+
