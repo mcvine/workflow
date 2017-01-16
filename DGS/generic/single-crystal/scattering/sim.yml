@@ -1,0 +1,10 @@
+
+cluster:
+  nodes: %(nodes)s
+instrument:
+  name: %(instrument)s
+scatter:
+  ncount: %(ncount)s
+  buffer_size: %(buffer_size)s
+  multiple_scattering: off
+  template: ./template

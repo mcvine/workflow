@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+echo $SAMPLE_ANGLE
+
+LAUNCHER=`python -c "from mcni.pyre_support.MpiApplication import mpi_launcher_choice as l; print l"`
+
+SSSCMD="./sss --ncount=${NCOUNT} --buffer_size=${BUFFER_SIZE} --$LAUNCHER.nodes=${NODES} --multiple-scattering=${MS} --geometer.sample=(0,0,0),(0,${SAMPLE_ANGLE},0)"
+
+echo $SSSCMD
+rm -rf out && time $SSSCMD

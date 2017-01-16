@@ -33,7 +33,15 @@ from . import workflow
 @click.option("--type", default='DGS')
 @click.option("--instrument", default='ARCS')
 @click.option("--sample", default='sample.yml')
-def singlecrystal(outdir, type, instrument, sample):
+@click.option('--mod2sample', default=None)
+@click.option("--ncount", default=1e7)
+@click.option("--buffer_size", default=0)
+@click.option("--nodes", default=10)
+def singlecrystal(outdir, type, instrument, sample, mod2sample, ncount, buffer_size, nodes):
+    if mod2sample is None:
+        mod2sample = mod2sample_dict.get(instrument.lower())
+        if mod2sample is None:
+            raise RuntimeError("Please specify mod2sample (meters")
     # create outdir
     if os.path.exists(outdir):
         raise IOError('%s already exists' % outdir)
@@ -41,7 +49,7 @@ def singlecrystal(outdir, type, instrument, sample):
     from mcvine import resources
     from mcvine_workflow import root
     # by copying from template
-    template = os.path.join(root, type, instrument, 'single-crystal')
+    template = os.path.join(root, type, 'generic', 'single-crystal')
     from .._shutil import rsync
     rsync(template, outdir)
     # create "beam" subdir
@@ -51,29 +59,38 @@ def singlecrystal(outdir, type, instrument, sample):
     create_beam_run_script(beam, instrument.lower())
     # copy sampleassembly template
     if sample.endswith(".yml"):
+        # load sample configuration from yml
         from ..sample import loadSampleYml
         sample = loadSampleYml(sample)
         # create sample assembly using scaffolding
         from ..singlextal.scaffolding import createSampleAssembly
         createSampleAssembly(os.path.join(outdir, 'sampleassembly'), sample)
-        return
-    elif os.path.isabs(sample) and os.path.isdir(sample):
-        # this means "sample" is a path to a sample assembly diretory
-        srcpath = ssample
     else:
-        sampleargs = sample.split('/')
-        if len(sampleargs) > 3:
-            raise ValueError('Wrong sample input %s. Examples: %s' % (sample, sample_examples))
-        template = resources.sample(*sampleargs)
-        if not os.path.exists(template):
-            raise RuntimeError("Sample template for %r does not exist" % sample)
-        srcpath = template
-    rsync(template, os.path.join(outdir, 'sampleassembly'))
+        if os.path.isabs(sample) and os.path.isdir(sample):
+            # this means "sample" is a path to a sample assembly diretory
+            srcpath = ssample
+        else:
+            # this means "sample" is an ID with which we can look up a sample
+            # example directory in the mcvine resources
+            sampleargs = sample.split('/')
+            if len(sampleargs) > 3:
+                raise ValueError('Wrong sample input %s. Examples: %s' % (sample, sample_examples))
+            template = resources.sample(*sampleargs)
+            if not os.path.exists(template):
+                raise RuntimeError("Sample template for %r does not exist" % sample)
+            srcpath = template
+        # copying
+        rsync(srcpath, os.path.join(outdir, 'sampleassembly'))
+    # fix Makefile and sss.pml
+    d = dict(locals()); d['instrument'] = instrument.lower()
+    _fix_using_template(os.path.join(outdir, 'scattering', 'template', 'Makefile'), d)
+    _fix_using_template(os.path.join(outdir, 'scattering', 'template', 'sss.pml'), d)
+    _fix_using_template(os.path.join(outdir, 'scattering', 'sim.yml'), d)
     return
 
+from .powder import mod2sample_dict, create_beam_run_script, _fix_using_template
 
 sample_examples = '"V", "V/300K", or "V/300K/plate"'
 
-from .powder import create_beam_run_script
 
 # End of file 

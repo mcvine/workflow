@@ -1,0 +1,89 @@
+#!/usr/bin/env python
+# load data 
+# the inputs are auto-reduced data
+# they undergo DGS_reduction?
+# datadir = '/SNS/users/linjiao/simulations/ARCS/Si/March2016/scan-longer'
+import numpy as np, os
+datadir = os.path.abspath(".")
+angles = np.arange(-5,90.1,0.5)
+# angles = np.arange(-5,90.1,10)
+filenames= [os.path.join(datadir, 'work_%.1f' % angle, 'reduced_%s.nxs' % angle)  for angle in angles]
+
+from mantid.simpleapi import *
+WG= Load(','.join(filenames))
+
+# compress events
+CompressEvents(InputWorkspace=WG,OutputWorkspace='WG_compressed',Tolerance=0.05)
+# clean up
+DeleteWorkspace(WG)
+# obtain the compressed ws
+WG_compressed=mtd['WG_compressed']
+WGO = WG_compressed
+
+# geometry
+# goniometer psi: rotate around vertical axis. counter-clock wise (ccw)
+SetGoniometer(WGO, Axis0='psi,0,1,0,1')
+# UB: ws, a, b, c, alpha, beta, gamma, u, v
+ha = 2.71526503565
+a = ha*2
+# SetUB(WGO,7.255,5.002,5.548,90,96.75,90,u=[-0.333333,0,0.333333],v=[0,2,0])
+SetUB(WGO,a, a, a, 90, 90, 90, u=[-1.,1.,-1.],v=[2., 1., -1.])
+# align the energy axis?
+CropWorkspace(InputWorkspace=WGO,OutputWorkspace='WGO_cropped',XMin=-5.,XMax=95.)
+WGO_cropped=mtd['WGO_cropped']
+# clean up
+DeleteWorkspace(WGO)
+
+
+# min, max values of hklE
+minn="-6,-6,-6,-5"
+maxx="6,6,6,95"
+
+
+for i in range(WGO_cropped.getNumberOfEntries()):
+    # convert events to Q vector
+    ConvertToMD(
+        InputWorkspace=WGO_cropped[i],
+        OutputWorkspace='md_i_use',
+        dEAnalysisMode="Direct",
+        QDimensions='Q3D',
+        Q3DFrames="HKL",
+        QConversionScales='HKL',
+        MinValues=minn,
+        MaxValues=maxx,
+        Uproj="-1,1,-1",
+        Vproj="1,0.5,-0.5",
+        Wproj="0,-1,-1")
+    
+    # compute data and normalization for the slices at the requested axes
+    a2,b2=MDNormDirectSC(
+        'md_i_use', 
+        AlignedDim0='[-H,H,-H],-6.0,6.0,241',
+        AlignedDim1='DeltaE,-5,90.,190',
+        AlignedDim2='[H,0.5H,-0.5H],-5.45,-5.15,1',
+        AlignedDim3='[0,-K,-K],-0.3,0.3,1'
+    )
+    
+    #
+    print 'rotation angle: %s' %i
+    
+    # merge data
+    if i==0:
+        dataMD2=CloneMDWorkspace(a2)
+        normMD2=CloneMDWorkspace(b2)
+    else:
+        dataMD2+=a2
+        normMD2+=b2
+    continue
+    
+# clean up
+RemoveWorkspaceHistory(dataMD2); RemoveWorkspaceHistory(normMD2)
+
+# smooth data
+DataSmooth2=SmoothMD(InputWorkspace=dataMD2, WidthVector=3, Function='Hat',InputNormalizationWorkspace=normMD2)
+NormSmooth2=SmoothMD(InputWorkspace=normMD2, WidthVector=3, Function='Hat',InputNormalizationWorkspace=normMD2)
+SmoothedSlice=DataSmooth2/NormSmooth2
+
+SaveMD(InputWorkspace='SmoothedSlice',Filename='slice.nxs')
+
+
