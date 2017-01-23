@@ -17,19 +17,23 @@ from . import workflow
 @click.option("--buffer_size", default=100000)
 @click.option("--nodes", default=10)
 @click.option("--qaxis", default="0 15 0.1")
-@click.option('--mod2sample', default=None)
-def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis, mod2sample):
+@click.option('--beam2sample', default=None)
+def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis, beam2sample):
     workdir = workdir or "mcvine-workflow-powder-%s-%s" % (instrument, sample)
-    if mod2sample is None:
-        mod2sample = mod2sample_dict.get(instrument.lower())
-        if mod2sample is None:
-            raise RuntimeError("Please specify mod2sample (meters")
+    if beam2sample is None:
+        beam2sample = beam2sample_dict.get(instrument.lower())
+        if beam2sample is None:
+            raise RuntimeError("Please specify beam2sample (meters")
     # copy from template
     from mcvine import resources
     from mcvine_workflow import root
     template = os.path.join(root, type, 'generic', 'powder')
     import shutil
     shutil.copytree(template, workdir)
+    # customize using instrument-specific files
+    from .._shutil import rsync
+    template = os.path.join(root, type, instrument, 'powder')
+    rsync(template, workdir)
     # create "beam" subdir
     beam = os.path.join(workdir, 'beam')
     os.makedirs(beam)
@@ -49,10 +53,11 @@ def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis,
     _fix_using_template(os.path.join(workdir, 'sss.pml'), d)
     return
 
-mod2sample_dict = dict(
+beam2sample_dict = dict(
     arcs = '0.15',
     seq = '0.15',
     cncs = '0.15',
+    hyspec = '0.15',
     )
 
 
@@ -62,10 +67,13 @@ sample_examples = '"V", "V/300K", or "V/300K/plate"'
 def create_beam_run_script(workdir, instrument):
     name = "run-beam.sh"
     content = """#!/usr/bin/env bash
+# run 
+#   mcvine instruments %s beam -h 
+# for more options
+#
+mcvine instruments %s beam --keep-in-cache --use-cache --ncount=1e8
 
-mcvine instruments %s beam --keep-in-cache --use-cache -E=100 --ncount=1e8
-
-""" % instrument
+""" % (instrument, instrument)
     path = os.path.join(workdir, name)
     open(path, 'wt').write(content)
     st = os.stat(path)

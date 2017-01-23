@@ -34,7 +34,7 @@
 
 
         <component name="geometer">
-            <property name="source">((0, 0, -%(mod2sample)s), (0, 0, 0))</property>
+            <property name="source">((0, 0, -%(beam2sample)s), (0, 0, 0))</property>
             <property name="sample">((0, 0, 0), (0, 0, 0))</property>
             <property name="storage">((0, 0, 0), (0, 0, 0))</property>
         </component>
