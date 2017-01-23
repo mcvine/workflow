@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+if [ -z "${DETECTOR_VESSEL_ANGLE}" ];
+then
+    echo "Please specify angle for detector vessel"
+    exit 1
+fi
+
+if [ -z "${SAMPLE_ANGLE}" ];
+then
+    echo "Please specify sample angle (psi)"
+    exit 1
+fi
+
+rm -rf work-neutrons2nxs
+time mcvine instruments sns neutrons2nxs \
+     --neutrons=out/scattered-neutrons --nxs=sim.nxs \
+     --workdir=work-neutrons2nxs \
+     --instrument=hyspec \
+     --detsys-z-rot=${DETECTOR_VESSEL_ANGLE} \
+     --nodes=${NODES}
+     
+cp sim.nxs sim_no_metadata.nxs
+sleep 5
+mcvine instruments hyspec nxs populate_metadata \
+       --nxs=sim.nxs --beam_outdir=beam/out \
+       --sample=${SAMPLE_ANGLE} --detector=${DETECTOR_VESSEL_ANGLE}

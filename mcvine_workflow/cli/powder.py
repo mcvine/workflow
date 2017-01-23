@@ -31,11 +31,9 @@ def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis,
     import shutil
     shutil.copytree(template, workdir)
     # customize using instrument-specific files
+    from .._shutil import rsync
     template = os.path.join(root, type, instrument, 'powder')
-    if os.path.exists(template):
-        cmd = 'rsync -a %s/ %s/' % (template, workdir)
-        if os.system(cmd):
-            raise RuntimeError("%s failed" % cmd)
+    rsync(template, workdir)
     # create "beam" subdir
     beam = os.path.join(workdir, 'beam')
     os.makedirs(beam)

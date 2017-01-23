@@ -52,6 +52,9 @@ def singlecrystal(outdir, type, instrument, sample, beam2sample, ncount, buffer_
     template = os.path.join(root, type, 'generic', 'single-crystal')
     from .._shutil import rsync
     rsync(template, outdir)
+    # customize using instrument-specific files
+    template = os.path.join(root, type, instrument, 'single-crystal')
+    rsync(template, outdir)
     # create "beam" subdir
     beam = os.path.join(outdir, 'beam')
     os.makedirs(beam)
