@@ -33,15 +33,15 @@ from . import workflow
 @click.option("--type", default='DGS')
 @click.option("--instrument", default='ARCS')
 @click.option("--sample", default='sample.yml')
-@click.option('--mod2sample', default=None)
+@click.option('--beam2sample', default=None)
 @click.option("--ncount", default=1e7)
 @click.option("--buffer_size", default=0)
 @click.option("--nodes", default=10)
-def singlecrystal(outdir, type, instrument, sample, mod2sample, ncount, buffer_size, nodes):
-    if mod2sample is None:
-        mod2sample = mod2sample_dict.get(instrument.lower())
-        if mod2sample is None:
-            raise RuntimeError("Please specify mod2sample (meters")
+def singlecrystal(outdir, type, instrument, sample, beam2sample, ncount, buffer_size, nodes):
+    if beam2sample is None:
+        beam2sample = beam2sample_dict.get(instrument.lower())
+        if beam2sample is None:
+            raise RuntimeError("Please specify beam2sample (meters")
     # create outdir
     if os.path.exists(outdir):
         raise IOError('%s already exists' % outdir)
@@ -88,7 +88,7 @@ def singlecrystal(outdir, type, instrument, sample, mod2sample, ncount, buffer_s
     _fix_using_template(os.path.join(outdir, 'scattering', 'sim.yml'), d)
     return
 
-from .powder import mod2sample_dict, create_beam_run_script, _fix_using_template
+from .powder import beam2sample_dict, create_beam_run_script, _fix_using_template
 
 sample_examples = '"V", "V/300K", or "V/300K/plate"'
 
