@@ -46,7 +46,7 @@ def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis,
         raise ValueError('Wrong sample input %s. Examples: %s' % (sample, sample_examples))
     template = resources.sample(*sampleargs)
     if not os.path.exists(template):
-        raise RuntimeError("Sample template for %r does not exist" % sample)
+        raise RuntimeError("Sample template for %r does not exist at %r" % (sample, template))
     shutil.copytree(template, os.path.join(workdir, 'sampleassembly'))
     # fix Makefile and sss.pml
     d = dict(locals()); d['instrument'] = instrument.lower()
