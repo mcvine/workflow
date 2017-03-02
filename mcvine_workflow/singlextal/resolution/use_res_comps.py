@@ -54,12 +54,16 @@ class pixel:
 def setup(outdir, sampleyml, beam, E, hkl, hkl_projection, psi_axis, instrument, pixel):
     # load beam
     from ._beam import computeEi_and_t0
-    Ei, t0 = computeEi_and_t0(beam, instrument.name)
+    Ei, t0 = computeEi_and_t0(beam, instrument)
     # load sample
     from ...sample import loadSampleYml
     sample = loadSampleYml(sampleyml)
     # the sample kernel need information of E and hkl
     Q, hkl2Qmat, psi = calcQ(sampleyml, Ei, E, hkl, psi_axis, Npsisegments=10)
+    print "Computed:"
+    print "* psi=%s degree" % (psi/np.pi*180,)
+    print "* Q=%s" % (Q,)
+    print "* hkl2Qmat=%s" % (hkl2Qmat,)
     kfv, Ef = computeKf(Ei, E, Q)
     pixel_position = computePixelPosition(kfv, instrument)
     # at this point the coordinates have convention of z vertical up
@@ -205,6 +209,8 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
     geometer.register( pixel_comp, pixel.position, (0,0,0) )
     # 
     Q2hkl = np.linalg.inv(hkl2Q)
+    # lengh of hkl_projection squared
+    hkl_proj_len2 = np.dot(hkl_projection, hkl_projection)
     # neutron buffer
     from mcni.neutron_storage.idf_usenumpy import count
     N0 = count(beam_neutrons_path)
@@ -264,7 +270,7 @@ def run(beam_neutrons_path, instrument, samplexmlpath, psi, hkl2Q, pixel, t_m2p,
         # print dhkls
         # print dEs
         # print p
-        dxs = np.dot( dhkls, np.array(hkl_projection) )
+        dxs = np.dot( dhkls, np.array(hkl_projection) )/hkl_proj_len2
         if dxs_all is None:
             dxs_all = dxs
             dEs_all = dEs

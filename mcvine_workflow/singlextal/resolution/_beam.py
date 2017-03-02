@@ -5,7 +5,54 @@
 
 import os, numpy as np
 
-def computeEi_and_t0(beampath, instrument='ARCS'):
+
+def computeEi_and_t0(beampath, instrument):
+    """use Ei saved in props.json. use saved neutrons information to compute t0
+    """
+    Ei = getEi(beampath)
+    
+    import mcni.neutron_storage as ns
+    neutrons = ns.readneutrons_asnpyarr(os.path.join(beampath, 'out', 'neutrons'))
+    assert neutrons.shape[-1] == 10
+    t = neutrons[:, -2]
+    vz = neutrons[:, 5]
+    from mcni.units import parser; parser = parser()
+    z_beam = parser.parse(instrument.L_m2s) + parser.parse(instrument.offset_sample2beam)
+    z_beam /= parser.parse('meter')
+    z = neutrons[:, 2] + z_beam
+    t0 = t - z/vz
+    # take histogram
+    h, tbb = np.histogram(t0, bins=200)
+    # compute t0 with maximum intensity
+    t0_max_int = tbb[np.argmax(h)]
+    # only retain a small portion of the whole t0 histogram
+    t0a = t0[t0<t0_max_int + np.std(t0)]
+    # now compute the histogram of the subset
+    h, tbb = np.histogram(t0a, bins=200)
+    tcenters = (tbb[:-1]+tbb[1:])/2
+    # fit to gaussian
+    from scipy.optimize import curve_fit
+    def gaus(x,a,x0,sigma):
+        return a*np.exp(-(x-x0)**2/(2*sigma**2))
+    p0=[np.max(h), tcenters[np.argmax(h)], np.abs(np.median(t0a)-np.average(t0a))]
+    popt,pcov = curve_fit(gaus, tcenters, h, p0=p0)
+    t0 = popt[1]
+    print Ei, t0
+    return Ei, t0
+
+
+def getEi(beampath):
+    import json, os
+    beam_outdir = os.path.join(beampath, 'out')
+    props_path = os.path.join(beam_outdir, 'props.json')
+    s = open(props_path).read()
+    s = s.replace("'", '"') # ' -> "
+    props = json.loads(s)
+    Ei, unit = props['average energy'].split()
+    return float(Ei)
+
+
+def computeEi_and_t0_usingMantid_ARCS(beampath, instrument='ARCS'):
     """use mantid to compute Ei and t0
     """
     # only implementation right now
