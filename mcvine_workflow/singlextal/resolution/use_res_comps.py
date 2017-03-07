@@ -55,6 +55,7 @@ def setup(outdir, sampleyml, beam, E, hkl, hkl_projection, psi_axis, instrument,
     # load beam
     from ._beam import computeEi_and_t0
     Ei, t0 = computeEi_and_t0(beam, instrument)
+    print "Ei=%s, t0=%s" % (Ei, t0)
     # load sample
     from ...sample import loadSampleYml
     sample = loadSampleYml(sampleyml)
@@ -65,7 +66,9 @@ def setup(outdir, sampleyml, beam, E, hkl, hkl_projection, psi_axis, instrument,
     print "* Q=%s" % (Q,)
     print "* hkl2Qmat=%s" % (hkl2Qmat,)
     kfv, Ef = computeKf(Ei, E, Q)
+    print "* Ef=%s" % (Ef,)
     pixel_position = computePixelPosition(kfv, instrument)
+    print "* pixel_position=%s" % (pixel_position,) 
     # at this point the coordinates have convention of z vertical up
     # ** coordinate system for calculated position: z is vertical **
     # this pixel_position is in the instrument coordinate system.
@@ -141,17 +144,17 @@ urc.run(
 
 def computeKf(Ei, E, Q):
     ki = Conv.e2k(Ei);
-    print "ki=%s" % (ki,)
+    print "* ki=%s" % (ki,)
     kiv = np.array([ki, 0, 0])
     kfv = kiv - Q
-    print "vectors ki=%s, kf=%s" % (kiv, kfv)
+    print "* vectors ki=%s, kf=%s" % (kiv, kfv)
     Ef = Ei - E
     # ** Verify the momentum and energy transfers **
     print "These two numbers should be very close:"
     print Ei-Conv.k2e(np.linalg.norm(kfv))
     print Ei-Ef
     assert np.isclose(Ef, Conv.k2e(np.linalg.norm(kfv)))
-    print "Ei=%s, Ef=%s" % (Ei,Ef)
+    print "  Ei=%s, Ef=%s" % (Ei,Ef)
     return kfv, Ef
 
 def computePixelPosition(kfv, instrument):
@@ -161,7 +164,7 @@ def computePixelPosition(kfv, instrument):
     R = mcvine.units.parse(instrument.detsys_radius)/mcvine.units.meter
     t_sample2pixel = R/(kfv[0]**2 + kfv[1]**2)**.5
     pixel_pos = kfv*t_sample2pixel
-    print "pixel positon=%s" % (pixel_pos,)
+    print "* pixel positon=%s" % (pixel_pos,)
     return pixel_pos
 
 def calcQ(sampleyml, Ei, E, hkl, psi_axis, Npsisegments=10):
