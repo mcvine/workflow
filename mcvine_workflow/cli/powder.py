@@ -56,7 +56,7 @@ def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis,
 
 beam2sample_dict = dict(
     arcs = '0.15',
-    seq = '0.15',
+    sequoia = '0.15',
     cncs = '0.15',
     hyspec = '0.15',
     )
