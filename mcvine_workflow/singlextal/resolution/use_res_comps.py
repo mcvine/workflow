@@ -38,18 +38,8 @@ from mcni.utils import conversion as Conv
 
 
 # input data structures
-class instrument:
-    def __init__(self, name, detsys_radius, L_m2s, offset_sample2beam):
-        self.name = name
-        self.detsys_radius = detsys_radius
-        self.L_m2s = L_m2s
-        self.offset_sample2beam = offset_sample2beam
-class pixel:
-    def __init__(self, radius, height, pressure, position=None):
-        self.radius = radius
-        self.height = height
-        self.pressure = pressure
-        self.position = position
+from . import instrument, pixel
+
 
 def setup(outdir, sampleyml, beam, E, hkl, hkl_projection, psi_axis, instrument, pixel):
     # load beam

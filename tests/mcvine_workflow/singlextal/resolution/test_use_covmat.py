@@ -8,7 +8,6 @@ from mcvine_workflow.singlextal.resolution import use_covmat
 import numpy as np
 
 def test():
-    from mcvine_workflow.DGS import ARCS
     sampleyml = "Si.yml"
     Ei = 100
     class dynamics:
@@ -18,7 +17,26 @@ def test():
         dq = 0
     class scan:
         psimin, psimax, dpsi = -5, 90., 0.5
-    use_covmat.compute(ARCS, sampleyml, Ei, dynamics, scan, plot=True)
+    instrument = use_covmat.instrument(
+        name = 'ARCS',
+        detsys_radius = "3.*meter",
+        L_m2s = "13.6*meter",
+        L_m2fc = "11.61*meter",
+        offset_sample2beam = "-0.15*meter" # offset from sample to saved beam
+        )
+    pixel = use_covmat.pixel(
+        radius = "0.5*inch",
+        height = "meter/128",
+        pressure = "10*atm",
+        )
+    tofwidths = use_covmat.tofwidths(P=10,M=8)
+    beamdivs = use_covmat.beamdivs(theta=0.01, phi=0.01)
+    samplethickness = 0.01
+    use_covmat.compute(
+        sampleyml, Ei, dynamics, scan,
+        instrument, pixel,
+        tofwidths, beamdivs, samplethickness,
+        plot=True)
     return
 
 

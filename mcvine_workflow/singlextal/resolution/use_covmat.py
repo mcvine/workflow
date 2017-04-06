@@ -3,7 +3,7 @@
 # # Resolution Calculation using Covariance Matrix
 
 # from matplotlib import pyplot as plt
-import numpy as np
+import numpy as np, mcvine
 import mcvine.cli
 # from mcvine_workflow.DGS import ARCS
 # import histogram.hdf as hh, histogram as H
@@ -13,11 +13,31 @@ import mcvine.cli
 # See NIMA 736(2014)31-39
 
 
-def compute(instrument, sample_yml, Ei, dynamics, scan, plot=False):
-    L_PM=instrument.L_PM
-    R = instrument.L_PM
-    L_PS=instrument.L_PS
+from . import instrument, pixel
+class tofwidths:
+
+    def __init__(self, P, M):
+        self.P = P # P chopper
+        self.M = M # M chopper
+        return
+
+class beamdivs:
+    "beam divergence along theta and phi"
+    def __init__(self, theta, phi):
+        self.theta = theta
+        self.phi = phi
+        return
+
+def compute(
+        sample_yml, Ei, dynamics, scan, instrument, pixel, tofwidths, beamdivs, samplethickness,
+        plot=False):
+    # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    # should P be the T0 chopper?
+    L_PM=mcvine.units.parse(instrument.L_m2fc)/mcvine.units.meter # P chopper to M chopper distance
+    L_PS= mcvine.units.parse(instrument.L_m2s)/mcvine.units.meter  # P chopper to sample
     L_MS=L_PS-L_PM
+    #
+    R = mcvine.units.parse(instrument.detsys_radius)/mcvine.units.meter # 
 
     hkl0 = dynamics.hkl0
     hkl_dir = dynamics.hkl_dir # projection
@@ -25,10 +45,10 @@ def compute(instrument, sample_yml, Ei, dynamics, scan, plot=False):
     psimax = scan.psimax
     dpsi = scan.dpsi
 
+    # dynamics calculations
     E = dynamics.E
     dq = dynamics.dq
     hkl = hkl0 + dq*hkl_dir
-
 
     from mcni.utils import conversion as Conv
     vi = Conv.e2v(Ei)
@@ -37,6 +57,7 @@ def compute(instrument, sample_yml, Ei, dynamics, scan, plot=False):
     Ef = Ei - E
     vf = Conv.e2v(Ef)
 
+    # find the psi angle
     from mcvine_workflow.singlextal.io import loadXtalOriFromSampleYml
     xtalori = loadXtalOriFromSampleYml(sample_yml)
     from mcvine_workflow.singlextal.solve_psi import solve
@@ -48,28 +69,28 @@ def compute(instrument, sample_yml, Ei, dynamics, scan, plot=False):
         xtalori.psi = r*np.pi/180
         print "psi=%s, Q=%s" % (r, hkl2Q(hkl, xtalori))
         print "hkl2Q=%r\n(Q = hkl dot hkl2Q)" % (xtalori.hkl2cartesian_mat(),)
-
     # these are the psi angles that the particular point of interest will be measured
     # print results
     assert len(results)
+    # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    # only select the first one. this is OK for most cases but there are cases where more than
+    # one psi angles satisfy the condition
     psi = results[0]
     xtalori.psi = psi*np.pi/180
     Q = hkl2Q(hkl, xtalori)
     hkl2Q_mat = xtalori.hkl2cartesian_mat()
     # print Q
     # print hkl2Q_mat
-
+    #
     Q_len = np.linalg.norm(Q); print Q_len
     ki = Conv.e2k(Ei); print ki
     kiv = np.array([ki, 0, 0])
     kfv = kiv - Q; print kfv
-
-
+    #
     # ** Verify the momentum and energy transfers **
     # print Ei-Conv.k2e(np.linalg.norm(kfv))
     # print Ei-Ef
     assert np.isclose(Ei-Ef, E)
-
 
     # ** Compute detector pixel position **
     z = kfv[2]/(kfv[0]**2+kfv[1]**2)**.5 * R
@@ -85,7 +106,7 @@ def compute(instrument, sample_yml, Ei, dynamics, scan, plot=False):
     m = 1.6750e-24 * 1e-3 #kg
     from numpy import sin, cos
 
-
+    # dE calcuation starts here
     # ## Differentials
     pE_pt = -m*(vi**3/L_PM + vf**3/L_SD * L_MS/L_PM)
     # convert to eV/microsecond
@@ -113,11 +134,15 @@ def compute(instrument, sample_yml, Ei, dynamics, scan, plot=False):
     pE_pz = pE_pLSD * (z/L_SD)
     # print pE_pR, pE_pz
 
+    # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     # ## ** Paramters: Estimate of standard deviations
-    tau_P = 10 # microsecond
-    tau_M = 8 # microsecond
-    tau_D = 10 # microsecond
-    tau_D = 0.025/vf*1e6 # microsecond
+    # tau_P = 10 # microsecond
+    # tau_M = 8 # microsecond
+    tau_P = tofwidths.P
+    tau_M = tofwidths.M
+    #
+    # tau_D = 10 # microsecond
+    tau_D = mcvine.units.parse(pixel.radius)/mcvine.units.meter*2/vf*1e6 # microsecond
 
     # ## Calculations
     pE_p_vec = [pE_pt, pE_ptMD, pE_pLPM, pE_pLMS, pE_pR, pE_pz]
@@ -127,17 +152,18 @@ def compute(instrument, sample_yml, Ei, dynamics, scan, plot=False):
     # print J_E
     sigma_t = (tau_P**2+tau_M**2)**.5
     sigma_tMD = (tau_M**2+tau_D**2)**.5
-    div = 0.01
+    # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    div = (beamdivs.theta**2 + beamdivs.phi**2)**.5  # a crude approx
     sigma_LPM = L_PM * div*div
 
     # mainly due to sample size
-    sigma_LMS = 0.025*2
+    sigma_LMS = samplethickness
 
     # mainly due to det tube diameter
-    sigma_R = 0.025
+    sigma_R = mcvine.units.parse(pixel.radius)/mcvine.units.meter*2
 
     # pixel size
-    sigma_z = 1./128
+    sigma_z = mcvine.units.parse(pixel.height)/mcvine.units.meter
 
     sigma = np.array([sigma_t, sigma_tMD, sigma_LPM, sigma_LMS, sigma_R, sigma_z])
     # print sigma
@@ -280,9 +306,11 @@ def compute(instrument, sample_yml, Ei, dynamics, scan, plot=False):
     J = np.array( (J_Qx, J_Qy, J_Qz, J_E) )
 
     # ## ** Parameters
-    sigma_eeta = 0.025/3
-    sigma_thetai = 0.01
-    sigma_phii = 0.01
+    sigma_eeta = mcvine.units.parse(pixel.radius)/mcvine.units.parse(instrument.detsys_radius)
+    # sigma_thetai = 0.01
+    sigma_thetai = beamdivs.theta
+    # sigma_phii = 0.01
+    sigma_phii = beamdivs.phi
     sigma = np.array([sigma_t, sigma_tMD, sigma_LPM, sigma_LMS, sigma_R, sigma_z, sigma_eeta, sigma_thetai, sigma_phii])
     sigma2 = sigma**2
     sigma2 = np.diag(sigma2)
