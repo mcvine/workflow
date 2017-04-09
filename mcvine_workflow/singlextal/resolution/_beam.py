@@ -15,7 +15,7 @@ def computeEi_and_t0(beampath, instrument):
     vi = Conv.e2v(Ei)
     L_m2s = mcvine.units.parse(instrument.L_m2s)/mcvine.units.meter
     t0 = tof - L_m2s/vi
-    print Ei, t0*1e6
+    # print Ei, t0*1e6
     return Ei, t0*1e6
 
 

@@ -41,24 +41,27 @@ from mcni.utils import conversion as Conv
 from . import instrument, pixel
 
 
-def setup(outdir, sampleyml, beam, E, hkl, hkl_projection, psi_axis, instrument, pixel):
+def setup(outdir, sampleyml, beam, E, hkl, hkl_projection, psi_axis, instrument, pixel, log=None):
+    if log is None:
+        import sys
+        log = sys.stdout
     # load beam
     from ._beam import computeEi_and_t0
     Ei, t0 = computeEi_and_t0(beam, instrument)
-    print "Ei=%s, t0=%s" % (Ei, t0)
+    log.write( "Ei=%s, t0=%s\n" % (Ei, t0) )
     # load sample
     from ...sample import loadSampleYml
     sample = loadSampleYml(sampleyml)
     # the sample kernel need information of E and hkl
     Q, hkl2Qmat, psi = calcQ(sampleyml, Ei, E, hkl, psi_axis, Npsisegments=10)
-    print "Computed:"
-    print "* psi=%s degree" % (psi/np.pi*180,)
-    print "* Q=%s" % (Q,)
-    print "* hkl2Qmat=%s" % (hkl2Qmat,)
-    kfv, Ef = computeKf(Ei, E, Q)
-    print "* Ef=%s" % (Ef,)
-    pixel_position = computePixelPosition(kfv, instrument)
-    print "* pixel_position=%s" % (pixel_position,) 
+    log.write( "Computed:\n" )
+    log.write( "* psi=%s degree\n" % (psi/np.pi*180,) )
+    log.write( "* Q=%s\n" % (Q,) )
+    log.write( "* hkl2Qmat=%s\n" % (hkl2Qmat,) )
+    kfv, Ef = computeKf(Ei, E, Q, log)
+    log.write( "* Ef=%s\n" % (Ef,))
+    pixel_position = computePixelPosition(kfv, instrument, log)
+    log.write( "* pixel_position=%s\n" % (pixel_position,) )
     # at this point the coordinates have convention of z vertical up
     # ** coordinate system for calculated position: z is vertical **
     # this pixel_position is in the instrument coordinate system.
@@ -77,7 +80,7 @@ def setup(outdir, sampleyml, beam, E, hkl, hkl_projection, psi_axis, instrument,
     vf = Conv.e2v(Ef)
     t_s2p = np.linalg.norm(pixel_position)/vf
     t_m2p = t_m2s + t_s2p
-    print "t_m2s=%s, t_s2p=%s, t_m2p=%s" % (t_m2s, t_s2p, t_m2p)
+    log.write( "t_m2s=%s, t_s2p=%s, t_m2p=%s\n" % (t_m2s, t_s2p, t_m2p))
     # tof passing through the pixel
     r = mcvine.units.parse(pixel.radius)/mcvine.units.meter
     h = mcvine.units.parse(pixel.height)/mcvine.units.meter
@@ -132,35 +135,35 @@ urc.run(
     Q, E, hkl_projection, Nbuffer=100000)
 """ 
 
-def computeKf(Ei, E, Q):
+def computeKf(Ei, E, Q, log):
     ki = Conv.e2k(Ei);
-    print "* ki=%s" % (ki,)
+    log.write( "* ki=%s\n" % (ki,) )
     kiv = np.array([ki, 0, 0])
     kfv = kiv - Q
-    print "* vectors ki=%s, kf=%s" % (kiv, kfv)
+    log.write( "* vectors ki=%s, kf=%s\n" % (kiv, kfv) )
     Ef = Ei - E
     # ** Verify the momentum and energy transfers **
-    print "These two numbers should be very close:"
-    print Ei-Conv.k2e(np.linalg.norm(kfv))
-    print Ei-Ef
+    log.write( "These two numbers should be very close:\n")
+    log.write( "  %s\n" % (Ei-Conv.k2e(np.linalg.norm(kfv)),) )
+    log.write( "  %s\n" % (Ei-Ef,) )
     assert np.isclose(Ef, Conv.k2e(np.linalg.norm(kfv)))
-    print "  Ei=%s, Ef=%s" % (Ei,Ef)
+    log.write( "  Ei=%s, Ef=%s\n" % (Ei,Ef) )
     return kfv, Ef
 
-def computePixelPosition(kfv, instrument):
+def computePixelPosition(kfv, instrument, log):
     # ** compute nominal TOF at detector pixel **
     # where is detector pixel?
     # cylinder radius = 3meter. 
     R = mcvine.units.parse(instrument.detsys_radius)/mcvine.units.meter
     t_sample2pixel = R/(kfv[0]**2 + kfv[1]**2)**.5
     pixel_pos = kfv*t_sample2pixel
-    print "* pixel positon=%s" % (pixel_pos,)
+    log.write( "* pixel positon=%s\n" % (pixel_pos,))
     return pixel_pos
 
 def calcQ(sampleyml, Ei, E, hkl, psi_axis, Npsisegments=10):
     from ..io import loadXtalOriFromSampleYml
     xtalori = loadXtalOriFromSampleYml(sampleyml)
-    psimin, psimax, dpsi = psi_axis
+    psimin, psimax, dpsi = psi_axis.min, psi_axis.max, psi_axis.step
     from ..solve_psi import solve
     results = solve(
         xtalori, Ei, hkl, E, psi_min=psimin, psi_max=psimax,
