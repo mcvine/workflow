@@ -29,7 +29,7 @@ class beamdivs:
         return
 
 def compute(
-        sample_yml, Ei, dynamics, scan, instrument, pixel, tofwidths, beamdivs, samplethickness,
+        sample_yml, Ei, dynamics, psi_scan, instrument, pixel, tofwidths, beamdivs, samplethickness,
         plot=False):
     # XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     # should P be the T0 chopper?
@@ -41,9 +41,9 @@ def compute(
 
     hkl0 = dynamics.hkl0
     hkl_dir = dynamics.hkl_dir # projection
-    psimin = scan.psimin
-    psimax = scan.psimax
-    dpsi = scan.dpsi
+    psimin = psi_scan.min
+    psimax = psi_scan.max
+    dpsi = psi_scan.step
 
     # dynamics calculations
     E = dynamics.E
