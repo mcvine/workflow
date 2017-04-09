@@ -16,7 +16,7 @@ def test():
         E = 40.
         dq = 0
     class scan:
-        psimin, psimax, dpsi = -5, 90., 0.5
+        min, max, step = -5, 90., 0.5
     instrument = use_covmat.instrument(
         name = 'ARCS',
         detsys_radius = "3.*meter",
