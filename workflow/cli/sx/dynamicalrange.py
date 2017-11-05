@@ -33,9 +33,9 @@ def slice(
         instrument, erange,
         out):
     """dynamic range of slice"""
-    from mcvine_workflow.sample import loadSampleYml
+    from mcvine.workflow.sample import loadSampleYml
     sample = loadSampleYml(sample)
-    code = "from mcvine_workflow.DGS import %s as mod" % instrument
+    code = "from mcvine.workflow.DGS import %s as mod" % instrument
     d = {}; exec(code, d); mod = d['mod']
     psi_angles = np.arange(*tuple(psi_axis))
     x_axis = np.arange(*tuple(x_axis))

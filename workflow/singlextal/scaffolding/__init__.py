@@ -13,7 +13,7 @@ def createSampleAssembly(outdir, sample, **kwds):
     """
     * outdir: output directory
     * sample: sample object. can be constructed from yaml file
-              using mcvine_workflow.sample.loadSampleYml
+              using mcvine.workflow.sample.loadSampleYml
               Example yaml file: tests/DGS/ARCS/Si.yml
     """
     if not os.path.exists(outdir):

@@ -46,14 +46,13 @@ def singlecrystal(outdir, type, instrument, sample, beam2sample, ncount, buffer_
     if os.path.exists(outdir):
         raise IOError('%s already exists' % outdir)
     os.makedirs(outdir)
-    from mcvine import resources
-    from mcvine_workflow import root
+    from mcvine import resources, deployment_info as dpinfo
     # by copying from template
-    template = os.path.join(root, type, 'generic', 'single-crystal')
+    template = os.path.join(dpinfo.mcvine_workflow, type, 'generic', 'single-crystal')
     from .._shutil import rsync
     rsync(template, outdir)
     # customize using instrument-specific files
-    template = os.path.join(root, type, instrument, 'single-crystal')
+    template = os.path.join(dpinfo.mcvine_workflow, type, instrument, 'single-crystal')
     if os.path.exists(template):
         rsync(template, outdir)
     # create "beam" subdir
