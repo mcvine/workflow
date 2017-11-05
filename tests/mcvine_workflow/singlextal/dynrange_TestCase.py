@@ -6,6 +6,9 @@ import mcvine.cli
 from mcvine.workflow.singlextal import dynrange
 from mcvine.workflow.sample import loadSampleYml
 from mcvine.workflow.DGS import ARCS
+
+import matplotlib as mpl
+mpl.use('Agg')
 from matplotlib import pyplot as plt
 
 import numpy as np, os
