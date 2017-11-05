@@ -62,7 +62,7 @@ def xtalori2mat(b1, b2, b3, u, v, psi):
     """
     # b1, b2, b3 are defined in a cartesian
     # coordinate system attached to the crystal (CCSC)
-    r = np.array([b1, b2, b3])
+    r = np.array([b1, b2, b3], dtype=float)
     # compute u, v in cartesian coordinate system
     u_cart = np.dot(u, r)
     v_cart = np.dot(v, r)

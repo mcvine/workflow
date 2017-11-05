@@ -3,9 +3,9 @@
 # Jiao Lin <jiao.lin@gmail.com>
 
 import mcvine.cli
-from mcvine_workflow import singlextal
-from mcvine_workflow.singlextal import coords_transform as ct
-from mcvine_workflow.singlextal import solve_psi
+from mcvine.workflow import singlextal
+from mcvine.workflow.singlextal import coords_transform as ct
+from mcvine.workflow.singlextal import solve_psi
 
 import numpy as np, os
 thisdir = os.path.dirname(__file__)

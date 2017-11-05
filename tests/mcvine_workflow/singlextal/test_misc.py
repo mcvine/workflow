@@ -3,9 +3,9 @@
 # Jiao Lin <jiao.lin@gmail.com>
 
 import mcvine.cli
-from mcvine_workflow.singlextal.misc import Eresidual
-from mcvine_workflow.singlextal.XtalOrientation import XtalOrientation
-from mcvine_workflow import singlextal
+from mcvine.workflow.singlextal.misc import Eresidual
+from mcvine.workflow.singlextal.XtalOrientation import XtalOrientation
+from mcvine.workflow import singlextal
 
 import numpy as np, os
 thisdir = os.path.dirname(__file__)

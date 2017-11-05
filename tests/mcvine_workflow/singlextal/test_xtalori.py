@@ -3,7 +3,7 @@
 # Jiao Lin <jiao.lin@gmail.com>
 
 import mcvine.cli
-from mcvine_workflow.singlextal.XtalOrientation import XtalOrientation, xtalori2mat
+from mcvine.workflow.singlextal.XtalOrientation import XtalOrientation, xtalori2mat
 
 import numpy as np
 

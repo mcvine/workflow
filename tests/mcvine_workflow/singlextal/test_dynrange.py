@@ -3,9 +3,9 @@
 # Jiao Lin <jiao.lin@gmail.com>
 
 import mcvine.cli
-from mcvine_workflow.singlextal import dynrange
-from mcvine_workflow.sample import loadSampleYml
-from mcvine_workflow.DGS import ARCS
+from mcvine.workflow.singlextal import dynrange
+from mcvine.workflow.sample import loadSampleYml
+from mcvine.workflow.DGS import ARCS
 from matplotlib import pyplot as plt
 
 import numpy as np, os
