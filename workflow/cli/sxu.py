@@ -93,6 +93,8 @@ def dr_slice(
     d = {}; exec(code, d); mod = d['mod']
     psi_angles = np.arange(*tuple(psi_axis))
     x_axis = np.arange(*tuple(x_axis))
+    import matplotlib as mpl
+    if out: mpl.use('Agg')
     from matplotlib import pyplot as plt
     plt.figure()
     from ..singlextal import dynrange
