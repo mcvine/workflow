@@ -25,14 +25,13 @@ def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis,
         if beam2sample is None:
             raise RuntimeError("Please specify beam2sample (meters")
     # copy from template
-    from mcvine import resources
-    from mcvine_workflow import root
-    template = os.path.join(root, type, 'generic', 'powder')
+    from mcvine import resources, deployment_info as dpinfo
+    template = os.path.join(dpinfo.mcvine_workflow, type, 'generic', 'powder')
     import shutil
     shutil.copytree(template, workdir)
     # customize using instrument-specific files
     from .._shutil import rsync
-    template = os.path.join(root, type, instrument, 'powder')
+    template = os.path.join(dpinfo.mcvine_workflow, type, instrument, 'powder')
     if os.path.exists(template):
         rsync(template, workdir)
     # create "beam" subdir

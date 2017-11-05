@@ -87,9 +87,9 @@ def dr_slice(
         instrument, erange,
         out):
     """OBSOLETE: use "mcvine workflow sx dynamicalrange slice" instead"""
-    from mcvine_workflow.sample import loadSampleYml
+    from ..sample import loadSampleYml
     sample = loadSampleYml(sample)
-    code = "from mcvine_workflow.DGS import %s as mod" % instrument
+    code = "from mcvine.workflow.DGS import %s as mod" % instrument
     d = {}; exec(code, d); mod = d['mod']
     psi_angles = np.arange(*tuple(psi_axis))
     x_axis = np.arange(*tuple(x_axis))

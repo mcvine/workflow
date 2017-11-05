@@ -55,7 +55,7 @@ def reduce(instrument_type, type, eiguess, eaxis, psi_axis, psi, eventnxs, out):
     assert instrument_type == 'DGS'
     eventnxs = eventnxs.encode()
     out = out.encode()
-    from mcvine_workflow.singlextal import reduction
+    from mcvine.workflow.singlextal import reduction
     if type == 'single':
         reduction.reduceOneKeepingEvents(eventnxs, psi, eiguess, eaxis, out)
     elif type == 'batch':
@@ -90,7 +90,7 @@ def slice(sample, psi_axis, nxs, slice, out, smooth):
     Eaxis = slice.Eaxis
     Qproj_axes = slice.Q_projections
     out = out.encode()
-    from mcvine_workflow.singlextal import reduction
+    from mcvine.workflow.singlextal import reduction
     reduction.getslice(
         angles, filenames, lattice_params, orientation, Eaxis, Qproj_axes, out, smooth)
     return
@@ -103,7 +103,7 @@ def slice2hist(mantid, histogram):
     """OBSOLETE: use "mcvine workflow sx reduce slice2hist" instead"""
     mantid = mantid.encode()
     histogram = histogram.encode()
-    from mcvine_workflow.singlextal import reduction
+    from mcvine.workflow.singlextal import reduction
     reduction.slice2hist(mantid, histogram)
 
 # End of file 

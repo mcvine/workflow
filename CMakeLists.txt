@@ -62,11 +62,13 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules/
 
 # copy share files
 file(COPY share/
-  DESTINATION ${EXPORT_SHARE}/workflow/
+  DESTINATION ${EXPORT_SHARE}/mcvine/workflow/
   PATTERN "CMakeLists.txt" EXCLUDE
   PATTERN "*~" EXCLUDE
   PATTERN ".git*" EXCLUDE
   )
+# install share
+install(DIRECTORY ${EXPORT_SHARE}/ DESTINATION share/ USE_SOURCE_PERMISSIONS)
 
 
 # tests
