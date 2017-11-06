@@ -38,7 +38,7 @@ ELSE(EXISTS "cmake_utils/")
 ENDIF(EXISTS "cmake_utils/")
 set(CMAKE_MODULE_PATH ${PROJECT_BINARY_DIR}/cmake_utils)
 # use utils
-include(System) # system info
+# include(System) # system info
 include(Dirs)   # directory structure
 include(TestUtils)
 # message("lib: $ENV{LD_LIBRARY_PATH}; python: $ENV{PYTHONPATH}")
