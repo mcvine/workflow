@@ -1,0 +1,18 @@
+name: KVO
+chemical_formula: K2V3O8
+lattice: 
+ constants: 8.87, 8.87, 5.2, 90, 90, 90
+ basis_vectors:
+  - 8.87, 0, 0
+  - 0, 8.87, 0
+  - 0, 0, 5.2
+excitation:
+ type: spinwave
+ E_Q: 2.563*sqrt(1-(cos(h*pi)*cos(k*pi))**2)
+ S_Q: 1
+ Emax: 3
+orientation:
+ u: 1, 0, 0
+ v: 0, 1, 0
+shape: block width="4.6*cm" height="4.6*cm" thickness="2.3/4*cm"
+temperature: 300*K
