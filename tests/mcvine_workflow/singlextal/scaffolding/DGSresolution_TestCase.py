@@ -3,7 +3,7 @@
 # Jiao Lin <jiao.lin@gmail.com>
 
 import mcvine.cli
-from mcvine_workflow.singlextal.scaffolding import sample
+from mcvine.workflow.singlextal.scaffolding import sample
 
 import numpy as np
 
