@@ -11,9 +11,9 @@ here = os.path.dirname(__file__)
 
 
 def test():
-    sample = loadSampleYml('KVO.yml')
+    sample = loadSampleYml(os.path.join(here, 'KVO.yml'))
     createSampleAssembly("_tmp.sampleassembly", sample)
-    o = os.system('diff -r _tmp.sampleassembly %s/expected-sampleassembly' % here)
+    o = os.system('diff -r _tmp.sampleassembly ' + os.path.join(here, 'expected-sampleassembly'))
     assert not o
     return
 
