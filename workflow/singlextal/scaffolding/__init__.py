@@ -18,8 +18,12 @@ def createSampleAssembly(outdir, sample, **kwds):
     """
     if not os.path.exists(outdir):
         os.makedirs(outdir)
+    # get sample data
+    sample_dict = sample.__dict__.copy()
+    # format shape
+    sample_dict['shape'] = _format_shape(sample_dict['shape'])
     # sampleassembly.xml
-    content = sampleassembly_tempalte % sample.__dict__
+    content = sampleassembly_template % sample_dict
     open(os.path.join(outdir, 'sampleassembly.xml'), 'wt').write(content)
     # sample
     so = sample.orientation
@@ -35,7 +39,20 @@ def createSampleAssembly(outdir, sample, **kwds):
         )
     return
 
-sampleassembly_tempalte = """<?xml version="1.0"?>
+
+def _format_shape(shape):
+    indent = 6 * ' '
+    # shape is an xml string
+    if shape.startswith('<'):
+        return '\n'.join( indent + x for x in shape.splitlines() )
+    # shape is a simple oneliner that can convert to a xml tag
+    if '\n' not in shape:
+        return '%s<%s />' % (indent, shape)
+    # yml shape specification
+    raise NotImplementedError
+
+
+sampleassembly_template = """<?xml version="1.0"?>
 
 <!DOCTYPE SampleAssembly>
 
@@ -47,7 +64,7 @@ sampleassembly_tempalte = """<?xml version="1.0"?>
   
   <PowderSample name="%(name)s" type="sample">
     <Shape>
-      <%(shape)s />
+%(shape)s
     </Shape>
     <Phase type="crystal">
       <ChemicalFormula>%(chemical_formula)s</ChemicalFormula>

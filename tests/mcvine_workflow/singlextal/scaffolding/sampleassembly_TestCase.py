@@ -18,8 +18,17 @@ def test():
     return
 
 
+def test2():
+    sample = loadSampleYml(os.path.join(here, 'KVO-rotated.yml'))
+    createSampleAssembly("_tmp.sampleassembly2", sample)
+    o = os.system('diff -r _tmp.sampleassembly2 ' + os.path.join(here, 'expected-sampleassembly2'))
+    assert not o
+    return
+
+
 def main():
     test()
+    test2()
     return
 
 
