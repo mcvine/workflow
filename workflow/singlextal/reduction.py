@@ -43,8 +43,7 @@ def getslice(angles, filenames,
 
     from mantid.simpleapi import Load, CompressEvents, DeleteWorkspace, mtd,\
         SetGoniometer, SetUB, CropWorkspace, ConvertToMD, MDNormDirectSC,\
-        CloneMDWorkspace, RemoveWorkspaceHistory, SmoothMD, SaveMD \
-        
+        CloneMDWorkspace, RemoveWorkspaceHistory, SmoothMD, SaveMD
     WG= Load(','.join(filenames))
 
     # compress events
@@ -148,7 +147,7 @@ def reduceScan(psi_axis, nxs_template, outfn_template, eiguess, eaxis):
     return
 
 
-def reduceOneKeepingEvents(nxsfile, angle, eiguess, eaxis, outfile):
+def reduceOneKeepingEvents(nxsfile, angle, eiguess, eaxis, outfile, t0guess=0.):
     """reduce nxs from one angle of a single crystal scan, keeping events
     (only do tof->E conversion)
 
@@ -168,13 +167,36 @@ def reduceOneKeepingEvents(nxsfile, angle, eiguess, eaxis, outfile):
     unique_name = os.path.dirname(nxsfile).split('/')[-1]
     wsname = 'reduced-%s' % unique_name
 
+    # Ei
+    if eiguess == 0.:
+        # If user does not supply Ei, we try to get it from the samplelog,
+        # because mcvine-generated SEQUOIA data files are mantid-processed nexus file
+        # with sample logs of Ei and t0.
+        # If we don't have them from sample logs, we just set Ei and T0 to None
+        run = workspace.getRun()
+        UseIncidentEnergyGuess = False
+        try:
+            Ei = run.getLogData('Ei').value
+            UseIncidentEnergyGuess = True
+        except:
+            Ei = None
+        try:
+            T0 = run.getLogData('t0').value
+        except:
+            T0 = None
+    else:
+        # user specified Ei, just use that
+        Ei = eiguess
+        T0 = t0guess
+        UseIncidentEnergyGuess = True
     # keep events (need to then run RebinToWorkspace and ConvertToDistribution)
     Emin, Emax, dE = eaxis
     eaxis = '%s,%s,%s' % (Emin,dE, Emax)
     DgsReduction(
         SampleInputWorkspace = workspace,
-        IncidentEnergyGuess=eiguess,
-        UseIncidentEnergyGuess=False,
+        IncidentEnergyGuess = Ei,
+        TimeZeroGuess = T0,
+        UseIncidentEnergyGuess=UseIncidentEnergyGuess,
         OutputWorkspace=wsname,
         SofPhiEIsDistribution='0',
         EnergyTransferRange = eaxis,

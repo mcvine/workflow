@@ -44,7 +44,7 @@ def reduce():
 @reduce.command(help="Reduce event nxs by converting TOF to E")
 @click.option("--instrument-type", default='DGS', type=click.Choice(['DGS']))
 @click.option("--type", default="batch", type=click.Choice(['batch', 'single']))
-@click.option("--eiguess", default=100.)
+@click.option("--eiguess", default=0.)
 @click.option("--eaxis", default=(0.,100.,1.), nargs=3, type=float)
 @click.option("--psi-axis", default=(-10., 120., 1.), nargs=3, type=float)
 @click.option("--psi", default=0.)
