@@ -176,12 +176,12 @@ def reduceOneKeepingEvents(nxsfile, angle, eiguess, eaxis, outfile, t0guess=0.):
         run = workspace.getRun()
         UseIncidentEnergyGuess = False
         try:
-            Ei = run.getLogData('Ei').value
+            Ei = run.getLogData('mcvine-Ei').value
             UseIncidentEnergyGuess = True
         except:
             Ei = None
         try:
-            T0 = run.getLogData('t0').value
+            T0 = run.getLogData('mcvine-t0').value
         except:
             T0 = None
     else:
