@@ -15,6 +15,7 @@ before_install:
   - chmod +x miniconda.sh
   - ./miniconda.sh -b -p /home/travis/mc
   - export PATH=/home/travis/mc/bin:$PATH
+  - git clone https://github.com/yxqd/dotmantid ~/.mantid
 
 install:
   - export GIT_FULL_HASH=`git rev-parse HEAD`
