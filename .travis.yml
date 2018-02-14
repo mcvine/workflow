@@ -25,6 +25,7 @@ install:
   - conda update conda
   - conda config --add channels conda-forge
   - conda config --add channels mcvine
+  - conda config --add channels mantid
   - conda install -n root conda-build
   - conda create -n testenv python=$TRAVIS_PYTHON_VERSION
   - conda install -n testenv anaconda-client
