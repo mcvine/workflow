@@ -53,14 +53,8 @@ def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis,
     _fix_using_template(os.path.join(workdir, 'sss.pml'), d)
     return
 
-beam2sample_dict = dict(
-    arcs = '0.15',
-    sequoia = '0.15',
-    cncs = '0.15',
-    hyspec = '0.15',
-    )
 
-
+from . import beam2sample_dict
 sample_examples = '"V", "V/300K", or "V/300K/plate"'
 
 
