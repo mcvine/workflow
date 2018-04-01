@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE scatterer>
+
+<!-- weights: absorption, scattering, transmission -->
+<homogeneous_scatterer 
+  mcweights="0, 1, 0.1"
+  max_multiplescattering_loops="3"
+  >
+  
+  <KernelContainer average="yes">
+
+
+    <!-- a simple kernel for elastic scattering. more realistic kernel exists. -->
+    <E_Q_Kernel 
+	E_Q="1" 
+	S_Q="1"
+	Qmin="0./angstrom"
+	Qmax="16./angstrom"
+	/>
+
+
+    <Phonon_CoherentInelastic_SingleXtal_Kernel
+      weight="1."
+      orientation="0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0"
+      >
+      <LinearlyInterpolatedDispersion idf-data-path="/path/to/phonon-idf-dir"/>
+    </Phonon_CoherentInelastic_SingleXtal_Kernel>
+
+    <!-- multiphonon kernel. uncomment and customize to enable -->
+    <!--
+    <MultiPhonon_Kernel
+      Qmax="14/angstrom"
+      dQ="0.05/angstrom"
+      Emax="80*meV"
+      weight="1."
+      >
+      <LinearlyInterpolatedDOS idf-path="/path/to/phonon-idf-dir/DOS"/>
+    </MultiPhonon_Kernel>
+    -->
+
+    
+  </KernelContainer>
+  
+</homogeneous_scatterer>

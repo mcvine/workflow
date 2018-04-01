@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE scatterer>
+
+<!-- weights: absorption, scattering, transmission -->
+<homogeneous_scatterer 
+  mcweights="0, 1, 0.1"
+  max_multiplescattering_loops="3"
+  >
+  
+  <KernelContainer average="yes">
+
+
+    <!-- delta function kernel for resolution calculation
+      Q: Q vector
+      E: energy transfer (unit: meV)
+      dE: allowed deviation of energy transfer (unit: meV)
+      orientation: flattened rotation matrix M. M dot Q_crystal = Q_instrument
+     -->
+    <ConstantvQEKernel
+        momentum-transfer="0.0,6.28318530718,0.0"
+        energy-transfer="30*meV"
+        dE="0.05*meV"
+        orientation="0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0"
+        />
+
+    
+  </KernelContainer>
+  
+</homogeneous_scatterer>

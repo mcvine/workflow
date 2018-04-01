@@ -5,7 +5,9 @@
 import mcvine.cli
 from mcvine.workflow.singlextal.scaffolding import sample
 
-import numpy as np
+import numpy as np, os
+here = os.path.dirname(__file__)
+
 
 def test_dgsresolution():
     class dgsresolution:
@@ -22,6 +24,8 @@ def test_dgsresolution():
         excitations = [dgsresolution],
         add_elastic_line = False,
     )
+    o = os.system('diff -r _tmp.dgsresolution ' + os.path.join(here, 'expected-scatterer-DGSResolution_kernel'))
+    assert not o
     return
 
 

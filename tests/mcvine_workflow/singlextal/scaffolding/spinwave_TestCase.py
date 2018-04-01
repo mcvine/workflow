@@ -6,7 +6,8 @@ import mcvine.cli
 from mcvine.workflow.singlextal.XtalOrientation import XtalOrientation
 from mcvine.workflow.singlextal.scaffolding import sample
 
-import numpy as np
+import numpy as np, os
+here = os.path.dirname(__file__)
 
 def test_spinwave():
     class spinwave:
@@ -21,6 +22,8 @@ def test_spinwave():
         chemical_formula="K2V3O8",
         excitations = [spinwave],
     )
+    o = os.system('diff -r _tmp.spinwave ' + os.path.join(here, 'expected-scatterer-spinwave_kernel'))
+    assert not o
     return
 
 
