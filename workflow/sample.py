@@ -13,10 +13,13 @@ def loadSampleYml(path):
         pbv = None
     sample.lattice.basis_vectors = bv
     sample.lattice.primitive_basis_vectors = pbv
-    # - orientation
+    # - orientation (only for single crystal)
+    if not hasattr(sample, 'orientation'):
+        sample.orientation = None
     so = sample.orientation
-    so.u, so.v = map(eval, (so.u, so.v))
-    # - excitations
+    if so:
+        so.u, so.v = map(eval, (so.u, so.v))
+    # - excitations. normalize to a list, which could be empty
     excitations = getattr(sample, 'excitations', [])
     excitation = getattr(sample, 'excitation', None)
     if excitation is not None:
