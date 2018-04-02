@@ -4,7 +4,7 @@
 
 import mcvine.cli
 from mcvine.workflow.sample import loadSampleYml
-from mcvine.workflow.singlextal.scaffolding import createSampleAssembly
+from mcvine.workflow.sampleassembly.scaffolding import createSampleAssembly
 
 import numpy as np, os
 here = os.path.dirname(__file__)
