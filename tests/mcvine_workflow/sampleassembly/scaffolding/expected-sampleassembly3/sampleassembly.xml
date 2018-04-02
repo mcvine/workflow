@@ -22,9 +22,25 @@
   </PowderSample>
 
 
+  <PowderSample name="Al-can" type="sample">
+    <Shape>
+    <difference>
+        <cylinder height="0.1*m" radius="0.1*m"/>
+        <cylinder height="0.11*m" radius="0.099*m"/>
+    </difference>
+    </Shape>
+    <Phase type="crystal">
+      <ChemicalFormula>Al4</ChemicalFormula>
+      <xyzfile>Al-can.xyz</xyzfile>
+    </Phase>
+  </PowderSample>
+
+
   <LocalGeometer registry-coordinate-system="InstrumentScientist">
 
     <Register name="KVO" position="(0,0,0)" orientation="(0, 0, 0)"/>
+
+    <Register name="Al-can" position="(0,0,0)" orientation="(0, 0, 0)"/>
 
   </LocalGeometer>
 

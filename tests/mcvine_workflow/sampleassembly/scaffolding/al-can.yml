@@ -1,0 +1,22 @@
+name: Al-can
+chemical_formula: Al4
+lattice: 
+ constants: 4.046, 4.046, 4.046, 90, 90, 90
+ basis_vectors:
+  - 4.046, 0, 0
+  - 0, 4.046, 0
+  - 0, 0, 4.046
+excitation:
+ type: powderSQE
+ SQEhist: Al-iqe.h5
+ Qrange: 0./angstrom, 10./angstrom
+ Erange: -45*meV, 45.*meV
+shape:
+  difference:
+    - cylinder:
+        radius: 10.*cm
+        height: 10*cm
+    - cylinder:
+        radius: 9.9*cm
+        height: 11*cm
+temperature: 300*K
