@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE SampleAssembly>
+
+<SampleAssembly name="X"
+   max_multiplescattering_loops_among_scatterers="1"
+   max_multiplescattering_loops_interactM_path1="4"
+   min_neutron_probability=".1"
+ >
+
+
+  <PowderSample name="KVO" type="sample">
+    <Shape>
+      <rotation angles="90.*deg,0*deg,0*deg">
+        <block width="4.6*cm" height="4.6*cm" thickness="2.3/4*cm"/>
+      </rotation>
+    </Shape>
+    <Phase type="crystal">
+      <ChemicalFormula>K2V3O8</ChemicalFormula>
+      <xyzfile>KVO.xyz</xyzfile>
+    </Phase>
+  </PowderSample>
+
+
+  <PowderSample name="Al-can" type="sample">
+    <Shape>
+      <cylinder radius="10.*cm" height="10*cm" />
+    </Shape>
+    <Phase type="crystal">
+      <ChemicalFormula>Al4</ChemicalFormula>
+      <xyzfile>Al-can.xyz</xyzfile>
+    </Phase>
+  </PowderSample>
+
+
+  <LocalGeometer registry-coordinate-system="InstrumentScientist">
+
+    <Register name="KVO" position="(0,0,0)" orientation="(0, 0, 0)"/>
+
+    <Register name="Al-can" position="(0,0,0)" orientation="(0, 0, 0)"/>
+
+  </LocalGeometer>
+
+
+  <Environment temperature="300*K"/>
+
+
+</SampleAssembly>

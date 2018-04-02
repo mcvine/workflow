@@ -26,9 +26,19 @@ def test2():
     return
 
 
+def test3():
+    sample = loadSampleYml(os.path.join(here, 'KVO-rotated.yml'))
+    al_can = loadSampleYml(os.path.join(here, 'al-can.yml'))
+    createSampleAssembly("_tmp.sampleassembly3", sample, al_can)
+    o = os.system('diff -r _tmp.sampleassembly3 ' + os.path.join(here, 'expected-sampleassembly3'))
+    assert not o
+    return
+
+
 def main():
     test()
     test2()
+    test3()
     return
 
 
