@@ -24,7 +24,10 @@
 
   <PowderSample name="Al-can" type="sample">
     <Shape>
-      <cylinder radius="10.*cm" height="10*cm" />
+    <difference>
+        <cylinder height="0.1*m" radius="0.1*m"/>
+        <cylinder height="0.11*m" radius="0.099*m"/>
+    </difference>
     </Shape>
     <Phase type="crystal">
       <ChemicalFormula>Al4</ChemicalFormula>
