@@ -22,10 +22,26 @@ def create(scatterers):
     text.append(templates.geometer % dict(registrations=''.join(geometer_registrations)))
     text.append(templates.environment % dict(temperature=T))
     text.append(templates.footer)
-    return '\n'.join(text)
+    text = '\n'.join(text)
+    return text
 
 
 def _format_shape(shape):
+    if isinstance(shape, basestring):
+        return _format_shape_from_shapexml(shape)
+    # shape is a dict
+    from instrument.geometry.yaml.parser import Parser
+    parser = Parser()
+    shape = parser.parse(shape.orig_dict)
+    from instrument.geometry.pml import render
+    text = render(shape, print_docs=False)
+    text = '\n'.join(text)
+    lines = text.splitlines()
+    # ignore header and footer
+    lines = lines[15:-9]
+    return '\n'.join(lines)
+
+def _format_shape_from_shapexml(shape):
     indent = 6 * ' '
     # shape is an xml string
     if shape.startswith('<'):
