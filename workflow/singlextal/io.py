@@ -4,6 +4,8 @@
 #
 
 import numpy as np
+from ..sampleassembly.scaffolding.utils import reciprocal_basis
+
 
 def loadXtalOriConfig(path):
     import warnings
@@ -15,7 +17,6 @@ def loadXtalOriConfig(path):
         key = 'a%d' %i
         setattr(l, key, eval(getattr(l, key)))
         continue
-    from .scaffolding.utils import reciprocal_basis
     b1,b2,b3 = reciprocal_basis([l.a1, l.a2, l.a3])
     #
     xo = xtalori.orientation
@@ -29,7 +30,6 @@ def loadXtalOriFromSampleYml(path):
     from mcvine.cli import config
     sample = config.loadYmlConfig(path)
     bv = map(eval, sample.lattice.basis_vectors)
-    from .scaffolding.utils import reciprocal_basis
     b1,b2,b3 = reciprocal_basis(bv)
     #
     xo = sample.orientation

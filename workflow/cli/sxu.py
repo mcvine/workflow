@@ -44,7 +44,7 @@ orientation:
     bv = map(eval, sample.lattice.basis_vectors)
     so=sample.orientation
     uv = map(eval, (so.u, so.v))
-    from ..singlextal.scaffolding import utils
+    from ..sampleassembly.scaffolding import utils
     print utils.computeOrientationStr(lattice_basis=bv, uv=uv)
     return
 

@@ -34,7 +34,7 @@ def iterPointsInSlice(
     # random
     # xaxis = XMIN + np.random.random(200)*(XMAX-XMIN)
     lattice_basis = sample.lattice.basis_vectors
-    from .scaffolding.utils import reciprocal_basis
+    from ..sampleassembly.scaffolding.utils import reciprocal_basis
     b1,b2,b3 = reci_basis = reciprocal_basis(lattice_basis)
     so = sample.orientation
     u,v = so.u, so.v

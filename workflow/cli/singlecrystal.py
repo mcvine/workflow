@@ -66,7 +66,7 @@ def singlecrystal(outdir, type, instrument, sample, beam2sample, ncount, buffer_
         from ..sample import loadSampleYml
         sample = loadSampleYml(sample)
         # create sample assembly using scaffolding
-        from ..singlextal.scaffolding import createSampleAssembly
+        from ..sampleassembly.scaffolding import createSampleAssembly
         createSampleAssembly(os.path.join(outdir, 'sampleassembly'), sample)
     else:
         if os.path.isabs(sample) and os.path.isdir(sample):
