@@ -7,7 +7,8 @@
    max_multiplescattering_loops_interactM_path1="4"
    min_neutron_probability=".1"
  >
-  
+
+
   <PowderSample name="KVO" type="sample">
     <Shape>
       <block width="4.6*cm" height="4.6*cm" thickness="2.3/4*cm" />
@@ -17,11 +18,16 @@
       <xyzfile>KVO.xyz</xyzfile>
     </Phase>
   </PowderSample>
-  
+
+
   <LocalGeometer registry-coordinate-system="InstrumentScientist">
+
     <Register name="KVO" position="(0,0,0)" orientation="(0, 0, 0)"/>
+
   </LocalGeometer>
 
+
   <Environment temperature="300*K"/>
+
 
 </SampleAssembly>
