@@ -26,8 +26,11 @@ def createSampleAssembly(outdir, sample, **kwds):
     content = sampleassembly_template % sample_dict
     open(os.path.join(outdir, 'sampleassembly.xml'), 'wt').write(content)
     # sample
-    so = sample.orientation
-    uv = so.u, so.v
+    if sample.orientation:
+        so = sample.orientation
+        uv = so.u, so.v
+    else:
+        uv = None
     from .sample import createSample
     createSample(
         outdir, name=sample.name, 

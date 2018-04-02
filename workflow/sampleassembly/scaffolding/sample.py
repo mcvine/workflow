@@ -44,9 +44,12 @@ def createSample(
     #  Q = [b1 b2 b3]/ROW dot [h k l]/COL = h2Q dot [h k l]/COL
     #  so h2Q = [b1 b2 b3]/ROW
     h2Q = reci_basis.T
-    # orientation matrix that connects the instrument coordinate system
-    # to the cartesian coordinate system fixed in the crystal
-    orientation=computeOrientationStr(uv=uv, h2Q=h2Q)
+    if uv is not None:
+        # orientation matrix that connects the instrument coordinate system
+        # to the cartesian coordinate system fixed in the crystal
+        orientation=computeOrientationStr(uv=uv, h2Q=h2Q)
+    else:
+        orientation = None
     # prepare kernels
     kernels = makeKernels(excitations, h2Q, orientation, add_elastic_line=add_elastic_line)
     #  write
@@ -55,7 +58,7 @@ def createSample(
     return
 
 
-def makeKernels(excitations, hkl, orientation, add_elastic_line=True):
+def makeKernels(excitations, h2Q, orientation, add_elastic_line=True):
     ks = []
     types = [e.type for e in excitations]
     # if 'phonon' not in types:
@@ -63,17 +66,19 @@ def makeKernels(excitations, hkl, orientation, add_elastic_line=True):
     if add_elastic_line:
         ks.append(simple_elastic_kernel)
     for excitation in excitations:
-        ks.append(makeKernel(excitation, hkl, orientation))
+        ks.append(makeKernel(excitation, h2Q, orientation))
         continue
     return '\n'.join(ks)
 
 
-from . import spinwave, phonon, deltafunction, DGSresolution
-def makeKernel(excitation, hkl, orientation):
+from . import spinwave, phonon, deltafunction, DGSresolution, powderSQE
+def makeKernel(excitation, h2Q, orientation):
     type = excitation.type
     mod = globals()[type]
-    return mod.createKernel(excitation, hkl, orientation)
-
+    if orientation is not None:
+        return mod.createKernel(excitation, h2Q, orientation)
+    else:
+        return mod.createKernel(excitation)
 
 scatterer_template = """<?xml version="1.0"?>
 

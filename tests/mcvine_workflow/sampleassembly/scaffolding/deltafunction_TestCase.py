@@ -3,7 +3,7 @@
 # Jiao Lin <jiao.lin@gmail.com>
 
 import mcvine.cli
-from mcvine.workflow.singlextal.scaffolding import sample
+from mcvine.workflow.sampleassembly.scaffolding import sample
 
 import numpy as np, os
 here = os.path.dirname(__file__)
