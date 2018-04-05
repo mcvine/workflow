@@ -21,7 +21,7 @@
 
 
     <SQEkernel Q-range='0./angstrom, 10./angstrom' energy-range='-45*meV, 45.*meV'>
-      <GridSQE histogram-hdf-path="Al-iqe.h5/S(Q,E)" auto-normalization="0" />
+      <GridSQE histogram-hdf-path="Al-iqe.h5" auto-normalization="0" />
     </SQEkernel>
 
     
