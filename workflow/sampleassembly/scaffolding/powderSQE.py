@@ -35,7 +35,7 @@ def createKernel(excitation):
 
 kernel_template = """
     <SQEkernel Q-range='%(Qrange)s' energy-range='%(Erange)s'>
-      <GridSQE histogram-hdf-path="%(SQEhist)s/S(Q,E)" auto-normalization="0" />
+      <GridSQE histogram-hdf-path="%(SQEhist)s" auto-normalization="0" />
     </SQEkernel>
 """
 
