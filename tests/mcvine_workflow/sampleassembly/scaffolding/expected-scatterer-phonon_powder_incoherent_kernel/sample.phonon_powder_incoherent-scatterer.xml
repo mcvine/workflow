@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE scatterer>
+
+<!-- weights: absorption, scattering, transmission -->
+<homogeneous_scatterer 
+  mcweights="0, 1, 0.1"
+  max_multiplescattering_loops="3"
+  >
+  
+  <KernelContainer average="yes">
+
+
+    <Phonon_IncoherentInelastic_Kernel>
+      <LinearlyInterpolatedDOS idf-data-path="V-dos.idf" /> 
+    </Phonon_IncoherentInelastic_Kernel>
+
+    
+  </KernelContainer>
+  
+</homogeneous_scatterer>
