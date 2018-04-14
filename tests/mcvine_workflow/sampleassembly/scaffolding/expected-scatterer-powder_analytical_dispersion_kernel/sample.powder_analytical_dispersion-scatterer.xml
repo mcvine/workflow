@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE scatterer>
+
+<!-- weights: absorption, scattering, transmission -->
+<homogeneous_scatterer 
+  mcweights="0, 1, 0.1"
+  max_multiplescattering_loops="3"
+  >
+  
+  <KernelContainer average="yes">
+
+
+    <E_Q_Kernel 
+       E_Q="sin(Q)" 
+       S_Q="1." 
+       Qmin="0*m**-1"
+       Qmax="1e+11*m**-1"
+       />
+
+    
+  </KernelContainer>
+  
+</homogeneous_scatterer>
