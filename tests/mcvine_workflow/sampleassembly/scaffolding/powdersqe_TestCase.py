@@ -23,8 +23,8 @@ def test_powdersqe():
         excitations = [powdersqe],
         add_elastic_line = False,
     )
-    # o = os.system('diff -r _tmp.powdersqe ' + os.path.join(here, 'expected-scatterer-powdersqe_kernel'))
-    # assert not o
+    o = os.system('diff -r _tmp.powdersqe ' + os.path.join(here, 'expected-scatterer-powdersqe_kernel'))
+    assert not o
     return
 
 

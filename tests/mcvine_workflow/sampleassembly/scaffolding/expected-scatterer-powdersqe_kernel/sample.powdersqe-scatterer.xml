@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE scatterer>
+
+<!-- weights: absorption, scattering, transmission -->
+<homogeneous_scatterer 
+  mcweights="0, 1, 0.1"
+  max_multiplescattering_loops="3"
+  >
+  
+  <KernelContainer average="yes">
+
+
+    <SQEkernel Q-range='0/angstrom, 10/angstrom' energy-range='-50*meV,50*meV'>
+      <GridSQE histogram-hdf-path="Al-iqe.h5" auto-normalization="0" />
+    </SQEkernel>
+
+    
+  </KernelContainer>
+  
+</homogeneous_scatterer>
