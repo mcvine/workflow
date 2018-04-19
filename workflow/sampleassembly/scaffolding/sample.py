@@ -17,6 +17,7 @@ def createSample(
         excitations = None,
         lattice_primitive_basis=None,
         add_elastic_line = True,
+        packing_factor = 1.,
         ):
     """
     Inputs
@@ -89,6 +90,7 @@ scatterer_template = """<?xml version="1.0"?>
 <homogeneous_scatterer 
   mcweights="0, 1, 0.1"
   max_multiplescattering_loops="3"
+  packing_factor="%(packing_factor)s"
   >
   
   <KernelContainer average="yes">

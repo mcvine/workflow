@@ -6,6 +6,7 @@
 <homogeneous_scatterer 
   mcweights="0, 1, 0.1"
   max_multiplescattering_loops="3"
+  packing_factor="1.0"
   >
   
   <KernelContainer average="yes">
