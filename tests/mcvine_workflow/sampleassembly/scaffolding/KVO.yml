@@ -15,4 +15,5 @@ orientation:
  u: 1, 0, 0
  v: 0, 1, 0
 shape: block width="4.6*cm" height="4.6*cm" thickness="2.3/4*cm"
+packing_factor: 0.5
 temperature: 300*K

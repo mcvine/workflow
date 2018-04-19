@@ -26,11 +26,14 @@ def createSampleAssembly(outdir, sample, *scatterers, **kwds):
     open(os.path.join(outdir, 'sampleassembly.xml'), 'wt').write(content)
     for scatterer in scatterers:
         # scatterer
+        # single crystal or powder
         if scatterer.orientation:
             so = scatterer.orientation
             uv = so.u, so.v
         else:
             uv = None
+        # packing factor
+        packing_factor = getattr(scatterer, 'packing_factor', 1.0)
         from .sample import createSample
         createSample(
             outdir, name=scatterer.name, 
@@ -38,6 +41,7 @@ def createSampleAssembly(outdir, sample, *scatterers, **kwds):
             chemical_formula=scatterer.chemical_formula,
             excitations = scatterer.excitations,
             lattice_primitive_basis=scatterer.lattice.primitive_basis_vectors,
+            packing_factor = packing_factor,
             **kwds
             )
     return
