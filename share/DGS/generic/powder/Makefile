@@ -7,7 +7,7 @@ NCOUNT=%(ncount)s
 BUFFER_SIZE=%(buffer_size)s
 NODES=%(nodes)s
 QAXIS=%(qaxis)s
-
+MULSCATT=%(multiple_scattering)s
 
 # default rule: we want I(Q,E)
 all: IQE
@@ -40,7 +40,7 @@ sim.nxs: out/scattered-neutrons
 
 # scattered neutrons comes from simulation of scattering of incident beam by sample assembly
 out/scattered-neutrons: beam sampleassembly sampleassembly/*
-	NCOUNT=$(NCOUNT) BUFFER_SIZE=$(BUFFER_SIZE) NODES=$(NODES) ./scatter </dev/null >log.scatter 2>&1
+	NCOUNT=$(NCOUNT) BUFFER_SIZE=$(BUFFER_SIZE) NODES=$(NODES) MULSCATT=$(MULSCATT) ./scatter </dev/null >log.scatter 2>&1
 
 # Required inputs
 beam:

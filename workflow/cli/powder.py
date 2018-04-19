@@ -18,7 +18,8 @@ from . import workflow
 @click.option("--nodes", default=10)
 @click.option("--qaxis", default="0 15 0.1")
 @click.option('--beam2sample', default=None)
-def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis, beam2sample):
+@click.option('--multiple_scattering', default='off')
+def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis, beam2sample, multiple_scattering):
     workdir = workdir or "mcvine-workflow-powder-%s-%s" % (instrument, sample)
     if beam2sample is None:
         beam2sample = beam2sample_dict.get(instrument.lower())

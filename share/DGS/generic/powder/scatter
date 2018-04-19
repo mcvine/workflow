@@ -2,6 +2,6 @@
 
 LAUNCHER=`python -c "from mcni.pyre_support.MpiApplication import mpi_launcher_choice as l; print l"`
 rm -rf out && ./sss --ncount=${NCOUNT} --$LAUNCHER.nodes=${NODES} --buffer_size=${BUFFER_SIZE} \
-		    --multiple-scattering=off
+		    --multiple-scattering=${MULSCATT}
 
 #--journal.debug.phonon_incoherent_inelastic_kernel
