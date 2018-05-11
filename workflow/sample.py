@@ -1,18 +1,29 @@
+import os
+
 
 def loadSampleYml(path):
     """load sample object from a yaml file
     """
     from mcvine.cli.config import loadYmlConfig
     sample = loadYmlConfig(path)
-    # convert input data types
-    #  - lattice
-    bv = map(eval, sample.lattice.basis_vectors)
-    if hasattr(sample.lattice, "primitive_basis_vectors"):
-        pbv = map(eval, sample.lattice.primitive_basis_vectors)
+    # - crystal structure
+    # if the filepath for the atomic structure is given, we should use it
+    # to compute everything we can
+    if hasattr(sample, 'structure_file'):
+        if not os.path.isabs(sample.structure_file):
+            parent = os.path.dirname(path)
+            sample.structure_file = os.path.join(parent, sample.structure_file)
+        _loadStructure(sample.structure_file, sample)
     else:
-        pbv = None
-    sample.lattice.basis_vectors = bv
-    sample.lattice.primitive_basis_vectors = pbv
+        # convert input data types
+        #  - lattice
+        bv = map(eval, sample.lattice.basis_vectors)
+        if hasattr(sample.lattice, "primitive_basis_vectors"):
+            pbv = map(eval, sample.lattice.primitive_basis_vectors)
+        else:
+            pbv = None
+        sample.lattice.basis_vectors = bv
+        sample.lattice.primitive_basis_vectors = pbv
     # - orientation (only for single crystal)
     if not hasattr(sample, 'orientation'):
         sample.orientation = None
@@ -30,6 +41,26 @@ def loadSampleYml(path):
     return sample
 
 
+def _loadStructure(path, sample):
+    "load crystal structure from path and save info in `sample`"
+    ext = os.path.splitext(path)[-1][1:]
+    from diffpy.Structure.Parsers import getParser
+    p = getParser(ext)
+    sample.atomic_structure = structure = p.parseFile(path)
+    assert not hasattr(sample, 'chemical_formula')
+    assert not hasattr(sample, 'lattice')
+    atoms = [atom.element for atom in structure]
+    from collections import Counter
+    atoms_counter = Counter(atoms)
+    sample.chemical_formula = ''.join('%s%s' % (a, n) for a,n in atoms_counter.items())
+    class Lattice: pass
+    lattice = sample.lattice = Lattice()
+    sl = structure.lattice
+    lattice.constants = sl.a, sl.b, sl.c, sl.alpha, sl.beta, sl.gamma
+    lattice.basis_vectors = sl.base
+    return sample
+
+    
 def dgs_setEi(sample, Ei):
     """set incident energy for DGS experiment
     
