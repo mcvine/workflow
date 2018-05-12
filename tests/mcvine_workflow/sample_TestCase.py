@@ -37,12 +37,12 @@ def test():
     return
 
 def test2():
-    sample.loadSampleYml(os.path.join(here, 'data', 'KVO.yml'))
+    sample.loadSampleYml(os.path.join(here, '..', 'data', 'KVO.yml'))
     return
 
 
 def test3():
-    V_plate = sample.loadSampleYml(os.path.join(here, 'data', 'V-plate.yml'))
+    V_plate = sample.loadSampleYml(os.path.join(here, '..', 'data', 'V-plate.yml'))
     assert V_plate.chemical_formula == 'V2'
     assert np.allclose(V_plate.lattice.basis_vectors, np.eye(3)*3.024)
     for atom in V_plate.atomic_structure:
