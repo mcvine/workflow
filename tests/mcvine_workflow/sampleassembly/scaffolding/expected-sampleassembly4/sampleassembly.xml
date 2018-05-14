@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE SampleAssembly>
+
+<SampleAssembly name="X"
+   max_multiplescattering_loops_among_scatterers="1"
+   max_multiplescattering_loops_interactM_path1="4"
+   min_neutron_probability=".1"
+ >
+
+
+  <PowderSample name="Al-can" type="sample">
+    <Shape>
+    <difference>
+        <cylinder height="0.1*m" radius="0.1*m"/>
+        <cylinder height="0.11*m" radius="0.099*m"/>
+    </difference>
+    </Shape>
+    <Phase type="crystal">
+      <ChemicalFormula>V2</ChemicalFormula>
+      <ciffile>V.cif</ciffile>
+    </Phase>
+  </PowderSample>
+
+
+  <LocalGeometer registry-coordinate-system="InstrumentScientist">
+
+    <Register name="Al-can" position="(0,0,0)" orientation="(0, 0, 0)"/>
+
+  </LocalGeometer>
+
+
+  <Environment temperature="300*K"/>
+
+
+</SampleAssembly>

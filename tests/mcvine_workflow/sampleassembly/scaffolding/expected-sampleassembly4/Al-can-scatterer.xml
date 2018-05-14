@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+
+<!DOCTYPE scatterer>
+
+<!-- weights: absorption, scattering, transmission -->
+<homogeneous_scatterer 
+  mcweights="0, 1, 0.1"
+  max_multiplescattering_loops="3"
+  packing_factor="1.0"
+  >
+  
+  <KernelContainer average="yes">
+
+
+    <!-- a simple kernel for elastic scattering. more realistic kernel exists. -->
+    <E_Q_Kernel 
+	E_Q="1" 
+	S_Q="1"
+	Qmin="0./angstrom"
+	Qmax="16./angstrom"
+	/>
+
+
+    <SQEkernel Q-range='0./angstrom, 10./angstrom' energy-range='-45*meV, 45.*meV'>
+      <GridSQE histogram-hdf-path="Al-iqe.h5" auto-normalization="0" />
+    </SQEkernel>
+
+    
+  </KernelContainer>
+  
+</homogeneous_scatterer>

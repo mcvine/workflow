@@ -34,14 +34,18 @@ def createSampleAssembly(outdir, sample, *scatterers, **kwds):
             uv = None
         # packing factor
         packing_factor = getattr(scatterer, 'packing_factor', 1.0)
+        structure_file = getattr(scatterer, 'structure_file', None)
         from .sample import createSample
         createSample(
             outdir, name=scatterer.name, 
             lattice_basis=scatterer.lattice.basis_vectors, uv=uv,
             chemical_formula=scatterer.chemical_formula,
             excitations = scatterer.excitations,
-            lattice_primitive_basis=scatterer.lattice.primitive_basis_vectors,
+            lattice_primitive_basis=getattr(
+                scatterer.lattice, 'primitive_basis_vectors',
+                None),
             packing_factor = packing_factor,
+            structure_file = structure_file,
             **kwds
             )
     return
