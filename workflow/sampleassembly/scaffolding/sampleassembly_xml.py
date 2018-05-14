@@ -11,6 +11,8 @@ def create(scatterers):
         scatterer_dict = scatterer.__dict__.copy()
         # format shape
         scatterer_dict['shape'] = _format_shape(scatterer_dict['shape'])
+        # structure file
+        scatterer_dict['structure'] = _format_structure(scatterer)
         #
         text.append( templates.scatterer % scatterer_dict )
         geometer_registrations.append( templates.geometer_register % scatterer_dict )
@@ -24,6 +26,19 @@ def create(scatterers):
     text.append(templates.footer)
     text = '\n'.join(text)
     return text
+
+
+def _format_structure(scatterer):
+    if getattr(scatterer, 'structure_file', None):
+        # if structure_file is already specified,
+        # create the tag using the filename
+        # the file will be copied by code in ./sample.py
+        fn = os.path.basename(scatterer.structure_file)
+        _, ext = os.path.splitext(fn)
+        tag = '%sfile' % ext[1:]
+        return "<%s>%s</%s>" % (tag, fn, tag)
+    # otherwise, use xyzfile
+    return templates.scatterer_structure_xyz % dict(name=scatterer.name)
 
 
 def _format_shape(shape):
@@ -72,11 +87,13 @@ class templates:
     </Shape>
     <Phase type="crystal">
       <ChemicalFormula>%(chemical_formula)s</ChemicalFormula>
-      <xyzfile>%(name)s.xyz</xyzfile>
+      %(structure)s
     </Phase>
   </PowderSample>
 """
 
+    scatterer_structure_xyz = "<xyzfile>%(name)s.xyz</xyzfile>"
+    
     geometer = """
   <LocalGeometer registry-coordinate-system="InstrumentScientist">
 %(registrations)s

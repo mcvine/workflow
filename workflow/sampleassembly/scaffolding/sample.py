@@ -18,6 +18,7 @@ def createSample(
         lattice_primitive_basis=None,
         add_elastic_line = True,
         packing_factor = 1.,
+        structure_file = None,
         ):
     """
     Inputs
@@ -33,13 +34,18 @@ def createSample(
         os.makedirs(outdir)
     if not name: 
         name = chemical_formula
-    # xyz
-    xyzpath = os.path.join(outdir, '%s.xyz' % name)
-    atoms = decode_chemicalformula(chemical_formula)
-    if lattice_primitive_basis:
-        writeXYZ(xyzpath, lattice_primitive_basis, atoms)
+    if structure_file:
+        # if structure_file exists, simply copy it over
+        import shutil
+        shutil.copy(structure_file, os.path.join(outdir, os.path.basename(structure_file)))
     else:
-        writeXYZ(xyzpath, lattice_basis, atoms)
+        # otherwise, create an xyz file
+        xyzpath = os.path.join(outdir, '%s.xyz' % name)
+        atoms = decode_chemicalformula(chemical_formula)
+        if lattice_primitive_basis:
+            writeXYZ(xyzpath, lattice_primitive_basis, atoms)
+        else:
+            writeXYZ(xyzpath, lattice_basis, atoms)
     # scatterer.xml
     reci_basis = reciprocal_basis(lattice_basis)
     #  Q = [b1 b2 b3]/ROW dot [h k l]/COL = h2Q dot [h k l]/COL

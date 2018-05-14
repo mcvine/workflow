@@ -35,10 +35,19 @@ def test3():
     return
 
 
+def test4():
+    sample = loadSampleYml(os.path.join(here, '..', '..', '..', 'data', 'V-plate.yml'))
+    createSampleAssembly("_tmp.sampleassembly4", sample)
+    o = os.system('diff -r _tmp.sampleassembly4 ' + os.path.join(here, 'expected-sampleassembly4'))
+    assert not o
+    return
+
+
 def main():
     test()
     test2()
     test3()
+    test4()
     return
 
 
