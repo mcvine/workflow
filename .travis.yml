@@ -43,7 +43,7 @@ install:
   - make install
 
 script:
-  - CTEST_OUTPUT_ON_FAILURE=1 make test
+  - CTEST_OUTPUT_ON_FAILURE=1 travis_wait 30 make test
 
 notifications:
   email:
