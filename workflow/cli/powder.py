@@ -32,7 +32,7 @@ def powder(type, instrument, sample, workdir, ncount, buffer_size, nodes, qaxis,
     shutil.copytree(template, workdir)
     # customize using instrument-specific files
     from .._shutil import rsync
-    template = os.path.join(dpinfo.mcvine_workflow, type, instrument, 'powder')
+    template = os.path.join(dpinfo.mcvine_workflow, type, instrument.lower(), 'powder')
     if os.path.exists(template):
         rsync(template, workdir)
     # create "beam" subdir

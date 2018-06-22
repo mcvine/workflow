@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+time mcvine instruments sequoia nxs reduce sim.nxs --qaxis=${QAXIS} --tof2E
