@@ -19,10 +19,16 @@ from . import workflow
 @click.option("--qaxis", default="0 15 0.1")
 @click.option('--beam2sample', default=None)
 @click.option('--multiple_scattering', default='off')
-@click.option('--detector-vessel-angle', default=0)
+@click.option('--detector-vessel-angle', default=0) # only used by HYSPEC
 def powder(
         type, instrument, sample, workdir, ncount, buffer_size, nodes,
         qaxis, beam2sample, multiple_scattering, detector_vessel_angle):
+    """create powder simulation workflow
+    """
+    # when parameters here is referenced in a template file using %({name})s
+    # it will be replaced by its value. See _fix_using_template
+    # different instrument can have different template.
+    # for example, only the HYSPEC Makefile template refers to detector_vessel_angle
     workdir = workdir or "mcvine-workflow-powder-%s-%s" % (instrument, sample)
     if beam2sample is None:
         beam2sample = beam2sample_dict.get(instrument.lower())
