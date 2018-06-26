@@ -2,13 +2,13 @@
 
 # *** modifye the following if running mannualy ***
 # *** or use command line to change them.       ***
-INSTRUMENT=%(instrument)s
-NCOUNT=%(ncount)s
-BUFFER_SIZE=%(buffer_size)s
-NODES=%(nodes)s
-QAXIS=%(qaxis)s
-MULSCATT=%(multiple_scattering)s
-DETECTOR_VESSEL_ANGLE=%(detector_vessel_angle)s
+INSTRUMENT=hyspec
+NCOUNT=10000000.0
+BUFFER_SIZE=100000
+NODES=10
+QAXIS=0 15 0.1
+MULSCATT=off
+DETECTOR_VESSEL_ANGLE=10
 
 # default rule: we want I(Q,E)
 all: IQE
