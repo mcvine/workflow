@@ -19,7 +19,7 @@ from . import workflow
 @click.option("--qaxis", default="0 15 0.1")
 @click.option('--beam2sample', default=None)
 @click.option('--multiple_scattering', default='off')
-@click.option('--detector-vessel-angle', default=0) # only used by HYSPEC
+@click.option('--detector-vessel-angle', default=0.) # only used by HYSPEC
 def powder(
         type, instrument, sample, workdir, ncount, buffer_size, nodes,
         qaxis, beam2sample, multiple_scattering, detector_vessel_angle):
