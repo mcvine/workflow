@@ -19,7 +19,7 @@
       orientation: flattened rotation matrix M. M dot Q_crystal = Q_instrument
      -->
     <ConstantvQEKernel
-        momentum-transfer="0.0,6.28318530718,0.0"
+        momentum-transfer="0.0,6.283185307179586,0.0"
         energy-transfer="30*meV"
         dE="0.05*meV"
         orientation="0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0"
