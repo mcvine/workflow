@@ -83,8 +83,7 @@ def compute_xE_curve(xaxis, hkl0, ex, mat, Ei):
     # theta is the angle in the scattering plane (x-y)
     theta = np.arctan2(kfv[:, 1], kfv[:, 0]) # N
     # phi is the angle off the scattering plane. sin(phi) = z/r
-    phi = np.arcsin(kfv[:, 2], kf)
-
+    phi = np.arcsin(kfv[:, 2] / kf)
     Ef = kf2 * (Conv.K2V**2 * Conv.VS2E)
     E = Ei - Ef
     return E, theta, phi
