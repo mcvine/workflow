@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/mcvine/workflow.svg?branch=master)](https://travis-ci.org/mcvine/workflow) 
+[![Build Status](https://travis-ci.com/mcvine/workflow.svg?branch=master)](https://travis-ci.com/mcvine/workflow) 
 
 # workflow
 Scripts and helper files for mcvine workflows
