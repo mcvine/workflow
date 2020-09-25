@@ -14,9 +14,9 @@ def run(sample):
   outfile = os.path.abspath(outfile)
   cmd = "mcvine-sns-reduce-by-mantid -nxs=%(infile)s --eaxis=-10,90,0.25 --psi=%(sample)s --powder=off --speout=%(outfile)s" % locals()
   # args = cmd.split()
-  print work, cmd
+  print(work, cmd)
   if os.system(cmd):
-      print "** %s failed" % cmd
+      print("** %s failed" % cmd)
   return
 
 

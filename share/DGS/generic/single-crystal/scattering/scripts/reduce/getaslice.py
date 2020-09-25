@@ -65,11 +65,11 @@ def run(angles, filenames, lattice_params, orientation, Eaxis, Qproj_axes, outpu
             AlignedDim2='[%s],%s,%s,%s' % (V.proj_name, V.min, V.max, V.N),
             AlignedDim3='[%s],%s,%s,%s' % (W.proj_name, W.min, W.max, W.N),
             )
-        print dims
+        print(dims)
         a2,b2=MDNormDirectSC('md_i_use', **dims)
 
         #
-        print 'rotation angle #%s: %s' % (i, angles[i])
+        print('rotation angle #%s: %s' % (i, angles[i]))
 
         # merge data
         if i==0:
@@ -99,7 +99,7 @@ def main():
     angles = np.arange(*eval(config.angles))
     filenames = [config.filename_pattern % dict(angle=angle)
                  for angle in angles]
-    print angles[0], filenames[0]
+    print(angles[0], filenames[0])
     lattice_params = eval(config.lattice)
     orientation = config.orientation
     Eaxis = config.Eaxis

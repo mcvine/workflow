@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-LAUNCHER=`python -c "from mcni.pyre_support.MpiApplication import mpi_launcher_choice as l; print l"`
+LAUNCHER=`mcvine mpi launcher`
 rm -rf out && ./sss --ncount=${NCOUNT} --$LAUNCHER.nodes=${NODES} --buffer_size=${BUFFER_SIZE} \
 		    --multiple-scattering=${MULSCATT}
 

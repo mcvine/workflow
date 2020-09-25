@@ -43,17 +43,17 @@ def run_oneangle(angle, config, envvars, target):
     if not os.path.exists(work) :
         cmd = 'cp -a %s %s' % (config.scatter.template, work)
         if os.system(cmd):
-            print "*** %s failed" % cmd
+            print("*** %s failed" % cmd)
             return
     # run
     cmd = ['make', target]
-    cmd += ['%s=%s' % (k,v) for k,v in envvars.iteritems()]
+    cmd += ['%s=%s' % (k,v) for k,v in envvars.items()]
     cmd.append('SAMPLE_ANGLE=%s' % angle)
     cmd = ' ' .join(cmd)
     save = os.path.abspath(os.curdir)
     os.chdir(work)
     if os.system(cmd):
-        print "*** %s failed" % cmd
+        print("*** %s failed" % cmd)
     os.chdir(save)
     return
 

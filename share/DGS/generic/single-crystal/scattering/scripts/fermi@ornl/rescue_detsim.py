@@ -16,7 +16,7 @@ import sys, os
 def run(workdir):
     res = os.path.join(workdir, 'arcs-sim-wEidata.nxs')
     if os.path.exists(res):
-        print "result %s already exists" % res
+        print("result %s already exists" % res)
         return
 
     # create events.dat
@@ -26,25 +26,25 @@ def run(workdir):
         workdir, 'work-arcs-neutrons2nxs', 'todetsys', 'out')
     fn = 'events.dat'
     events_path = os.path.join(events_outdir, fn)
-    print "* creating %s ..." % (events_path,)
+    print("* creating %s ..." % (events_path,))
     mn(outputdir=events_outdir, overwrite_datafiles = False)
 
     # convert events.dat to nexus file
     cmd = "mcvine instruments arcs events2nxs --tofbinsize 0.1 --type raw --Ei 100 %s %s" % (events_path, os.path.join(workdir, 'arcs-sim.nxs'))
-    print "* running %s ..." % cmd
+    print("* running %s ..." % cmd)
     if os.system(cmd):
         # raise RuntimeError("%s failed" % cmd)
-        print "%s failed" % cmd
+        print("%s failed" % cmd)
         return 1
 
     import subprocess as sp
     cmd = 'make arcs-sim-wEiData.nxs'
-    print "* running %s at %s ... " % (cmd, workdir)
+    print("* running %s at %s ... " % (cmd, workdir))
     args = cmd.split()
     p = sp.Popen(args, cwd=workdir)
     if p.wait():
         # raise RuntimeError("%s failed" % cmd)
-        print "%s failed" % cmd
+        print("%s failed" % cmd)
         return 1
     return
 

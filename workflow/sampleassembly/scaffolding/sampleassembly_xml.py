@@ -42,7 +42,8 @@ def _format_structure(scatterer):
 
 
 def _format_shape(shape):
-    if isinstance(shape, basestring):
+    from mcni._2to3 import isstr
+    if isstr(shape):
         return _format_shape_from_shapexml(shape)
     # shape is a dict
     from instrument.geometry.yaml.parser import Parser

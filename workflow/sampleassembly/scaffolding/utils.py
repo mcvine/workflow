@@ -3,6 +3,8 @@
 # Jiao Lin <jiao.lin@gmail.com>
 #
 
+from future.standard_library import install_aliases
+install_aliases()
 import os, numpy as np
 
 def computeOrientationStr(lattice_basis=np.eye(3), uv=([1,0,0], [0,1,0]), h2Q=None):
@@ -43,7 +45,7 @@ def writeXYZ(path, basis, atoms):
     stream = open(path, 'wt')
     stream.write('%s\n' % sum(atoms.values()))
     stream.write('\t'.join(['%s %s %s' % tuple(v) for v in basis]) + '\n')
-    for symbol, number in atoms.items():
+    for symbol, number in sorted(atoms.items()):
         for i in range(number):
             stream.write("%s\t0 0 0\n" % symbol)
             continue
@@ -62,20 +64,20 @@ def decode_chemicalformula(formula):
     return d
 
 def decode_chemicalformula_using_chemcalc_org(formula):
-    import urllib, urllib2
+    import urllib.request, urllib.parse, urllib.error, urllib.request, urllib.error, urllib.parse
     import json
     ccurl = 'http://www.chemcalc.org/chemcalc/mf'
     # Define a molecular formula string
     # Define the parameters and send them to Chemcalc
     params = {'mf': mf,'isotopomers':'jcamp,xy'}
-    response = urllib2.urlopen(ccurl, urllib.urlencode(params))
+    response = urllib.request.urlopen(ccurl, urllib.parse.urlencode(params))
     # Read the output and convert it from JSON into a Python dictionary
     jsondata = response.read()
     data = json.loads(jsondata)
     atoms = data['parts'][0]['ea']
     for atom in atoms:
-        print atom['element']
-        print atom['number']
+        print(atom['element'])
+        print(atom['number'])
         continue
     return
 

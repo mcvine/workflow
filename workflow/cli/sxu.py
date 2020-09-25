@@ -41,11 +41,11 @@ orientation:
     from mcvine.cli.config import loadYmlConfig
     sample = loadYmlConfig(sample)
     # parse inputs
-    bv = map(eval, sample.lattice.basis_vectors)
+    bv = list(map(eval, sample.lattice.basis_vectors))
     so=sample.orientation
-    uv = map(eval, (so.u, so.v))
+    uv = list(map(eval, (so.u, so.v)))
     from ..sampleassembly.scaffolding import utils
-    print utils.computeOrientationStr(lattice_basis=bv, uv=uv)
+    print(utils.computeOrientationStr(lattice_basis=bv, uv=uv))
     return
 
 
@@ -66,7 +66,7 @@ def solve_psi(sample, ei, hkl, e, psimin, psimax, number_segments):
         xtalori, ei, hkl, e, psimin, psimax,
         Nsegments = number_segments)
     for r in results:
-        print r
+        print(r)
     return
 
 

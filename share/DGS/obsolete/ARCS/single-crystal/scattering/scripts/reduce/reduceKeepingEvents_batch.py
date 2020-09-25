@@ -13,16 +13,16 @@ def run(sample, Eiguess, Eaxis):
   work = 'work_%s' % sample
   outname = "reduced_%s.nxs" % sample
   if os.path.exists(os.path.join(work, outname)):
-    print "skipping %s" % sample
+    print("skipping %s" % sample)
     return
   # cmd = ['python', '../../scripts/reduceKeepingEvents.py', "sequoia-sim.nxs", "100.3", "-10,80,0.25", outname]
   cmd = ['python', '../scripts/reduce/reduceKeepingEvents.py', "sim-%s.nxs"%sample, str(sample), Eiguess, Eaxis, outname]
-  print work, cmd
+  print(work, cmd)
   p = sp.Popen(cmd, stdout=sp.PIPE, cwd=work)
   out,err = p.communicate()
   if p.wait():
-    print out
-    print err
+    print(out)
+    print(err)
   return 
 
 

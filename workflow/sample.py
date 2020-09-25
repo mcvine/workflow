@@ -17,9 +17,9 @@ def loadSampleYml(path):
     else:
         # convert input data types
         #  - lattice
-        bv = map(eval, sample.lattice.basis_vectors)
+        bv = list(map(eval, sample.lattice.basis_vectors))
         if hasattr(sample.lattice, "primitive_basis_vectors"):
-            pbv = map(eval, sample.lattice.primitive_basis_vectors)
+            pbv = list(map(eval, sample.lattice.primitive_basis_vectors))
         else:
             pbv = None
         sample.lattice.basis_vectors = bv
@@ -29,7 +29,7 @@ def loadSampleYml(path):
         sample.orientation = None
     so = sample.orientation
     if so:
-        so.u, so.v = map(eval, (so.u, so.v))
+        so.u, so.v = list(map(eval, (so.u, so.v)))
     # - excitations. normalize to a list, which could be empty
     excitations = getattr(sample, 'excitations', [])
     excitation = getattr(sample, 'excitation', None)
@@ -101,7 +101,7 @@ def _combine_range(r1, r2):
 from mcni.units import parser
 parser = parser()
 def _to_float_tuple(s, unit):
-    values = map(parser.parse, s.split(','))
+    values = list(map(parser.parse, s.split(',')))
     u = parser.parse(unit)
     try:
         sum(values, u)

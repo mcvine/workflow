@@ -29,7 +29,7 @@ def loadXtalOriConfig(path):
 def loadXtalOriFromSampleYml(path):
     from mcvine.cli import config
     sample = config.loadYmlConfig(path)
-    bv = map(eval, sample.lattice.basis_vectors)
+    bv = list(map(eval, sample.lattice.basis_vectors))
     b1,b2,b3 = reciprocal_basis(bv)
     #
     xo = sample.orientation

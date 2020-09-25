@@ -7,8 +7,10 @@ class TestCase(unittest.TestCase):
     def test_kernelorientation(self):
         "mcvine workflow sxu kernelorientation"
         cmd = "mcvine workflow sxu kernelorientation KVO.yml"
-        o = sp.check_output(cmd.split())
-        self.assertEqual(o.strip(), "0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0")
+        o = sp.check_output(cmd.split()).strip()
+        if sys.version_info >= (3,0) and isinstance(o, bytes):
+            o = o.decode()
+        self.assertEqual(o, "0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0")
         return
 
     def test_solve_psi(self):
@@ -23,7 +25,7 @@ class TestCase(unittest.TestCase):
         out = "_tmp.slice100_from000.png"
         cmd = "mcvine workflow sxu dr_slice Si.yml --Ei=100 --psi-axis -5 90. 1. --hkl0 0 0 0 --hkl-dir 1 0 0 --x-axis -15 5 .1 --instrument ARCS --Erange -15 80 --out %s" % out
         o = sp.check_output(cmd.split())
-        self.assert_(os.path.exists(out))
+        self.assertTrue(os.path.exists(out))
         return
 
 

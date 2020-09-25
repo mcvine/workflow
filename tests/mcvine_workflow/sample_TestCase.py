@@ -46,7 +46,7 @@ def test3():
     assert V_plate.chemical_formula == 'V2'
     assert np.allclose(V_plate.lattice.basis_vectors, np.eye(3)*3.024)
     for atom in V_plate.atomic_structure:
-        print atom
+        print(atom)
     return
 
 

@@ -20,12 +20,12 @@ def createKernel(excitation):
     """
     d = dict(excitation.__dict__)
     assert os.path.exists(d['SQEhist'])
-    Qmin, Qmax = map(parser.parse, d['Qrange'].split(','))
+    Qmin, Qmax = list(map(parser.parse, d['Qrange'].split(',')))
     try:
         Qmin + Qmax + parser.parse('1./angstrom')
     except:
         raise ValueError("The units for Qrange values should be 1./angstrom. Got %s, %s" % (Qmin, Qmax))
-    Emin, Emax = map(parser.parse, d['Erange'].split(','))
+    Emin, Emax = list(map(parser.parse, d['Erange'].split(',')))
     try:
         Emin + Emax + parser.parse('meV')
     except:
