@@ -19,7 +19,7 @@ def createKernel(excitation):
     - Qrange: Qmin, Qmax
     """
     d = dict(excitation.__dict__)
-    Qmin, Qmax = map(parser.parse, d['Qrange'].split(','))
+    Qmin, Qmax = list(map(parser.parse, d['Qrange'].split(',')))
     try:
         Qmin + Qmax + parser.parse('1./angstrom')
     except:

@@ -29,15 +29,15 @@ def main(angle, config, target):
     if not os.path.exists(work) :
         cmd = 'cp -a %s %s' % (config.scatter.template, work)
         if os.system(cmd):
-            print "*** %s failed" % cmd
+            print("*** %s failed" % cmd)
             return
     # run
     cmd = ['make', target]
-    cmd += ['%s=%s' % (k,v) for k,v in envvars.iteritems()]
+    cmd += ['%s=%s' % (k,v) for k,v in envvars.items()]
     cmd = ' ' .join(cmd)
     os.chdir(work)
     if os.system(cmd):
-        print "*** %s failed" % cmd
+        print("*** %s failed" % cmd)
         return
     return
 

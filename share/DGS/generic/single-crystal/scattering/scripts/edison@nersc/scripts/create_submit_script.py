@@ -29,4 +29,4 @@ template = """#!/bin/bash -l
 
 content = template % locals()
 
-print content
+print(content)

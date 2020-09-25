@@ -7,7 +7,7 @@ outfile = sys.argv[5]
 
 from mantid.simpleapi import DgsReduction, SofQW3, SaveNexus, SaveNXSPE, LoadInstrument, Load, MoveInstrumentComponent, AddSampleLog
 
-print "* working on ", nxsfile
+print("* working on ", nxsfile)
 # load workspace from input nexus file
 workspace = Load(nxsfile)
     

@@ -41,8 +41,8 @@ def test_Eresidual():
     v = np.array((0, -1, -1))
     hkl = -(5+1./3) * u + 0 * v
     
-    print "psi\tresidual"
-    print Eresidual(xtalori, hkl, Etarget, angles, Ei)
+    print("psi\tresidual")
+    print(Eresidual(xtalori, hkl, Etarget, angles, Ei))
     return
 
 
@@ -62,8 +62,8 @@ def test_Eresidual2():
     v = np.array((0, -1, -1))
     hkl = -(5+1./3) * u + 0 * v
     
-    print "psi\tresidual"
-    print Eresidual(xtalori, hkl, Etarget, angles, Ei)
+    print("psi\tresidual")
+    print(Eresidual(xtalori, hkl, Etarget, angles, Ei))
     return
 
 
@@ -79,9 +79,9 @@ def test_Eresidual3():
     delta = np.array([-1,1,-1])
     for i in range(9):
         hkl = hkl0+delta*i
-        print hkl
-        print "psi\tresidual"
-        print Eresidual(xtalori, hkl, Etarget, angles, Ei)
+        print(hkl)
+        print("psi\tresidual")
+        print(Eresidual(xtalori, hkl, Etarget, angles, Ei))
     return
 
 

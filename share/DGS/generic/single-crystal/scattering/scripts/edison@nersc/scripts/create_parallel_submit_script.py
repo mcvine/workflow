@@ -30,4 +30,4 @@ wait
 
 content = template % locals()
 
-print content
+print(content)

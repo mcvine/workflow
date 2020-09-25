@@ -11,9 +11,9 @@ def main():
             failed.append(work)
         continue
     
-    print "Failed:"
+    print("Failed:")
     for w in failed:
-        print " - %s" % w
+        print(" - %s" % w)
     return
 
 if __name__ == '__main__' : main()

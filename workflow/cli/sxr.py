@@ -84,7 +84,7 @@ def slice(sample, psi_axis, nxs, slice, out, smooth):
         nxs % angle
         for angle in angles
     ]
-    print angles[0], filenames[0]
+    print(angles[0], filenames[0])
     # load slice
     slice = loadYmlConfig(slice)
     Eaxis = slice.Eaxis

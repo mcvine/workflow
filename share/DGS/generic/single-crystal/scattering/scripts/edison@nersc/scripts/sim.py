@@ -3,14 +3,14 @@
 import os, subprocess as sp, numpy as np
 
 def run(sample):
-  print sample
+  print(sample)
   work = 'work_%s' % sample
   cmd = 'cp -a template %s' % work
   if not os.path.exists(work) :
-    if os.system(cmd): print "%s Failed" % cmd
+    if os.system(cmd): print("%s Failed" % cmd)
 
   cmd = ['make', "arcs-sim-wEiData.nxs", 'SAMPLE_ANGLE=%s' % sample]
-  print ' '.join(cmd)
+  print(' '.join(cmd))
   p = sp.Popen(cmd, stdout=sp.PIPE, cwd=work)
   out,err = p.communicate()
   return 

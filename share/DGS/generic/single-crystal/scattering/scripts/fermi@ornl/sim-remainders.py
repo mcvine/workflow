@@ -8,7 +8,7 @@ def main():
     work = 'work_%s' % sample
     if os.path.exists(os.path.join(work, 'arcs-sim-wEidata.nxs')):
     # if os.path.exists(os.path.join(work, 'log.scatter')): # this is used when sometimes the job got put into hold, and it is not running by the queueing system. in that case, the jobs that are on hold need to be killed, and then we can rerun this script to resubmit the jobs
-      print "skipping %s" % sample
+      print("skipping %s" % sample)
       continue
     run(sample)
   return
