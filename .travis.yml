@@ -29,6 +29,7 @@ install:
   - # conda config --set anaconda_upload no
 
 script:
+  - cd build
   - CTEST_OUTPUT_ON_FAILURE=1 make test
 
 notifications:
