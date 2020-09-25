@@ -45,7 +45,7 @@ def writeXYZ(path, basis, atoms):
     stream = open(path, 'wt')
     stream.write('%s\n' % sum(atoms.values()))
     stream.write('\t'.join(['%s %s %s' % tuple(v) for v in basis]) + '\n')
-    for symbol, number in atoms.items():
+    for symbol, number in sorted(atoms.items()):
         for i in range(number):
             stream.write("%s\t0 0 0\n" % symbol)
             continue
