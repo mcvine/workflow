@@ -7,8 +7,10 @@ class TestCase(unittest.TestCase):
     def test_kernelorientation(self):
         "mcvine workflow sxu kernelorientation"
         cmd = "mcvine workflow sxu kernelorientation KVO.yml"
-        o = sp.check_output(cmd.split())
-        self.assertEqual(o.strip(), "0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0")
+        o = sp.check_output(cmd.split()).strip()
+        if sys.version_info >= (3,0) and isinstance(o, bytes):
+            o = o.decode()
+        self.assertEqual(o, "0.0,1.0,0.0,0.0,0.0,1.0,1.0,0.0,0.0")
         return
 
     def test_solve_psi(self):
