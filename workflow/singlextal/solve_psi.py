@@ -43,7 +43,8 @@ def solve(
     delta = 1.*(psi_max-psi_min)/Nsegments
     results = []
     # retrieve solver
-    if isinstance(solver, basestring):
+    from mcni._2to3 import isstr
+    if isstr(solver):
         solver = getattr(scipy.optimize, solver)
     for i in range(Nsegments):
         min = psi_min+i*delta
