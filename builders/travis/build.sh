@@ -9,7 +9,7 @@ conda config --add channels diffpy
 conda config --add channels mantid
 conda config --add channels mcvine
 
-conda create -n testenv -c mcvine/label/unstable mcvine.instruments mpich python=$TRAVIS_PYTHON_VERSION # muparser=2.2.5=0 numpy=1.14
+conda create -n testenv -c mcvine/label/unstable mcvine.instruments=0.1.1 mpich python=$TRAVIS_PYTHON_VERSION # muparser=2.2.5=0 numpy=1.14
 source activate testenv
 
 export SRC=$PWD
