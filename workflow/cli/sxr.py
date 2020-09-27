@@ -33,7 +33,7 @@ Q_projections:
   N: 1
 """
 
-import os, stat, click, numpy as np
+import os, sys, stat, click, numpy as np
 
 from . import workflow
 
@@ -53,8 +53,9 @@ def sxr():
 def reduce(instrument_type, type, eiguess, eaxis, psi_axis, psi, eventnxs, out):
     """OBSOLETE: use "mcvine workflow sx reduce tof2e" instead"""
     assert instrument_type == 'DGS'
-    eventnxs = eventnxs.encode()
-    out = out.encode()
+    if sys.version_info < (3,0):
+        eventnxs = eventnxs.encode()
+        out = out.encode()
     from mcvine.workflow.singlextal import reduction
     if type == 'single':
         reduction.reduceOneKeepingEvents(eventnxs, psi, eiguess, eaxis, out)
@@ -79,7 +80,8 @@ def slice(sample, psi_axis, nxs, slice, out, smooth):
     orientation = sample.orientation
     # load scan
     angles = np.arange(*psi_axis)
-    nxs = nxs.encode()
+    if sys.version_info < (3,0):
+        nxs = nxs.encode()
     filenames = [
         nxs % angle
         for angle in angles
@@ -89,7 +91,8 @@ def slice(sample, psi_axis, nxs, slice, out, smooth):
     slice = loadYmlConfig(slice)
     Eaxis = slice.Eaxis
     Qproj_axes = slice.Q_projections
-    out = out.encode()
+    if sys.version_info < (3,0):
+        out = out.encode()
     from mcvine.workflow.singlextal import reduction
     reduction.getslice(
         angles, filenames, lattice_params, orientation, Eaxis, Qproj_axes, out, smooth)
@@ -101,8 +104,9 @@ def slice(sample, psi_axis, nxs, slice, out, smooth):
 @click.argument("histogram")
 def slice2hist(mantid, histogram):
     """OBSOLETE: use "mcvine workflow sx reduce slice2hist" instead"""
-    mantid = mantid.encode()
-    histogram = histogram.encode()
+    if sys.version_info < (3,0):
+        mantid = mantid.encode()
+        histogram = histogram.encode()
     from mcvine.workflow.singlextal import reduction
     reduction.slice2hist(mantid, histogram)
 
