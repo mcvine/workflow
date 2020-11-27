@@ -1,3 +1,4 @@
+[![Build Status](https://github.com/mcvine/workflow/workflows/CI/badge.svg)](https://github.com/mcvine/workflow/actions?query=workflow%3ACI)
 [![Build Status](https://travis-ci.com/mcvine/workflow.svg?branch=master)](https://travis-ci.com/mcvine/workflow) 
 
 # workflow
