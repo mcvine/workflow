@@ -20,7 +20,7 @@ which anaconda
 conda config --set anaconda_upload no
 
 # build
-cd $(realpath($(dirname $0)))
+cd $(realpath $(dirname $0))
 pwd
 sed -e "s|XXXVERSIONXXX|$_CONDA_PKG_VER_|g" meta.yaml.template | sed -e "s|XXXGIT_REVXXX|$GIT_REV|g" > meta.yaml
 cat meta.yaml
