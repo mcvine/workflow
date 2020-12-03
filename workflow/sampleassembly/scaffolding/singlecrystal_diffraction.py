@@ -24,7 +24,7 @@ kernel_template = """
         weight="1."
         orientation="%(orientation)s"
         Dd_over_d="%(Dd_over_d)s"
-        lau_path="%(lau_path)s"
+        lau-path="%(lau_path)s"
         mosaic="%(mosaic)s"
       >
       </SingleCrystalDiffractionKernel>
