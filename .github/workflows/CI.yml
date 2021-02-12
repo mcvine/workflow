@@ -55,5 +55,5 @@ jobs:
         run: |
           ./builders/github-actions/conda_build_and_upload.sh
         env:
-          TRAVIS_PYTHON_VERSION: ${{ matrix.python-version }}
+          PYTHON_VERSION: ${{ matrix.python-version }}
           CONDA_UPLOAD_TOKEN: ${{ secrets.ANACONDA_TOKEN }}
