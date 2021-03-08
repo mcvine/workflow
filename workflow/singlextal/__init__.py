@@ -32,11 +32,12 @@ class instrument:
         self.L_m2fc = L_m2fc
 
 class pixel:
-    def __init__(self, radius, height, pressure, position=None):
+    def __init__(self, radius, height, pressure, position=None, orientation=None):
         self.radius = radius
         self.height = height
         self.pressure = pressure
         self.position = position
+        self.orientation = orientation
 
 class axis:
     def __init__(self, min, max, step):
