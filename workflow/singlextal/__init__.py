@@ -19,9 +19,14 @@ Misc
 """
 
 class instrument:
-    def __init__(self, name, detsys_radius, L_m2s, offset_sample2beam, L_m2fc=None):
+    def __init__(
+            self, name, detsys_radius, L_m2s, offset_sample2beam, L_m2fc=None,
+            detsys_shape = 'cylinder'
+    ):
         self.name = name
         self.detsys_radius = detsys_radius
+        assert detsys_shape in ['cylinder', 'sphere']
+        self.detsys_shape = detsys_shape
         self.L_m2s = L_m2s
         self.offset_sample2beam = offset_sample2beam
         self.L_m2fc = L_m2fc
