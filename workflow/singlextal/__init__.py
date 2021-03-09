@@ -21,7 +21,7 @@ Misc
 class instrument:
     def __init__(
             self, name, detsys_radius, L_m2s, offset_sample2beam, L_m2fc=None,
-            detsys_shape = 'cylinder'
+            detsys_shape = 'cylinder', pixel_orientation_func = None
     ):
         self.name = name
         self.detsys_radius = detsys_radius
@@ -30,6 +30,10 @@ class instrument:
         self.L_m2s = L_m2s
         self.offset_sample2beam = offset_sample2beam
         self.L_m2fc = L_m2fc
+        # function to calculation pixel orientation matrix (mcstas convention: z-beam, y-vertical)
+        # inputs are theta and phi of the pixel (spherical coord system, z-vertical, x-beam)
+        # rotmat = pixel_orientation_func(theta, phi)
+        self.pixel_orientation_func = pixel_orientation_func
 
 class pixel:
     def __init__(self, radius, height, pressure, position=None, orientation=None):
