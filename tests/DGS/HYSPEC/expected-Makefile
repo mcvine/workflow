@@ -11,7 +11,7 @@ MULSCATT=off
 DETECTOR_VESSEL_ANGLE=10.0
 
 # default rule: we want I(Q,E)
-all: IQE
+all: IQE clean-intermediate-files
 
 # clean up
 clean:
