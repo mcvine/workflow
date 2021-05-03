@@ -18,6 +18,9 @@ all: event-nxs
 clean:
 	rm -rf out work-* log.* *~ *.nxs *.h5
 
+clean-intermediate-files:
+	rm -rf out/rank*-step* work-*/todetsys/out/rank*-step*
+
 # this rule restore this directory back to the original state of template
 # don't do this unless you know what you are doing
 restore-template: clean
