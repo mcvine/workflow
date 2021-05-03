@@ -10,7 +10,7 @@ QAXIS=%(qaxis)s
 MULSCATT=%(multiple_scattering)s
 
 # default rule: we want I(Q,E)
-all: IQE
+all: IQE clean-intermediate-files
 
 # clean up
 clean:

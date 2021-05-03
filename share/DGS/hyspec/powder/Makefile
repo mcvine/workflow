@@ -11,7 +11,7 @@ MULSCATT=%(multiple_scattering)s
 DETECTOR_VESSEL_ANGLE=%(detector_vessel_angle)s
 
 # default rule: we want I(Q,E)
-all: IQE
+all: IQE clean-intermediate-files
 
 # clean up
 clean:
