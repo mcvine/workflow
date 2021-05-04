@@ -52,10 +52,14 @@ def run_oneangle(angle, config, envvars, target):
     cmd = ' ' .join(cmd)
     save = os.path.abspath(os.curdir)
     os.chdir(work)
-    if os.system(cmd):
+    failed = os.system(cmd)
+    if failed:
         print("*** %s failed" % cmd)
+    else:
+        cmd = 'make clean-intermediate-files'
+        os.system(cmd)
     os.chdir(save)
-    return
+    return failed
 
 
 if __name__ == '__main__': main()

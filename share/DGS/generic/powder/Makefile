@@ -10,11 +10,14 @@ QAXIS=%(qaxis)s
 MULSCATT=%(multiple_scattering)s
 
 # default rule: we want I(Q,E)
-all: IQE
+all: IQE clean-intermediate-files
 
 # clean up
 clean:
 	rm -rf out work-* log.* *~ *.h5 *.nxs
+
+clean-intermediate-files:
+	rm -rf out/rank*-step* work-*/todetsys/out/rank*-step*
 
 # this rule restore this directory back to the original state of template
 # don't do this unless you know what you are doing
