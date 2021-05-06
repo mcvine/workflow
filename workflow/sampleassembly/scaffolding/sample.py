@@ -78,10 +78,11 @@ def makeKernels(excitations, h2Q, orientation, add_elastic_line=True):
     return '\n'.join(ks)
 
 
-from . import deltafunction, DGSresolution, \
-    phonon, phonon_powder_incoherent, \
-    singlecrystal_diffraction, \
-    spinwave, powder_analytical_dispersion, powderSQE
+from . import (
+    deltafunction, DGSresolution, phonon, phonon_powder_incoherent,
+    singlecrystal_diffraction, spinwave, powder_analytical_dispersion,
+    powderSQE, powder_elastic_incoherent
+)
 def makeKernel(excitation, h2Q, orientation):
     type = excitation.type
     mod = globals()[type]
