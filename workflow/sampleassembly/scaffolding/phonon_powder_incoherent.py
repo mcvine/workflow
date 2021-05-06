@@ -29,6 +29,7 @@ def createKernel(excitation):
     fn, ext = os.path.splitext(path)
     assert ext in ext2key, "Incoherent powder phonon kernel: Unknown file extension for DOS: %s" % ext
     d['dospathkey'] = ext2key[ext]
+    d['DOS'] = os.path.abspath(path)
     return kernel_template % d
 
 
