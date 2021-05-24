@@ -11,13 +11,12 @@ import os, numpy as np
 from mcni.units import parser
 parser = parser()
 
-def createKernel(excitation):
+def createKernel(excitation, srcdir, outdir):
     """
     excitation:
     - DOS: path to DOS data
     """
     d = dict(excitation.__dict__)
-    print(d)
     return kernel_template.format(**d)
 
 kernel_template = """

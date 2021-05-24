@@ -6,12 +6,12 @@ def loadSampleYml(path):
     """
     from mcvine.cli.config import loadYmlConfig
     sample = loadYmlConfig(path)
+    sample.parent_dir = parent = os.path.dirname(path)
     # - crystal structure
     # if the filepath for the atomic structure is given, we should use it
     # to compute everything we can
     if hasattr(sample, 'structure_file'):
         if not os.path.isabs(sample.structure_file):
-            parent = os.path.dirname(path)
             sample.structure_file = os.path.join(parent, sample.structure_file)
         _loadStructure(sample.structure_file, sample)
     else:

@@ -9,7 +9,7 @@ Tools for creating spinwave sample
 
 import os, numpy as np
 
-def createKernel(excitation, h2Q, orientation):
+def createKernel(excitation, h2Q, orientation, srcdir, outdir):
     """
     excitation:
     - E_Q: E(vector Q) expression

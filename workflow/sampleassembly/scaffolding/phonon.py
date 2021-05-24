@@ -8,14 +8,19 @@ Tools for creating spinwave sample
 """
 
 import os, numpy as np
+from ._kernel_helpers import copydirectory
 
-def createKernel(excitation, h2Q, orientation):
+def createKernel(excitation, h2Q, orientation, srcdir, outdir):
     """
     excitation:
     - idf_dir: path to phonon data in IDF format
     """
     d = dict(excitation.__dict__)
     d.update(orientation=orientation)
+    idf_dir = d['idf_dir']
+    assert os.path.exists(idf_dir)
+    print("Copying IDF data files")
+    d['idf-dir'] = copydirectory(idf_dir, srcdir, outdir)
     return kernel_template % d
 
 

@@ -13,7 +13,7 @@
 
 
     <Phonon_IncoherentInelastic_Kernel>
-      <LinearlyInterpolatedDOS idf-data-path="V-dos.idf" /> 
+      <LinearlyInterpolatedDOS idf-data-path="V-dos.idf" />
     </Phonon_IncoherentInelastic_Kernel>
 
     

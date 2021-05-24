@@ -9,7 +9,7 @@ DGSresolution kernel
 
 import os, numpy as np
 
-def createKernel(excitation, h2Q, orientation):
+def createKernel(excitation, h2Q, orientation, srcdir, outdir):
     """
     excitation:
     - target_position

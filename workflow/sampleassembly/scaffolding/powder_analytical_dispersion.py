@@ -11,7 +11,7 @@ import os, numpy as np
 from mcni.units import parser
 parser = parser()
 
-def createKernel(excitation):
+def createKernel(excitation, srcdir, outdir):
     """
     excitation:
     - E_Q: E(Q) function

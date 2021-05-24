@@ -12,9 +12,13 @@ here = os.path.dirname(__file__)
 def test_phonon():
     class phonon:
         type = "phonon"
-        idf_dir = "/path/to/phonon-idf-dir"
+        idf_dir = "phonon-idf-dir"
+    outdir = '_tmp.phonon'
+    if os.path.exists(outdir):
+        import shutil
+        shutil.rmtree(outdir)
     sample.createSample(
-        outdir='_tmp.phonon', name='sample.phonon', 
+        outdir=outdir, name='sample.phonon',
         lattice_basis = [[1,0,0],[0,1,0],[0,0,1]],
         uv = ([1,0,0], [0,1,0]),
         chemical_formula="Si",
