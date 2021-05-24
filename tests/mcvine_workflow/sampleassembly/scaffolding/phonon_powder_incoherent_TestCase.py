@@ -14,7 +14,8 @@ def test():
         type = "phonon_powder_incoherent" # match module name
         DOS = "V-dos.idf"
     sample.createSample(
-        outdir='_tmp.phonon_powder_incoherent', name='sample.phonon_powder_incoherent', 
+        outdir='_tmp.phonon_powder_incoherent',
+        name='sample.phonon_powder_incoherent',
         lattice_basis = [[1,0,0],[0,1,0],[0,0,1]],
         uv = None,
         chemical_formula="Al",

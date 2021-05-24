@@ -11,7 +11,7 @@ import os, numpy as np
 from .utils import computeOrientationStr, reciprocal_basis, writeXYZ, decode_chemicalformula
 
 def createSample(
-        outdir, name=None, 
+        outdir, src_parent_dir='.', name=None, 
         lattice_basis=np.eye(3), uv=([1,0,0], [0,1,0]),
         chemical_formula=None, 
         excitations = None,
@@ -22,6 +22,7 @@ def createSample(
         ):
     """
     Inputs
+    - src_parent_dir: parent dir for relative paths in excitation specs
     - name: name of sample
     - lattice_basis: a1, a2, a3 basis vectors
     - uv: u,v vectors
@@ -32,7 +33,7 @@ def createSample(
     """
     if not os.path.exists(outdir):
         os.makedirs(outdir)
-    if not name: 
+    if not name:
         name = chemical_formula
     if structure_file:
         # if structure_file exists, simply copy it over
@@ -58,14 +59,20 @@ def createSample(
     else:
         orientation = None
     # prepare kernels
-    kernels = makeKernels(excitations, h2Q, orientation, add_elastic_line=add_elastic_line)
+    kernels = makeKernels(
+        excitations, h2Q, orientation,
+        srcdir = src_parent_dir, outdir=outdir,
+        add_elastic_line=add_elastic_line)
     #  write
     path = os.path.join(outdir, '%s-scatterer.xml' % name)
     open(path, 'wt').write(scatterer_template % locals()) 
     return
 
 
-def makeKernels(excitations, h2Q, orientation, add_elastic_line=True):
+def makeKernels(
+        excitations, h2Q, orientation,
+        srcdir, outdir,
+        add_elastic_line=True):
     ks = []
     types = [e.type for e in excitations]
     # if 'phonon' not in types:
@@ -73,22 +80,24 @@ def makeKernels(excitations, h2Q, orientation, add_elastic_line=True):
     if add_elastic_line:
         ks.append(simple_elastic_kernel)
     for excitation in excitations:
-        ks.append(makeKernel(excitation, h2Q, orientation))
+        ks.append(makeKernel(excitation, h2Q, orientation, srcdir, outdir))
         continue
     return '\n'.join(ks)
 
 
-from . import deltafunction, DGSresolution, \
-    phonon, phonon_powder_incoherent, \
-    singlecrystal_diffraction, \
-    spinwave, powder_analytical_dispersion, powderSQE
-def makeKernel(excitation, h2Q, orientation):
+from . import (
+    deltafunction, DGSresolution,
+    phonon, phonon_powder_incoherent, phonon_powder_coherent,
+    singlecrystal_diffraction, spinwave, powder_analytical_dispersion,
+    powderSQE, powder_elastic_incoherent, powder_diffraction,
+)
+def makeKernel(excitation, h2Q, orientation, srcdir, outdir):
     type = excitation.type
     mod = globals()[type]
     if orientation is not None:
-        return mod.createKernel(excitation, h2Q, orientation)
+        return mod.createKernel(excitation, h2Q, orientation, srcdir, outdir)
     else:
-        return mod.createKernel(excitation)
+        return mod.createKernel(excitation, srcdir, outdir)
 
 scatterer_template = """<?xml version="1.0"?>
 

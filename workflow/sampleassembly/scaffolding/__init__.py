@@ -15,6 +15,8 @@ def createSampleAssembly(outdir, sample, *scatterers, **kwds):
     * sample: sample object. can be constructed from yaml file
               using mcvine.workflow.sample.loadSampleYml
               Example yaml file: tests/DGS/ARCS/Si.yml
+              Should have a `parent_dir` attribute if not constructed
+              from yaml file. All paths could be relative to that.
     * scatterers: scatterers in addition to sample, such as sample environment
     """
     if not os.path.exists(outdir):
@@ -37,7 +39,8 @@ def createSampleAssembly(outdir, sample, *scatterers, **kwds):
         structure_file = getattr(scatterer, 'structure_file', None)
         from .sample import createSample
         createSample(
-            outdir, name=scatterer.name, 
+            outdir, sample.parent_dir,
+            name=scatterer.name,
             lattice_basis=scatterer.lattice.basis_vectors, uv=uv,
             chemical_formula=scatterer.chemical_formula,
             excitations = scatterer.excitations,
@@ -51,4 +54,4 @@ def createSampleAssembly(outdir, sample, *scatterers, **kwds):
     return
 
 
-# End of file 
+# End of file

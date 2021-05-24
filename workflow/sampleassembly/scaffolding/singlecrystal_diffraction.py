@@ -9,7 +9,7 @@ Tools for creating single crystal diffraction sample
 
 import os, numpy as np
 
-def createKernel(excitation, h2Q, orientation):
+def createKernel(excitation, h2Q, orientation, srcdir, outdir):
     """
     excitation:
       Dd_over_d="1.e-4" lau_path="Al.lau" mosaic="5./60*deg"

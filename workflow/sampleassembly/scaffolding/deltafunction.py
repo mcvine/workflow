@@ -9,7 +9,7 @@ Tools for creating delta function sample
 
 import os, numpy as np
 
-def createKernel(excitation, h2Q, orientation):
+def createKernel(excitation, h2Q, orientation, srcdir, outdir):
     """
     excitation:
     - hkl
