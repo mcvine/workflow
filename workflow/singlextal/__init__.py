@@ -79,6 +79,6 @@ class dynamics:
         self.hkl0 = hkl0
         self.hkl_dir = hkl_dir
 
-from .io import loadXtalOriConfig
+from .io import loadXtalOriConfig, loadXtalOriFromSampleYml
 
-# End of file 
+# End of file
