@@ -27,16 +27,12 @@ def loadXtalOriConfig(path):
     return XtalOrientation(b1,b2,b3, xo.u, xo.v, xo.psi)
 
 def loadXtalOriFromSampleYml(path):
-    from mcvine.cli import config
-    sample = config.loadYmlConfig(path)
-    bv = list(map(eval, sample.lattice.basis_vectors))
+    from ..sample import loadSampleYml
+    sample = loadSampleYml(path)
+    bv = sample.lattice.basis_vectors
     b1,b2,b3 = reciprocal_basis(bv)
-    #
     xo = sample.orientation
-    for key in ['u','v']:
-        setattr(xo, key, eval(getattr(xo, key)))
-        continue
     from .XtalOrientation import XtalOrientation
     return XtalOrientation(b1,b2,b3, xo.u, xo.v, 0)
 
-# End of file 
+# End of file
