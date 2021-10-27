@@ -12,6 +12,7 @@ import numpy as np
 class XtalOrientation:
     
     def __init__(self, b1, b2, b3, u, v, psi):
+        "psi: in radian"
         self.b1 = np.array(b1)
         self.b2 = np.array(b2)
         self.b3 = np.array(b3)
