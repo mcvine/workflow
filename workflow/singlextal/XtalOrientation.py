@@ -5,6 +5,8 @@
 # copied from yxqd/nslice
 
 """data object for crystal orientation
+
+coordinate system: see ./coords_transform.py
 """
 
 import numpy as np
