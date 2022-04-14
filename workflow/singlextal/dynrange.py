@@ -12,14 +12,18 @@ def plotDynRangeOfSlice(
         scattering_angle_constraints,
         Erange=None):
     from matplotlib import pyplot as plt
+    f,ax = plt.subplots()
     for psi, xs, Es in iterPointsInSlice(
             sample, psi_angles, Ei,
             hkl0, hkl_dir, xaxis,
             scattering_angle_constraints,
             Erange=Erange):
-        plt.plot(xs, Es, label=str(psi))
+        ax.plot(xs, Es, label=str(psi))
         continue
-    # plt.legend()
+    ax.set_ylabel("Energy (meV))")
+    ax.set_xlabel("{},{}".format(hkl0,hkl_dir))
+    # ax.legend()
+    f.show()
     return
 
 
